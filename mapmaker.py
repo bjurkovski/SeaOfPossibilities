@@ -2,21 +2,14 @@ from easygui import *
 import sys
 
 while 1:
-  msgbox("Hello, world!")
+  msgbox("Map Maker")
 
-  msg ="What is your favorite flavor?"
-  title = "Ice Cream Survey"
-  choices = ["Vanilla", "Chocolate", "Strawberry", "Rocky Road"]
-  choice = choicebox(msg, title, choices)
+  choice = ''
 
-  # note that we convert choice to string, in case
-  # the user cancelled the choice, and we got None.
-  msgbox("You chose: " + str(choice), "Survey Result")
-
-  msg = "Do you want to continue?"
-  title = "Please Confirm"
-  if ccbox(msg, title):     # show a Continue/Cancel dialog
-    pass  # user chose Continue
+  if ynbox("Open a file?","LoadFile"):
+    choice = fileopenbox("","Load File","*",["*.txt"])
   else:
     sys.exit(0)           # user chose Cancel
+
+  codebox( '', choice, open(choice).read() )
 
