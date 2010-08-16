@@ -1,11 +1,11 @@
 from math import pi, sin, cos
- 
+
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 
 from panda3d.core import CardMaker
 from direct.gui.DirectGui import *
- 
+
 class MyApp(ShowBase):
 	def __init__(self):
 		ShowBase.__init__(self)
@@ -34,6 +34,7 @@ class MyApp(ShowBase):
 		#se colocar esse setPos no __init__, nao funciona...
 		self.camera.setPos(0, -20.0, 0)
 		return Task.cont
- 
+
 app = MyApp()
 app.run()
+
