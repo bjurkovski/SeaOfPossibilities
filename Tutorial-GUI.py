@@ -25,6 +25,7 @@ class MyApp(ShowBase):
 		# Aparentemente esse eh o segredo pra mostrar o Card na tela, mas nao descobri o pq...
 		#self.taskMgr.add(self.idle, "Idle")
 
+
 		self.title = OnscreenText(text="MapMaker",
 								  style=1, fg=(1,1,1,1),
 								  pos=(0.5,-0.95), scale = .07)
