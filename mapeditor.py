@@ -37,25 +37,28 @@ class MyApp(ShowBase):
 
 		self.accept('escape', sys.exit)
 
+		self.drawBoard()
+
 	def drawBoard(self):
 		tex = loader.loadTexture('tex/tile.png')
 		for i in range(self.width):
 			for j in range(self.height):
-				sx, sy =  1.0/self.width , 1.0/self.height
+				sx, sy =  2.0/self.width , 2.0/self.height
 				card = self.render2d.attachNewNode( self.newCard(sx,sy) )
-				card.setPos( (sx - 1 - (2*i*sx)) ,0, -(sy - 1 - (2 * j * sy)) )
-				print( 1 - 2 * i * sx ,1 - 2 * j * sy ) 
+				card.setPos( sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
+				print(card.getPos())
 				card.setTexture(tex)
 
 	def newCard( self, w, h ):
-		self.cardMaker.setFrame(w,-w,h,-h)
-		self.cardMaker.setColor(0,1,0,1)
+		self.cardMaker.setFrame(w/2,-w/2,h/2,-h/2)
+		self.cardMaker.setColor(h % 2,w % 2,0,1)
 		return self.cardMaker.generate()
 
 	def mouseInput(self,task):
 
 		if base.mouseWatcherNode.hasMouse():
-			self.mpos = base.mouseWatcherNode.getMouse()
+			mpos = base.mouseWatcherNode.getMouse()
+			#mouse.setPos( (mouse.getX() * self.width )  )
 
 		return Task.cont
 
@@ -67,6 +70,6 @@ class MyApp(ShowBase):
 
 
 
-app = MyApp(20,20)
+app = MyApp(10,5)
 app.run()
 
