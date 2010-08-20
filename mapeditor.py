@@ -28,7 +28,8 @@ class MyApp(ShowBase):
 
 		#the card generator
 		self.cardMaker = CardMaker('card')
-		self.mpos = Vec2(0,0)
+
+		self.mouse = (0,0)
 
 		self.title = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.5,-0.95), scale = .07)
 
@@ -46,7 +47,6 @@ class MyApp(ShowBase):
 				sx, sy =  2.0/self.width , 2.0/self.height
 				card = self.render2d.attachNewNode( self.newCard(sx,sy) )
 				card.setPos( sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
-				print(card.getPos())
 				card.setTexture(tex)
 
 	def newCard( self, w, h ):
@@ -57,19 +57,20 @@ class MyApp(ShowBase):
 	def mouseInput(self,task):
 
 		if base.mouseWatcherNode.hasMouse():
-			mpos = base.mouseWatcherNode.getMouse()
-			#mouse.setPos( (mouse.getX() * self.width )  )
+			sx, sy =  2.0/self.width , 2.0/self.height
+			m = base.mouseWatcherNode.getMouse()
+			self.mouse = ( (m.getX()+1)//sx , (m.getY()+1)//sy )
 
 		return Task.cont
 
 	def idle(self, task):
 		#se colocar esse setPos no __init__, nao funciona...
 		#self.camera.setPos(0, 0, 0)
-		self.title.setText ("MapMaker (%.2f,%.2f)" % ( self.mpos.getX(), self.mpos.getY() ) )
+		self.title.setText ("MapMaker (%d,%d)" % ( self.mouse[0], self.mouse[1] ) )
 		return Task.cont
 
 
 
-app = MyApp(10,5)
+app = MyApp(20,20)
 app.run()
 
