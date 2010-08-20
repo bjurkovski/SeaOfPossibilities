@@ -30,10 +30,11 @@ class Stage:
 	def __init__(self, stageFile):
 		try:
 			file = open(stageFile)
-			self.data = json.loads(file.read())
+			data = json.loads(file.read())
+			self.start = data["start"]
 			self.maps = {}
-			for room in self.data["rooms"]:
-				self.maps[room] = Map(self.data["rooms"][room]["map"])
+			for room in data["rooms"]:
+				self.maps[room] = Map(data["rooms"][room]["map"])
 			file.close()
 		except:
 			print "Couldn't open stage %s!" % stageFile
@@ -41,7 +42,12 @@ class Stage:
 
 	def __str__(self):
 		# to do
-		return ""
+		str = 'Start Room: "' + self.start + '"\n\n'
+		for room in self.maps:
+			str += 'Room "' + room + '"\n'
+			str += self.maps[room].__str__()
+			str += "\n"
+		return str
 
 	def save(self, filename):
 		# to do: save each one of the stage's maps...

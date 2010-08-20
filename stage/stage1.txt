@@ -2,6 +2,7 @@
 	"stage-map": "stage1-map.txt",
 	"start": "1",
 	"rooms": {
-		"1": { "map": "map/1-1.txt" }
+		"1": { "map": "stage/map/1-1.txt" },
+		"2": { "map": "stage/map/1-2.txt" }
 	}
 }
