@@ -52,5 +52,6 @@ class Stage:
 	def save(self, filename):
 		# to do: save each one of the stage's maps...
 		file = open(filename, 'w')
-		file.write(self.__str__())
+		#dump a json file
+		#file.write(self.__str__())
 		file.close()

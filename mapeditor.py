@@ -88,6 +88,8 @@ class MyApp(ShowBase):
 		#se colocar esse setPos no __init__, nao funciona...
 		#self.camera.setPos(0, 0, 0)
 		self.title.setText ("MapMaker (%02d,%02d)" % ( self.mouse[0], self.mouse[1] ) )
+		self.matrix[0][0].setPos(0.5, 0, 0.5)
+		self.matrix[0][0].setColor(1,0,0,1)
 		self.drawBoard()
 		return Task.cont
 
