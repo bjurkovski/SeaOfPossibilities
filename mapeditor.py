@@ -29,7 +29,7 @@ def matrix(w,h,default=None):
 	return mat
 
 
-class MyApp(ShowBase):
+class MapEditor(ShowBase):
 
 	def __init__(self, w, h):
 		ShowBase.__init__(self)
@@ -89,12 +89,23 @@ class MyApp(ShowBase):
 		#self.camera.setPos(0, 0, 0)
 		self.title.setText ("MapMaker (%02d,%02d)" % ( self.mouse[0], self.mouse[1] ) )
 		self.matrix[0][0].setPos(0.5, 0, 0.5)
-		self.matrix[0][0].setColor(1,0,0,1)
+		self.matrix[0][0].setTexture("")
+
+		# lots of tries to change the phuking card color:
+		#print self.matrix[0][0].getColor()
+		#self.matrix[0][0].clearColor()
+		#print self.matrix[0][0].getColor()
+		#print self.matrix[0][0].node().getColor()
+		#help(self.matrix[0][0].node()) #.setColor(1,1,1,1)
+		print self.matrix[0][0].node().__getattribute__('color')
+		#print matrix[0][0].node().ColorAttrib
+		#print self.matrix[0][0].node()
+
 		self.drawBoard()
 		return Task.cont
 
 
 
-app = MyApp(20,20)
+app = MapEditor(20,20)
 app.run()
 

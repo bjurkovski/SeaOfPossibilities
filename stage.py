@@ -1,8 +1,11 @@
 import json
+from panda3d.core import NodePath, CardMaker
 
 class Map:
 	def __init__(self, mapFile=None):
 		self.tiles = []
+		self.cards = []
+		self.nodePath = None
 		if mapFile != None:
 			try:
 				file = open(mapFile)
@@ -12,6 +15,10 @@ class Map:
 			except:
 				print "Couldn't open map %s!" % mapFile
 				exit()
+
+	#def __init__(self, width, height):
+	#	self.tiles = []
+	#	self.cards = []
 
 	def __str__(self):
 		str = ""
@@ -25,6 +32,28 @@ class Map:
 		file = open(filename, 'w')
 		file.write(self.__str__())
 		file.close()
+
+	def constructModel(self):
+		if self.nodePath != None:
+			self.nodePath.removeNode()
+			self.cards = []
+
+		self.nodePath = NodePath("Map")
+		cm = CardMaker('CardMaker')
+
+		for row in range(len(self.tiles)):
+			self.cards.append([])
+			for tile in range(len(self.tiles[row])):
+				sx, sy =  2.0/len(self.tiles) , 2.0/len(self.tiles[row])
+				cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
+				cm.setColor(0,0.5,0,1)
+				card = self.nodePath.attachNewNode(cm.generate())
+				card.setPos(sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
+				#card.setTexture(tex)
+				self.cards[row].append(card)
+
+	def getNodePath(self):
+		return self.nodePath
 
 class Stage:
 	def __init__(self, stageFile):

@@ -16,4 +16,9 @@ class Game(ShowBase):
 		ls.moveTo(0, 0, 0)
 		ls.drawTo(0, 1, 0)
 
+		taskMgr.add(self.idle, "Idle")
+
+	def idle(self, param):
+		pass
+
 # to do (or not): create GameServer and GameClient classes to inherit from Game
