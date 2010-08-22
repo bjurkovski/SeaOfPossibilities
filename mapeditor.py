@@ -29,8 +29,6 @@ class MapEditor(ShowBase):
 		self.height = h
 
 		self.map = Map(size=(w,h))
-		# maybe calling this inside the constructor
-		self.map.constructModel()
 		
 		# maybe store a "theme" attribute in map and apply the texture there
 		tex = loader.loadTexture('tex/tile.png')

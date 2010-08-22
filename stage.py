@@ -28,6 +28,8 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
+		self.constructModel()
+
 	def __str__(self):
 		str = ""
 		for row in self.tiles:
