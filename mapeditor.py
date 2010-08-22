@@ -12,25 +12,12 @@ from panda3d.core import Vec2,Vec3,Vec4
 from panda3d.core import CardMaker
 from direct.gui.DirectGui import *
 
+from stage import *
+
 import sys
-
-def line(w,default=None):
-	lin = []
-	for i in range(w):
-		lin.append(default)
-
-	return lin
-
-def matrix(w,h,default=None):
-	mat = []
-	for i in range(w):
-		mat.append( line(h,default) )
-
-	return mat
 
 
 class MapEditor(ShowBase):
-
 	def __init__(self, w, h):
 		ShowBase.__init__(self)
 
@@ -41,10 +28,17 @@ class MapEditor(ShowBase):
 		self.width = w
 		self.height = h
 
-		#the card generator
-		self.cardMaker = CardMaker('card')
+		self.map = Map(size=(w,h))
+		# maybe calling this inside the constructor
+		self.map.constructModel()
+		
+		# maybe store a "theme" attribute in map and apply the texture there
+		tex = loader.loadTexture('tex/tile.png')
+		for i in range(w):
+			for j in range(h):
+				self.map.cards[i][j].setTexture(tex)
 
-		self.fillMatrix()
+		self.render2d.attachNewNode(self.map.getNode())
 
 		self.mouse = (0,0)
 
@@ -55,28 +49,8 @@ class MapEditor(ShowBase):
 
 		self.accept('escape', sys.exit)
 
-	def drawBoard(self):
-		self.matrix[self.mouse[0]][self.mouse[1]].setColor(0,0,0,1)
-
-	def fillMatrix(self):
-		self.matrix = matrix(self.width,self.height)
-		tex = loader.loadTexture('tex/tile.png')
-
-		for i in range(self.width):
-			for j in range(self.height):
-				sx, sy =  2.0/self.width , 2.0/self.height
-				card = self.render2d.attachNewNode( self.newCard(sx,sy) )
-				card.setPos( sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
-				card.setTexture(tex)
-				self.matrix[i][j] = card
-
-	def newCard( self, w, h ):
-		self.cardMaker.setFrame(w/2,-w/2,h/2,-h/2)
-		self.cardMaker.setColor(0,0.5,0,1)
-		return self.cardMaker.generate()
 
 	def mouseInput(self,task):
-
 		if base.mouseWatcherNode.hasMouse():
 			sx, sy =  2.0/self.width , 2.0/self.height
 			m = base.mouseWatcherNode.getMouse()
@@ -88,20 +62,7 @@ class MapEditor(ShowBase):
 		#se colocar esse setPos no __init__, nao funciona...
 		#self.camera.setPos(0, 0, 0)
 		self.title.setText ("MapMaker (%02d,%02d)" % ( self.mouse[0], self.mouse[1] ) )
-		self.matrix[0][0].setPos(0.5, 0, 0.5)
-		self.matrix[0][0].setTexture("")
 
-		# lots of tries to change the phuking card color:
-		#print self.matrix[0][0].getColor()
-		#self.matrix[0][0].clearColor()
-		#print self.matrix[0][0].getColor()
-		#print self.matrix[0][0].node().getColor()
-		#help(self.matrix[0][0].node()) #.setColor(1,1,1,1)
-		print self.matrix[0][0].node().__getattribute__('color')
-		#print matrix[0][0].node().ColorAttrib
-		#print self.matrix[0][0].node()
-
-		self.drawBoard()
 		return Task.cont
 
 

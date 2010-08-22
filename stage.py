@@ -2,23 +2,31 @@ import json
 from panda3d.core import NodePath, CardMaker
 
 class Map:
-	def __init__(self, mapFile=None):
+	def __init__(self, filename=None, size=()):
 		self.tiles = []
 		self.cards = []
 		self.nodePath = None
-		if mapFile != None:
+		if filename != None:
 			try:
-				file = open(mapFile)
+				file = open(filename)
 				for line in file.readlines():
 					self.tiles.append([c for c in line if c != '\n'])
 				file.close()
 			except:
-				print "Couldn't open map %s!" % mapFile
+				print "Error creating map: %s not found." % mapFile
 				exit()
-
-	#def __init__(self, width, height):
-	#	self.tiles = []
-	#	self.cards = []
+		elif size != ():
+			try:
+				for i in range(size[0]):
+					self.tiles.append([])
+					for j in range(size[1]):
+						self.tiles[i].append(' ')
+			except:
+				print "Error creating map: expecting a size=(width, height)."
+				exit()
+		else:
+			print "Error creating map: please provide either the filename or the size to be allocated."
+			exit()
 
 	def __str__(self):
 		str = ""
@@ -48,12 +56,12 @@ class Map:
 				cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
 				cm.setColor(0,0.5,0,1)
 				card = self.nodePath.attachNewNode(cm.generate())
-				card.setPos(sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
+				card.setPos(sx/2 + row*sx - 1 , 0, sy/2 + tile*sy - 1)
 				#card.setTexture(tex)
 				self.cards[row].append(card)
 
-	def getNodePath(self):
-		return self.nodePath
+	def getNode(self):
+		return self.nodePath.node()
 
 class Stage:
 	def __init__(self, stageFile):
@@ -63,7 +71,7 @@ class Stage:
 			self.start = data["start"]
 			self.maps = {}
 			for room in data["rooms"]:
-				self.maps[room] = Map(data["rooms"][room]["map"])
+				self.maps[room] = Map(filename=data["rooms"][room]["map"])
 			file.close()
 		except:
 			print "Couldn't open stage %s!" % stageFile

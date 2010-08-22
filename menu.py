@@ -6,7 +6,7 @@ from game import *
 
 # http://www.panda3d.org/manual/index.php/Simple_FSM_Usage
 class Menu(FSM):
-	def __init__(self, initialState=None):
+	def __init__(self, initialState='Title'):
 		FSM.__init__(self, 'Menu')
 
 		self.defaultTransitions = {
@@ -14,9 +14,6 @@ class Menu(FSM):
 			'NewGame': ['Title'],
 			'MapEditor': ['Title']
 		}
-
-		if not initialState:
-			initialState = 'Title'
 
 		self.request(initialState)
 
