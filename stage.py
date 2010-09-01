@@ -28,7 +28,7 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
-		self.constructModel()
+		#self.constructModel()
 
 	def __str__(self):
 		str = ""
@@ -94,3 +94,4 @@ class Stage:
 		#dump a json file
 		#file.write(self.__str__())
 		file.close()
+
