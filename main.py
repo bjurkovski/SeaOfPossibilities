@@ -14,3 +14,4 @@ if __name__ == '__main__':
 	#game.run()
 
 	b = Menu('NewGame')
+	b.run()
