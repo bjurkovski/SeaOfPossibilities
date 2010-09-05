@@ -1,8 +1,13 @@
+from panda3d.core import NodePath
+
 class State:
+	counter=0
 	def __init__(self):
 		self.render = None
 		self.camera = None
 		self.keys = None
+		self.node = NodePath("State"+str(State.counter)+"Node")
+		State.counter+=1
 	
 	def iterate(self):
 		pass
@@ -11,16 +16,11 @@ class State:
 		self.render = render
 		self.camera = camera
 		self.keys = keys
+		self.enter()
 		
 	def enter(self):
-		# to do:
-		# -> primeira vez que entra num estado, chama o construtor do objeto dele
-		#    nas proximas, chama apenas esse metodo enter
-		# -> criar um NodePath X vazio pra pendurar todos os elementos de um estado
-		#    em vez de pendurar direto no render. Assim, basta dar um X.detachNode()
-		#    no exit() e um X.reparentTo(self.render) nesse enter()
-		pass
+		self.node.reparentTo(self.render)
 	
 	def exit(self):
-		pass
+		self.node.detachNode()
 		

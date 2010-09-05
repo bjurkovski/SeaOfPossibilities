@@ -21,13 +21,15 @@ class Game(State):
 		
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
-		self.render.attachNewNode(self.stage.maps[self.room].getNode())
-		self.actor.reparentTo(self.render)
+		self.node.attachNewNode(self.stage.maps[self.room].getNode())
+		self.actor.reparentTo(self.node)
+		
+		self.camera.setPos(0, -4, 0)
+		self.camera.lookAt(0, 0, 0)
 		
 	def iterate(self):
 		State.iterate(self)
-		self.camera.setPos(0, -4, 0)
-		self.camera.lookAt(0, 0, 0)
+		self.camera.look()
 		self.move()
 		
 		if self.keys['start']:

@@ -5,6 +5,7 @@ from direct.showbase.ShowBase import ShowBase
 from input import *
 from game import *
 from pause import *
+from cam import *
 
 # here goes the game logic:
 # title menu state machine, etc
@@ -15,6 +16,8 @@ class Menu(FSM, ShowBase, Input):
 		FSM.__init__(self, initialState)
 		ShowBase.__init__(self)
 		Input.__init__(self)
+		
+		self.cam = Cam(self.camera)
 
 		self.defaultTransitions = {
 			'Title':    ['NewGame', 'Options', 'Exit'],
@@ -66,11 +69,13 @@ class Menu(FSM, ShowBase, Input):
 		if not self.states[self.newState]:
 			initialStage = "stage/stage1.txt"
 			self.states[self.newState] = Game(Stage(initialStage), [])
-			self.states[self.newState].register(self.render, self.camera, self.actionKeys)
+			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
+		else:
+			self.states[self.newState].enter()
 		
 	def enterPaused(self):
 		self.states[self.newState] = Pause()
-		self.states[self.newState].register(self.render2d, self.camera, self.actionKeys)
+		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 		
 	def enterGameOver(self):
 		pass
