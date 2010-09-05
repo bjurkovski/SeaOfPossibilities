@@ -29,6 +29,9 @@ class Game(State):
 		self.camera.setPos(0, -4, 0)
 		self.camera.lookAt(0, 0, 0)
 		self.move()
+		
+		if self.keys['start']:
+			return "Paused"
 
 	def move(self):
 		disp = Point3(0, 0, 0)
