@@ -12,14 +12,13 @@ class Input():
 		self.keymap = {}
 		
 		#a mapping of action -> bool, that represents if an action has been requested or not
-		self.action = {}
-		pass
+		self.actionKeys = {}
 		
 	def inputMap(self,adict):
 		#maybe clear old keymap
 		for action,key in adict.iteritems():
 			self.mapKey(action,key)
-			self.action[self.keymap[key]] = False
+			self.actionKeys[self.keymap[key]] = False
 	
 	def mapKey(self, action, key):
 		"""
@@ -30,7 +29,7 @@ class Input():
 		self.keymap[key] = action
 		
 	def setKey(self, key, pressed):
-		self.action[self.keymap[key]] = pressed
+		self.actionKeys[self.keymap[key]] = pressed
 		
 	def bindKeys(self):
 		"""

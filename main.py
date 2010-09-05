@@ -13,4 +13,5 @@ if __name__ == '__main__':
 	#game = Game(Stage("stage/stage1.txt"), [])
 	#game.run()
 
-	b = Menu('NewGame')
+	b = Menu('InGame')
+	b.run()
