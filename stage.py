@@ -1,6 +1,8 @@
 import json
 from panda3d.core import NodePath, CardMaker
 
+tex = loader.loadTexture('tex/tile.png')
+
 class Map:
 	def __init__(self, filename=None, size=()):
 		self.tiles = []
@@ -28,7 +30,7 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
-		#self.constructModel()
+		self.constructModel()
 
 	def __str__(self):
 		str = ""
@@ -59,25 +61,28 @@ class Map:
 				cm.setColor(0,0.5,0,1)
 				card = self.nodePath.attachNewNode(cm.generate())
 				card.setPos(sx/2 + row*sx - 1 , 0, sy/2 + tile*sy - 1)
-				#card.setTexture(tex)
+				
+				card.setTexture(tex)
+				
 				self.cards[row].append(card)
+				card.reparentTo(self.nodePath)
+				m = loader.loadModel('model/tree/tree')
+				m.reparentTo(card)
+				m.setHpr(0,90,0)
+				m.setScale(0.01,0.01,0.01)
 
 	def getNode(self):
 		return self.nodePath.node()
 
 class Stage:
 	def __init__(self, stageFile):
-		try:
-			file = open(stageFile)
-			data = json.loads(file.read())
-			self.start = data["start"]
-			self.maps = {}
-			for room in data["rooms"]:
-				self.maps[room] = Map(filename=data["rooms"][room]["map"])
-			file.close()
-		except:
-			print "Couldn't open stage %s!" % stageFile
-			exit()
+		file = open(stageFile)
+		data = json.loads(file.read())
+		self.start = data["start"]
+		self.maps = {}
+		for room in data["rooms"]:
+			self.maps[room] = Map(filename=data["rooms"][room]["map"])
+		file.close()
 
 	def __str__(self):
 		# to do
