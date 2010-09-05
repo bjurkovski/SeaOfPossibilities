@@ -15,8 +15,6 @@ from stage import *
 
 import sys
 
-# Makes sure that Panda is set to open external windows
-
 class MapEditor(ShowBase):
 	def __init__(self, w, h):
 		ShowBase.__init__(self)
