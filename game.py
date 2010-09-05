@@ -7,6 +7,7 @@ from panda3d.core import Point3
 class Game(State):
 	def __init__(self, stage, characters):
 		State.__init__(self)
+
 		# how to know the players that will be in game? a ChoosePlayer screen before the constructor?
 		self.characters = characters
 		self.stage = stage
@@ -27,8 +28,9 @@ class Game(State):
 		State.iterate(self)
 		self.camera.setPos(0, -4, 0)
 		self.camera.lookAt(0, 0, 0)
+		self.move()
 
-	def move(self, task):
+	def move(self):
 		disp = Point3(0, 0, 0)
 		try:
 			if self.keys['up']:
@@ -45,3 +47,4 @@ class Game(State):
 		self.actor.setPos(self.actor.getPos() + disp)
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
+

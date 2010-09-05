@@ -2,15 +2,17 @@ from direct.fsm.FSM import FSM
 from direct.task import Task
 from direct.showbase.ShowBase import ShowBase
 from game import *
+from input import *
 
 # here goes the game logic:
 # title menu state machine, etc
 
 # http://www.panda3d.org/manual/index.php/Simple_FSM_Usage
-class Menu(FSM, ShowBase):
+class Menu(FSM, ShowBase, Input):
 	def __init__(self, initialState='Title'):
 		FSM.__init__(self, initialState)
 		ShowBase.__init__(self)
+		Input.__init__(self)
 
 		self.defaultTransitions = {
 			'Title':    ['NewGame', 'Options', 'Exit'],
@@ -22,10 +24,12 @@ class Menu(FSM, ShowBase):
 		}
 		
 		self.states = {}
-		self.keys = {'up': False, 'left': False, 'down': False, 'right': False, 'action': False}
 		
+		# Read KeyConfig from a json file
 		kcfg = open("cfg/input.cfg")
-		self.keyCfg = json.loads(kcfg.read())
+		keyCfg = json.loads(kcfg.read())
+		self.inputMap(keyCfg)
+		self.bindKeys()
 		kcfg.close()
 		
 		taskMgr.add(self.idle, "Idle")
@@ -51,7 +55,7 @@ class Menu(FSM, ShowBase):
 		# to do: read this from a config file
 		initialStage = "stage/stage1.txt"
 		self.states[self.newState] = Game(Stage(initialStage), [])
-		self.states[self.newState].register(self.render, self.camera, self.keys)
+		self.states[self.newState].register(self.render, self.camera, self.actionKeys)
 
 	def exitNewGame(self):
 		pass

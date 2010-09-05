@@ -94,3 +94,4 @@ class Stage:
 		#dump a json file
 		#file.write(self.__str__())
 		file.close()
+
