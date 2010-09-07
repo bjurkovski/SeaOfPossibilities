@@ -4,6 +4,7 @@ from direct.showbase.ShowBase import ShowBase
 
 from input import *
 from game import *
+from character import *
 from pause import *
 from cam import *
 
@@ -50,7 +51,7 @@ class Menu(FSM, ShowBase, Input):
 			newState = self.states[self.state].iterate()
 			if newState:
 				self.request(newState)
-		except:
+		except KeyError:
 			print("Error: State '"+ self.state +"' not registered...")
 			
 		return task.cont
@@ -68,7 +69,8 @@ class Menu(FSM, ShowBase, Input):
 		# to do: read this from a config file
 		if not self.states[self.newState]:
 			initialStage = "stage/stage1.txt"
-			self.states[self.newState] = Game(Stage(initialStage), [])
+			chars = {'Jackson': Character("char/Jackson")}
+			self.states[self.newState] = Game(Stage(initialStage), chars, "Jackson")
 			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
 		else:
 			self.states[self.newState].enter()

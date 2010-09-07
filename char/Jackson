@@ -1,0 +1,21 @@
+{
+	"name": "Jackson",
+	"strenght": 1,
+	"speed": 1,
+	
+	"gloves": true,
+	"sword": false,
+	"bow": false,
+	
+	"render":
+	{
+		"model": "models/panda-model",
+		"animation":
+		{
+			"walk": "models/panda-walk4"
+		},
+		"scale": [0.0005, 0.0005, 0.0005],
+		"hpr": [0, 90, 0]
+	}
+	
+}
