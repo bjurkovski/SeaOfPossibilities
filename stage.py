@@ -1,7 +1,7 @@
 import json
 from panda3d.core import NodePath, CardMaker
 
-tex = loader.loadTexture('tex/tile.png')
+tex = loader.loadTexture('tex/grass2.png')
 
 class Map:
 	def __init__(self, filename=None, size=()):
@@ -58,7 +58,7 @@ class Map:
 			for tile in range(len(self.tiles[row])):
 				sx, sy =  2.0/len(self.tiles) , 2.0/len(self.tiles[row])
 				cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
-				cm.setColor(0,0.5,0,1)
+				#cm.setColor(1,1,1,1)
 				card = self.nodePath.attachNewNode(cm.generate())
 				card.setPos(sx/2 + row*sx - 1 , 0, sy/2 + tile*sy - 1)
 				
@@ -66,10 +66,12 @@ class Map:
 				
 				self.cards[row].append(card)
 				card.reparentTo(self.nodePath)
-				m = loader.loadModel('model/tree/tree')
-				m.reparentTo(card)
-				m.setHpr(0,90,0)
-				m.setScale(0.01,0.01,0.01)
+				
+				if self.tiles[row][tile] == '#':
+					m = loader.loadModel('model/rock/rock') 
+					m.reparentTo(card)
+					m.setHpr(0,90,0)
+					m.setScale(0.015,0.015,0.015)
 
 	def getNode(self):
 		return self.nodePath.node()
