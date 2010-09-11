@@ -18,7 +18,7 @@ class Character:
 		self.actor = Actor(self.data["render"]["model"], self.data["render"]["animation"])
 		self.actor.setScale(self.data["render"]["scale"][0], self.data["render"]["scale"][1], self.data["render"]["scale"][2])
 		self.actor.setHpr(self.data["render"]["hpr"][0], self.data["render"]["hpr"][1], self.data["render"]["hpr"][2])
-		self.actor.loop("walk")
+		self.isMoving = False
 		
 	def doAction(self, pressedKeys):
 		displacement = Point3(0, 0, 0)
@@ -32,6 +32,16 @@ class Character:
 		if 'right' in pressedKeys:
 			displacement += Point3(self.speed, 0, 0)
 			
+		if displacement[0]!=0 or displacement[1]!=0 or displacement[2]!=0:
+			if self.isMoving is False:
+				self.actor.loop("walk")
+				self.isMoving = True
+		else:
+			if self.isMoving:
+				self.actor.stop()
+				#self.actor.pose("walk",5) #transition between run and stop, if actor was looping 'run' animation
+				self.isMoving = False
+
 		self.actor.setPos(self.actor.getPos() + displacement)
 		
 	def getNode(self):

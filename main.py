@@ -1,5 +1,5 @@
 from game import *
-from menu import *
+from stateMachine import *
 
 if __name__ == '__main__':
 	#filename = "stage/map/1-1.txt"
@@ -13,5 +13,5 @@ if __name__ == '__main__':
 	#game = Game(Stage("stage/stage1.txt"), [])
 	#game.run()
 
-	b = Menu('InGame')
+	b = StateMachine('InGame')
 	b.run()
