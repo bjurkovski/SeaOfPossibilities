@@ -16,19 +16,11 @@ class Input():
 		#a mapping of action -> bool, that represents if an action has been requested or not
 		self.actionKeys = {}
 		
-		self.spActionKeys = {}
-		self.actionKeysTime = {}
-		
-		self.minTime = 0.01
-		
 	def inputMap(self,adict):
 		#maybe clear old keymap
 		for action,key in adict.iteritems():
 			self.mapKey(action,key)
 			self.actionKeys[self.keymap[key]] = False
-			
-			self.spActionKeys[self.keymap[key]] = False
-			self.actionKeysTime[self.keymap[key]] = 0
 	
 	def mapKey(self, action, key):
 		"""
@@ -40,13 +32,6 @@ class Input():
 		
 	def setKey(self, key, pressed):
 		self.actionKeys[self.keymap[key]] = pressed
-		self.spActionKeys[self.keymap[key]] = pressed
-		self.actionKeysTime[self.keymap[key]] = time.time()
-		
-	def updateInput(self):
-		for key in self.spActionKeys.keys():
-			if time.time() - self.actionKeysTime[key] > self.minTime:
-				self.spActionKeys[key] = False
 		
 	def bindKeys(self):
 		"""
@@ -54,6 +39,7 @@ class Input():
 		"""
 		for k in self.keymap.keys():
 			self.accept(k, self.setKey, [k, True])
+			self.accept(k + '-repeat', self.setKey, [k, True])
 			self.accept(k + '-up', self.setKey, [k, False])
 
 	def unbindKeys(self):

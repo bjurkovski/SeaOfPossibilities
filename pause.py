@@ -44,10 +44,14 @@ class Pause(State):
 		
 		if self.keys['up']:
 			self.selected = (self.selected + len(self.options) - 1)%len(self.options)
+			self.keys['up'] = False
 		elif self.keys['down']:
 			self.selected = (self.selected +  1)%len(self.options)
+			self.keys['down'] = False
 		elif self.keys['action']:
+			self.keys['action'] = False
 			return self.optState[self.selected]
 		elif self.keys["cancel"]:
+			self.keys['cancel'] = False
 			return "InGame"
 		
