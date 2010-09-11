@@ -43,9 +43,9 @@ class Pause(State):
 		self.text[self.options[self.selected]].setScale(0.08)
 		
 		if self.keys['up']:
-			self.selected = (self.selected +  1)%len(self.options)
-		elif self.keys['down']:
 			self.selected = (self.selected + len(self.options) - 1)%len(self.options)
+		elif self.keys['down']:
+			self.selected = (self.selected +  1)%len(self.options)
 		elif self.keys['action']:
 			return self.optState[self.selected]
 		elif self.keys["cancel"]:

@@ -47,6 +47,7 @@ class Menu(FSM, ShowBase, Input):
 	
 	def idle(self, task):
 		try:
+			self.updateInput()
 			#print("I'm in '"+self.state)
 			newState = self.states[self.state].iterate()
 			if newState:
@@ -77,7 +78,7 @@ class Menu(FSM, ShowBase, Input):
 		
 	def enterPaused(self):
 		self.states[self.newState] = Pause()
-		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
+		self.states[self.newState].register(self.render2d, self.cam, self.spActionKeys)
 		
 	def enterGameOver(self):
 		pass

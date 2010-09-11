@@ -1,3 +1,5 @@
+import time
+
 """
 	class Input
 	receives keyboard input and returns abstract action strings
@@ -14,11 +16,19 @@ class Input():
 		#a mapping of action -> bool, that represents if an action has been requested or not
 		self.actionKeys = {}
 		
+		self.spActionKeys = {}
+		self.actionKeysTime = {}
+		
+		self.minTime = 0.01
+		
 	def inputMap(self,adict):
 		#maybe clear old keymap
 		for action,key in adict.iteritems():
 			self.mapKey(action,key)
 			self.actionKeys[self.keymap[key]] = False
+			
+			self.spActionKeys[self.keymap[key]] = False
+			self.actionKeysTime[self.keymap[key]] = 0
 	
 	def mapKey(self, action, key):
 		"""
@@ -30,6 +40,13 @@ class Input():
 		
 	def setKey(self, key, pressed):
 		self.actionKeys[self.keymap[key]] = pressed
+		self.spActionKeys[self.keymap[key]] = pressed
+		self.actionKeysTime[self.keymap[key]] = time.time()
+		
+	def updateInput(self):
+		for key in self.spActionKeys.keys():
+			if time.time() - self.actionKeysTime[key] > self.minTime:
+				self.spActionKeys[key] = False
 		
 	def bindKeys(self):
 		"""
