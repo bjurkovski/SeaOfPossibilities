@@ -1,87 +1,33 @@
-from direct.fsm.FSM import FSM
-from direct.task import Task
-from direct.showbase.ShowBase import ShowBase
-
-from input import *
-from game import *
-from pause import *
-from cam import *
-
-# here goes the game logic:
-# title menu state machine, etc
-
-# http://www.panda3d.org/manual/index.php/Simple_FSM_Usage
-class Menu(FSM, ShowBase, Input):
-	def __init__(self, initialState='Title'):
-		FSM.__init__(self, initialState)
-		ShowBase.__init__(self)
-		Input.__init__(self)
+class Menu:
+	def __init__(self):
+		self.options = []
+		self.keys = None
+		self.actions = None
+		self.selected = 0
 		
-		self.cam = Cam(self.camera)
-
-		self.defaultTransitions = {
-			'Title':    ['NewGame', 'Options', 'Exit'],
-			'NewGame':  ['InGame', 'Title'],
-			'InGame':   ['Paused', 'GameOver'],
-			'Paused':   ['InGame', 'Title', 'Exit'],
-			'GameOver': ['Title', 'Exit'],
-			'Options':  ['Title']
-		}
+	def addOptions(self, options):
+		self.options += options
 		
-		self.states = {}
-		for state in self.defaultTransitions.keys():
-			self.states[state] = None
+	def registerKeys(self, keys, actions):
+		self.keys = keys
+		# Here we register (func, param) pairs to be called when the corresponding key is active
+		self.actions = actions
 		
-		# Read KeyConfig from a json file
-		kcfg = open("cfg/input.cfg")
-		keyCfg = json.loads(kcfg.read())
-		kcfg.close()
+	def previousOpt(self):
+		self.selected = (self.selected + len(self.options) - 1)%len(self.options)
+		return None
 		
-		self.inputMap(keyCfg)
-		self.bindKeys()
+	def nextOpt(self):
+		self.selected = (self.selected +  1)%len(self.options)
+		return None
 		
-		taskMgr.add(self.idle, "Idle")
-
-		self.request(initialState)
-	
-	def idle(self, task):
-		try:
-			#print("I'm in '"+self.state)
-			newState = self.states[self.state].iterate()
-			if newState:
-				self.request(newState)
-		except:
-			print("Error: State '"+ self.state +"' not registered...")
-			
-		return task.cont
-
-	def enterTitle(self):
-		pass
+	def iterate(self):
+		for k in self.keys.keys():
+			try:
+				if self.keys[k] and self.actions[k]:
+					self.keys[k] = False
+					return self.actions[k][0](self.actions[k][1])
+			except KeyError:
+				pass
 		
-	def enterOptions(self):
-		pass
-
-	def enterNewGame(self):
-		pass
-		
-	def enterInGame(self):
-		# to do: read this from a config file
-		if not self.states[self.newState]:
-			initialStage = "stage/stage1.txt"
-			self.states[self.newState] = Game(Stage(initialStage), [])
-			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
-		else:
-			self.states[self.newState].enter()
-		
-	def enterPaused(self):
-		self.states[self.newState] = Pause()
-		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
-		
-	def enterGameOver(self):
-		pass
-		
-	def enterExit(self):
-		pass
-		
-	def exitPaused(self):
-		self.states[self.oldState].exit()
+		return None

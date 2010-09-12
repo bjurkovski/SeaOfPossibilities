@@ -1,3 +1,5 @@
+import time
+
 """
 	class Input
 	receives keyboard input and returns abstract action strings
@@ -37,6 +39,7 @@ class Input():
 		"""
 		for k in self.keymap.keys():
 			self.accept(k, self.setKey, [k, True])
+			self.accept(k + '-repeat', self.setKey, [k, True])
 			self.accept(k + '-up', self.setKey, [k, False])
 
 	def unbindKeys(self):
