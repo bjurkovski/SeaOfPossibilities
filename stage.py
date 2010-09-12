@@ -1,13 +1,16 @@
 import json
 from panda3d.core import NodePath, CardMaker
 
-tex = loader.loadTexture('tex/grass2.png')
+tex = loader.loadTexture('tex/grass.png')
 
 class Map:
 	def __init__(self, filename=None, size=()):
 		self.tiles = []
 		self.cards = []
 		self.nodePath = None
+
+		self.readConfig()
+
 		if filename != None:
 			try:
 				file = open(filename)
@@ -32,6 +35,15 @@ class Map:
 
 		self.constructModel()
 
+	def readConfig(self):
+
+		cfg = open("cfg/stage.cfg")	
+		
+		data = json.loads(cfg.read())
+		self.tilemap = data['tilemap']
+		
+		cfg.close()
+
 	def __str__(self):
 		str = ""
 		for row in self.tiles:
@@ -53,21 +65,21 @@ class Map:
 		self.nodePath = NodePath("Map")
 		cm = CardMaker('CardMaker')
 
-		for row in range(len(self.tiles)):
+		for i in range(len(self.tiles)):
 			self.cards.append([])
-			for tile in range(len(self.tiles[row])):
-				sx, sy =  2.0/len(self.tiles) , 2.0/len(self.tiles[row])
+			for j in range(len(self.tiles[i])):
+				sx, sy =  2.0/len(self.tiles) , 2.0/len(self.tiles[i])
 				cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
 				#cm.setColor(1,1,1,1)
 				card = self.nodePath.attachNewNode(cm.generate())
-				card.setPos(sx/2 + row*sx - 1 , 0, sy/2 + tile*sy - 1)
+				card.setPos(sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
 				
 				card.setTexture(tex)
 				
-				self.cards[row].append(card)
+				self.cards[i].append(card)
 				card.reparentTo(self.nodePath)
 				
-				if self.tiles[row][tile] == '#':
+				if self.tilemap[self.tiles[i][j]] == 'obstacle':
 					m = loader.loadModel('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
