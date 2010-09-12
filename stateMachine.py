@@ -3,13 +3,14 @@ from direct.task import Task
 from direct.showbase.ShowBase import ShowBase
 
 from input import *
-from game import *
 from character import *
-from pause import *
 from cam import *
 
-# here goes the game logic:
-# title menu state machine, etc
+from game import *
+from pause import *
+from titleScreen import *
+from options import *
+from gameOver import *
 
 # http://www.panda3d.org/manual/index.php/Simple_FSM_Usage
 class StateMachine(FSM, ShowBase, Input):
@@ -57,10 +58,18 @@ class StateMachine(FSM, ShowBase, Input):
 		return task.cont
 
 	def enterTitle(self):
-		pass
+		if not self.states[self.newState]:
+			self.states[self.newState] = TitleScreen()
+			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
+		else:
+			self.states[self.newState].enter()
 		
 	def enterOptions(self):
-		pass
+		if not self.states[self.newState]:
+			self.states[self.newState] = Options()
+			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
+		else:
+			self.states[self.newState].enter()
 
 	def enterNewGame(self):
 		pass
@@ -80,10 +89,14 @@ class StateMachine(FSM, ShowBase, Input):
 		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 		
 	def enterGameOver(self):
-		pass
+		if not self.states[self.newState]:
+			self.states[self.newState] = GameOver()
+			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
+		else:
+			self.states[self.newState].enter()
 		
 	def enterExit(self):
-		pass
+		exit()
 		
 	def exitPaused(self):
 		self.states[self.oldState].exit()
