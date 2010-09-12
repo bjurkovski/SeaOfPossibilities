@@ -1,0 +1,6 @@
+{
+	"ground" : ".",
+	"obstacle" : "#"
+	"themes" : { "normal" : "normal.txt" }
+}
+
