@@ -8,6 +8,14 @@ class Pause(State):
 	def __init__(self):
 		State.__init__(self)
 		
+		# Options in the Pause Menu
+		options = ['Continue', 'Main Menu', 'Exit']
+		# Here we have the States in the FSM represented by the options
+		self.optState = ['InGame', 'Title', 'Exit']
+		
+		self.menu = Menu()
+		self.menu.addOptions(options)
+		
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		
@@ -18,20 +26,12 @@ class Pause(State):
 		self.bg = self.node.attachNewNode(cm.generate())
 		self.bg.setPos(0, 0, 0)
 		
-		# Options in the Pause Menu
-		options = ['Continue', 'Main Menu', 'Exit']
-		
-		self.menu = Menu()
-		self.menu.addOptions(options)
-		
 		menuActions = {'up': (Menu.previousOpt, self.menu),
 						'down': (Menu.nextOpt, self.menu), 
 						'action': (self.selectOption, None),
 						'cancel': (self.selectOption, 0) }
 		self.menu.registerKeys(keys, menuActions)
 	
-		# Here we have the States in the FSM represented by the options
-		self.optState = ['InGame', 'Title', 'Exit']
 		self.title = OnscreenText(text="Game Paused", mayChange = True , style=1, fg=(1,1,1,1), pos=(0,0.35), scale = .1)
 		self.text = {}
 		
