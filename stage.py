@@ -47,7 +47,7 @@ class Map:
 		cfg.close()
 
 	# sets all the points considered to be exits 
-	def setExits(self,direction,where):
+	def setExits(self,direction):
 		self.exits = { 'up' : [], 'down' : [], 'right' : [], 'left' : [] }
 
 		if direction == 'up':
@@ -83,7 +83,7 @@ class Map:
 		pass
 
 	def tileIs(self, tile , tilename):
-		return tile == self.tilemap[tilename]
+		return tilename == self.tilemap[tile]
 
 	def __str__(self):
 		str = ""
@@ -120,8 +120,8 @@ class Map:
 				self.cards[i].append(card)
 				card.reparentTo(self.nodePath)
 				
-				if self.tilemap[self.tiles[i][j]] == 'obstacle':
-					m = Actor('model/rock/rock') 
+				if self.tileIs( self.tiles[i][j], 'obstacle'):
+					m =	 Actor('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
 					m.setScale(0.015,0.015,0.015)
