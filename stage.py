@@ -46,6 +46,45 @@ class Map:
 		
 		cfg.close()
 
+	# sets all the points considered to be exits 
+	def setExits(self,direction,where):
+		self.exits = { 'up' : [], 'down' : [], 'right' : [], 'left' : [] }
+
+		if direction == 'up':
+			for i in range(tiles[0].size):
+				x , y = 0,i
+				if self.isTile(tiles[x][y], 'clear'):
+					self.exits['up'].append( (x,y) )
+
+		elif direction == 'down':
+			for i in range(tiles[0].size):
+				x , y = tiles.size,i
+				if self.isTile(tiles[x][y], 'clear'):
+					self.exits['down'].append( (x,y) )
+
+		elif direction == 'right':
+			for i in range(tiles.size):
+				x , y = i,tiles.size
+				if self.isTile(tiles[x][y], 'clear'):
+					self.exits['right'].append( (x,y) )
+
+		elif directon == 'left':
+			for i in range(tiles[0].size):
+				x , y = i,0
+				if self.isTile(tiles[x][y], 'clear'):
+					self.exits['left'].append( (x,y) )
+				
+
+	def getExit(self,point):
+		"""
+			Returns a string representing the direction if the given point
+			is an exit and None if it's not. 
+		"""
+		pass
+
+	def tileIs(self, tile , tilename):
+		return tile == self.tilemap[tilename]
+
 	def __str__(self):
 		str = ""
 		for row in self.tiles:
