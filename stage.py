@@ -1,5 +1,6 @@
 import json
-from panda3d.core import NodePath, CardMaker, Texture, Actor
+from panda3d.core import NodePath, CardMaker, Texture
+from direct.actor.Actor import Actor
 
 tex = Texture('tex') #loader.loadTexture('tex/grass.png')
 tex.load('tex/grass.png')
