@@ -2,7 +2,7 @@ import json
 from panda3d.core import NodePath, CardMaker, Texture
 from direct.actor.Actor import Actor
 
-tex = Texture('tex') #loader.loadTexture('tex/grass.png')
+tex = Texture('tex')
 tex.load('tex/grass.png')
 
 class Map:
@@ -46,44 +46,30 @@ class Map:
 		
 		cfg.close()
 
-	# sets all the points considered to be exits 
-	def setExits(self,direction):
-		self.exits = { 'up' : [], 'down' : [], 'right' : [], 'left' : [] }
+	def tileIs(self, point , tilename):
+		return tilename == self.tilemap[ self.tiles[point[0]][point[1]] ]
 
-		if direction == 'up':
-			for i in range(tiles[0].size):
-				x , y = 0,i
-				if self.isTile(tiles[x][y], 'clear'):
-					self.exits['up'].append( (x,y) )
-
-		elif direction == 'down':
-			for i in range(tiles[0].size):
-				x , y = tiles.size,i
-				if self.isTile(tiles[x][y], 'clear'):
-					self.exits['down'].append( (x,y) )
-
-		elif direction == 'right':
-			for i in range(tiles.size):
-				x , y = i,tiles.size
-				if self.isTile(tiles[x][y], 'clear'):
-					self.exits['right'].append( (x,y) )
-
-		elif directon == 'left':
-			for i in range(tiles[0].size):
-				x , y = i,0
-				if self.isTile(tiles[x][y], 'clear'):
-					self.exits['left'].append( (x,y) )
-				
-
-	def getExit(self,point):
+	def getExit(self,pos):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
-		"""
-		pass
 
-	def tileIs(self, tile , tilename):
-		return tilename == self.tilemap[tile]
+		"""
+		direc = None
+		clear = self.tileIs(pos,'clear')
+
+		# in the first line
+		if point[0] == 0 and clear:
+			direc = "up"
+		# in the last line
+		elif point[0] == self.tiles.size-1 and clear:
+			direc = "down"
+		elif point[1] == 0 and clear:
+			direc = "left"
+		elif point[1] == self.tiles[0].size-1 and clear:
+			direc = "right"
+		
+		return direc
 
 	def __str__(self):
 		str = ""
@@ -120,7 +106,7 @@ class Map:
 				self.cards[i].append(card)
 				card.reparentTo(self.nodePath)
 				
-				if self.tileIs( self.tiles[i][j], 'obstacle'):
+				if self.tileIs( (i,j), 'obstacle'):
 					m =	 Actor('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
