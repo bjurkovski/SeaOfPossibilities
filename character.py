@@ -1,18 +1,20 @@
 import json
-from Model import *
+from model import *
 from direct.actor.Actor import Actor
 from panda3d.core import Point3
 
 class Character(Model):
 	baseSpeed = 0.05
 	def __init__(self, charFile):
-		Model.__init__(self)
+		Model.__init__(self, charFile)
 		
 		self.level = 1
 		self.hearts = 6
 		self.maxSlots = 1
 		self.slots = []
 		self.speed = Character.baseSpeed * self.data["speed"]
+
+		self.actor = Actor(self.data["render"]["model"], self.data["render"]["animation"])
 
 		self.isMoving = False
 		
@@ -44,6 +46,4 @@ class Character(Model):
 
 		self.actor.setPos(self.actor.getPos() + displacement)
 		
-	def getNode(self):
-		return self.actor
 
