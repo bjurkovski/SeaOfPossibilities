@@ -2,7 +2,7 @@ import json
 from panda3d.core import NodePath, CardMaker, Texture
 from direct.actor.Actor import Actor
 
-tex = Texture('tex') #loader.loadTexture('tex/grass.png')
+tex = Texture('tex')
 tex.load('tex/grass.png')
 
 class Map:
@@ -46,6 +46,31 @@ class Map:
 		
 		cfg.close()
 
+	def tileIs(self, point , tilename):
+		return tilename == self.tilemap[ self.tiles[point[0]][point[1]] ]
+
+	def getExit(self,pos):
+		"""
+			Returns a string representing the direction if the given point
+			is an exit and None if it's not. 
+
+		"""
+		direc = None
+		clear = self.tileIs(pos,'clear')
+
+		# in the first line
+		if point[0] == 0 and clear:
+			direc = "up"
+		# in the last line
+		elif point[0] == self.tiles.size-1 and clear:
+			direc = "down"
+		elif point[1] == 0 and clear:
+			direc = "left"
+		elif point[1] == self.tiles[0].size-1 and clear:
+			direc = "right"
+		
+		return direc
+
 	def __str__(self):
 		str = ""
 		for row in self.tiles:
@@ -81,8 +106,8 @@ class Map:
 				self.cards[i].append(card)
 				card.reparentTo(self.nodePath)
 				
-				if self.tilemap[self.tiles[i][j]] == 'obstacle':
-					m = Actor('model/rock/rock') 
+				if self.tileIs( (i,j), 'obstacle'):
+					m =	 Actor('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
 					m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
