@@ -1,5 +1,6 @@
 import json
-from panda3d.core import NodePath, CardMaker, Texture, Actor
+from panda3d.core import NodePath, CardMaker, Texture
+from direct.actor.Actor import Actor
 
 tex = Texture('tex') #loader.loadTexture('tex/grass.png')
 tex.load('tex/grass.png')
@@ -84,6 +85,7 @@ class Map:
 					m = Actor('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
+					m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
 					m.setScale(0.015,0.015,0.015)
 
 	def getNode(self):

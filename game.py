@@ -21,12 +21,14 @@ class Game(State):
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
 		
-		self.camera.setPos(0, -4, 0)
+		self.camera.setPos(0, -3, -3)
 		self.camera.lookAt(0, 0, 0)
 		
 	def iterate(self):
 		State.iterate(self)
 		self.camera.look()
+		self.camera.camera.setPos(0, -3, -3)
+		self.camera.camera.lookAt(0, 0, 0)
 		self.move()
 		
 		if self.keys['start']:
