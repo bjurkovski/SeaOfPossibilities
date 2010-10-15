@@ -68,7 +68,7 @@ class Map:
 			direc = "down"
 		elif pos[1] == 0 and clear:
 			direc = "left"
-		elif pos[1] == len(self.tiles[0]) and clear:
+		elif pos[1] == len(self.tiles[0])-1 and clear:
 			direc = "right"
 		
 		return direc
