@@ -43,12 +43,11 @@ class StateMachine(FSM, ShowBase, Input):
 		self.bindKeys()
 		
 		taskMgr.add(self.idle, "Idle")
-
+		
 		self.request(initialState)
 	
 	def idle(self, task):
 		try:
-			#print("I'm in '"+self.state)
 			newState = self.states[self.state].iterate()
 			if newState:
 				self.request(newState)
@@ -76,6 +75,7 @@ class StateMachine(FSM, ShowBase, Input):
 		
 	def enterInGame(self):
 		# to do: read this from a config file
+		# or from user interface
 		if not self.states[self.newState]:
 			initialStage = "stage/stage1.txt"
 			chars = {'Jackson': Character("char/Jackson")}

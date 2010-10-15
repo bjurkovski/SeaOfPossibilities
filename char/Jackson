@@ -1,7 +1,7 @@
 {
 	"name": "Jackson",
 	"strenght": 1,
-	"speed": 0.5,
+	"speed": 0.13,
 	
 	"gloves": true,
 	"sword": false,
@@ -14,8 +14,8 @@
 		{
 			"walk": "models/panda-walk4"
 		},
-		"scale": [0.0005, 0.0005, 0.0005],
-		"hpr": [0, 90, 0]
+		"scale": [0.0004, 0.0004, 0.0004],
+		"hpr": [0, 30, 0]
 	}
 	
 }
