@@ -57,16 +57,16 @@ class Map:
 		"""
 		direc = None
 		clear = self.tileIs(point, 'ground')
-		print clear
+		print clear, len(self.tiles)-1, len(self.tiles[0])-1
 		# in the first line
-		if point[0] == 0 and clear:
+		if point[1] == 0 and clear:
 			direc = "up"
 		# in the last line
-		elif point[0] == len(self.tiles)-1 and clear:
+		elif point[1] == len(self.tiles)-1 and clear:
 			direc = "down"
-		elif point[1] == 0 and clear:
+		elif point[0] == 0 and clear:
 			direc = "left"
-		elif point[1] == len(self.tiles[0])-1 and clear:
+		elif point[0] == len(self.tiles[0])-1 and clear:
 			direc = "right"
 		
 		return direc
