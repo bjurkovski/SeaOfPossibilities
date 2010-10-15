@@ -37,6 +37,17 @@ class Game(State):
 	def move(self):
 		pressedKeys = [key for key in self.keys.keys() if self.keys[key]]
 		self.characters[self.player].doAction(pressedKeys)
+		
+		sizeX = len(self.stage.maps[self.room].tiles)
+		sizeY = len(self.stage.maps[self.room].tiles[0])
+		x = int((self.characters[self.player].actor.getX() / (2.0/sizeX)) + sizeX/2)
+		y = int((self.characters[self.player].actor.getZ() / (2.0/sizeY)) + sizeY/2)
+		dir = self.stage.maps[self.room].getExit((x,y))
+		
+		print x,y,dir
+		if dir and (dir in self.stage.doors[self.room].keys()):
+			self.room = self.stage.doors[self.room][dir]
+			
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 

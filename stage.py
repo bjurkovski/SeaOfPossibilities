@@ -47,26 +47,26 @@ class Map:
 		cfg.close()
 
 	def tileIs(self, point , tilename):
-		return tilename == self.tilemap[ self.tiles[point[0]][point[1]] ]
+		return tilename == self.tilemap[self.tiles[int(point[0])][int(point[1])]]
 
-	def getExit(self,pos):
+	def getExit(self,point):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
 
 		"""
 		direc = None
-		clear = self.tileIs(pos,'clear')
-
+		clear = self.tileIs(point, 'ground')
+		print clear
 		# in the first line
 		if point[0] == 0 and clear:
 			direc = "up"
 		# in the last line
-		elif point[0] == self.tiles.size-1 and clear:
+		elif point[0] == len(self.tiles)-1 and clear:
 			direc = "down"
 		elif point[1] == 0 and clear:
 			direc = "left"
-		elif point[1] == self.tiles[0].size-1 and clear:
+		elif point[1] == len(self.tiles[0])-1 and clear:
 			direc = "right"
 		
 		return direc
@@ -122,8 +122,13 @@ class Stage:
 		data = json.loads(file.read())
 		self.start = data["start"]
 		self.maps = {}
+		self.doors = {}
 		for room in data["rooms"]:
 			self.maps[room] = Map(filename=data["rooms"][room]["map"])
+			self.doors[room] = {}
+			for door in data["rooms"][room]["doors"]:
+				self.doors[room][door] = data["rooms"][room]["doors"][door]
+			
 		file.close()
 
 	def __str__(self):
