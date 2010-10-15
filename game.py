@@ -15,6 +15,15 @@ class Game(State):
 		self.stage = stage
 		self.room = self.stage.start
 		
+	def getPlayerPos(self):
+		pos3 = self.characters[self.player].actor.getPos()
+		w,h = self.stage.maps[self.room].width , self.stage.maps[self.room].height
+		
+		return (int(round((pos3[0]+1)/2 * w)), int(round((pos3[1]+1)/2 * h)) )
+		
+	def currentMap(self):
+		return self.stage.maps[self.room]
+	
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())

@@ -35,7 +35,11 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
+		self.width, self.height = len(self.tiles), len(self.tiles[0])
+
 		self.constructModel()
+
+		print(self)
 
 	def readConfig(self):
 
@@ -49,7 +53,8 @@ class Map:
 	def tileIs(self, point , tilename):
 		return tilename == self.tilemap[self.tiles[int(point[0])][int(point[1])]]
 
-	def getExit(self,point):
+
+	def getExit(self,pos):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
@@ -99,7 +104,7 @@ class Map:
 				cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
 				#cm.setColor(1,1,1,1)
 				card = self.nodePath.attachNewNode(cm.generate())
-				card.setPos(sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
+				card.setPos(-(sx/2 + (len(self.tiles) - i)*sx - 1 ), 0,(sy/2 + (len(self.tiles[0]) - j)*sy - 1))
 				
 				card.setTexture(tex)
 				
@@ -107,11 +112,12 @@ class Map:
 				card.reparentTo(self.nodePath)
 				
 				if self.tileIs( (i,j), 'obstacle'):
-					m =	 Actor('model/rock/rock') 
-					m.reparentTo(card)
-					m.setHpr(0,90,0)
-					m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
-					m.setScale(0.015,0.015,0.015)
+					#m =	 Actor('model/rock/rock') 
+					#m.reparentTo(card)
+					#m.setHpr(0,90,0)
+					#m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
+					#m.setScale(0.015,0.015,0.015)
+					self.cards[i][j].setColor(1,0,0)
 
 	def getNode(self):
 		return self.nodePath.node()

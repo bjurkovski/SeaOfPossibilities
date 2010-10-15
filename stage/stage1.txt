@@ -2,7 +2,8 @@
 	"stage-map": "stage1-map.txt",
 	"start": "1",
 	"rooms": {
-		"1": { "map": "stage/map/1-1.txt", "doors": {"up": "2"}},
+		"1": { "map": "stage/map/test.txt", "doors": {"up": "2"}},
 		"2": { "map": "stage/map/1-2.txt", "doors": {"down": "1"}}
 	}
 }
+
