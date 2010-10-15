@@ -14,16 +14,15 @@ class Game(State):
 		self.player = player
 		self.stage = stage
 		self.room = self.stage.start
-		
-	def getPlayerPos(self):
-		pos3 = self.characters[self.player].actor.getPos()
-		w,h = self.stage.maps[self.room].width , self.stage.maps[self.room].height
-		
-		return (int(round((pos3[0]+1)/2 * w)), int(round((pos3[1]+1)/2 * h)) )
-		
+
 	def currentMap(self):
 		return self.stage.maps[self.room]
-	
+
+	def changeMap(self,direction):
+		NodePath(self.currentMap().getNode()).detachNode()
+		self.room = self.stage.doors[self.room][direction]
+		NodePath(self.currentMap().getNode()).reparentTo(render)
+
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
@@ -51,11 +50,12 @@ class Game(State):
 		sizeY = len(self.stage.maps[self.room].tiles[0])
 		x = int((self.characters[self.player].actor.getX() / (2.0/sizeX)) + sizeX/2)
 		y = int((self.characters[self.player].actor.getZ() / (2.0/sizeY)) + sizeY/2)
-		dir = self.stage.maps[self.room].getExit((x,y))
+		ex = self.stage.maps[self.room].getExit((x,y))
 		
-		print x,y,dir
-		if dir and (dir in self.stage.doors[self.room].keys()):
-			self.room = self.stage.doors[self.room][dir]
+		print x,y,ex
+		if ex and (ex in self.stage.doors[self.room].keys()):
+			self.changeMap(ex)
+
 			
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game

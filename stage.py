@@ -16,11 +16,12 @@ class Map:
 		if filename != None:
 			try:
 				file = open(filename)
-				for line in file.readlines():
-					self.tiles.append([c for c in line if c != '\n'])
-				file.close()
+				self.tiles = file.read().split()
+#				for line in file.readlines():
+#					self.tiles.append([c for c in line if c != '\n'])
+#				file.close()
 			except:
-				print "Error creating map: %s not found." % mapFile
+				print "Error creating map: %s not found." % filename
 				exit()
 		elif size != ():
 			try:
@@ -54,7 +55,7 @@ class Map:
 		return tilename == self.tilemap[self.tiles[int(point[0])][int(point[1])]]
 
 
-	def getExit(self,pos):
+	def getExit(self,point):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
@@ -62,17 +63,23 @@ class Map:
 		"""
 		direc = None
 		clear = self.tileIs(point, 'ground')
-		print clear, len(self.tiles)-1, len(self.tiles[0])-1
+		
+		minX = 0
+		maxX = len(self.tiles)-1
+		minY = 0 
+		maxY = len(self.tiles[0])-1
+		
+		print clear, maxX, maxY
 		# in the first line
-		if point[1] == 0 and clear:
-			direc = "up"
+		if point[1] == maxY and clear:
+			return "up"
 		# in the last line
-		elif point[1] == len(self.tiles)-1 and clear:
-			direc = "down"
-		elif point[0] == 0 and clear:
-			direc = "left"
-		elif point[0] == len(self.tiles[0])-1 and clear:
-			direc = "right"
+		if point[1] == 0 and clear:
+			return "down"
+		if point[0] == 0 and clear:
+			return "left"
+		if point[0] == maxX and clear:
+			return "right"
 		
 		return direc
 
@@ -95,7 +102,6 @@ class Map:
 			self.cards = []
 
 		self.nodePath = NodePath("Map")
-		self.nodePath.setHpr(0,0,90)
 		cm = CardMaker('CardMaker')
 
 		for i in range(len(self.tiles)):
@@ -117,7 +123,7 @@ class Map:
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
 					m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
-					m.setScale(0.015,0.015,0.015)
+					m.setScale(0.012,0.012,0.012)
 					#self.cards[i][j].setColor(1,0,0)
 
 	def getNode(self):
