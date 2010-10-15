@@ -1,13 +1,12 @@
 import json
+from Model import *
 from direct.actor.Actor import Actor
 from panda3d.core import Point3
 
-class Character:
+class Character(Model):
 	baseSpeed = 0.05
 	def __init__(self, charFile):
-		file = open(charFile)
-		self.data = json.loads(file.read())
-		file.close()
+		Model.__init__(self)
 		
 		self.level = 1
 		self.hearts = 6
@@ -15,10 +14,6 @@ class Character:
 		self.slots = []
 		self.speed = Character.baseSpeed * self.data["speed"]
 
-		self.actor = Actor(self.data["render"]["model"], self.data["render"]["animation"])
-		self.actor.setScale(self.data["render"]["scale"][0], self.data["render"]["scale"][1], self.data["render"]["scale"][2])
-		self.actor.setHpr(self.data["render"]["hpr"][0], self.data["render"]["hpr"][1], self.data["render"]["hpr"][2])
-		self.actor.setPos(self.data["render"]["pos"][0], self.data["render"]["pos"][1], self.data["render"]["pos"][2])
 		self.isMoving = False
 		
 	def doAction(self, pressedKeys):
