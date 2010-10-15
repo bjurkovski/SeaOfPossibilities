@@ -39,6 +39,8 @@ class Map:
 
 		self.constructModel()
 
+		print(self)
+
 	def readConfig(self):
 
 		cfg = open("cfg/stage.cfg")	
@@ -52,14 +54,14 @@ class Map:
 		return tilename == self.tilemap[self.tiles[int(point[0])][int(point[1])]]
 
 
-	def getExit(self,point):
+	def getExit(self,pos):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
 
 		"""
 		direc = None
-		clear = self.tileIs(point, 'ground')
+		clear = self.tileIs(pos, 'ground')
 		print clear
 		# in the first line
 		if pos[0] == 0 and clear:
@@ -102,7 +104,7 @@ class Map:
 				cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
 				#cm.setColor(1,1,1,1)
 				card = self.nodePath.attachNewNode(cm.generate())
-				card.setPos(sx/2 + i*sx - 1 , 0, sy/2 + j*sy - 1)
+				card.setPos(-(sx/2 + (len(self.tiles) - i)*sx - 1 ), 0,(sy/2 + (len(self.tiles[0]) - j)*sy - 1))
 				
 				card.setTexture(tex)
 				
@@ -110,11 +112,12 @@ class Map:
 				card.reparentTo(self.nodePath)
 				
 				if self.tileIs( (i,j), 'obstacle'):
-					m =	 Actor('model/rock/rock') 
-					m.reparentTo(card)
-					m.setHpr(0,90,0)
-					m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
-					m.setScale(0.015,0.015,0.015)
+					#m =	 Actor('model/rock/rock') 
+					#m.reparentTo(card)
+					#m.setHpr(0,90,0)
+					#m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
+					#m.setScale(0.015,0.015,0.015)
+					self.cards[i][j].setColor(1,0,0)
 
 	def getNode(self):
 		return self.nodePath.node()

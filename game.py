@@ -40,8 +40,6 @@ class Game(State):
 		self.camera.camera.lookAt(0, 0, 0)
 		self.move()
 		
-		#print(self.currentMap().isExit(self.getPlayerPos()) )
-		
 		if self.keys['start']:
 			return "Paused"
 
