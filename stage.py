@@ -35,6 +35,8 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
+		self.width, self.height = len(self.tiles), len(self.tiles[0])
+
 		self.constructModel()
 
 	def readConfig(self):
@@ -49,7 +51,7 @@ class Map:
 	def tileIs(self, point , tilename):
 		return tilename == self.tilemap[ self.tiles[point[0]][point[1]] ]
 
-	def getExit(self,pos):
+	def isExit(self,pos):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
@@ -59,14 +61,14 @@ class Map:
 		clear = self.tileIs(pos,'clear')
 
 		# in the first line
-		if point[0] == 0 and clear:
+		if pos[0] == 0 and clear:
 			direc = "up"
 		# in the last line
-		elif point[0] == self.tiles.size-1 and clear:
+		elif pos[0] == len(self.tiles)-1 and clear:
 			direc = "down"
-		elif point[1] == 0 and clear:
+		elif pos[1] == 0 and clear:
 			direc = "left"
-		elif point[1] == self.tiles[0].size-1 and clear:
+		elif pos[1] == len(self.tiles[0]) and clear:
 			direc = "right"
 		
 		return direc
