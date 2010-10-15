@@ -22,7 +22,7 @@ class Game(State):
 		NodePath(self.currentMap().getNode()).detachNode()
 		self.room = self.stage.doors[self.room][direction]
 		NodePath(self.currentMap().getNode()).reparentTo(render)
-		self.characters[self.player].setZ(0)
+		self.characters[self.player].getNode().setZ(-0.8)
 		
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)

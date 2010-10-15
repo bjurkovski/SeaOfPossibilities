@@ -24,12 +24,16 @@ class Character:
 		displacement = Point3(0, 0, 0)
 		
 		if 'up' in pressedKeys:
+			self.actor.setHpr(0,0,180)
 			displacement += Point3(0, 0, self.speed)
 		if 'left' in pressedKeys:
+			self.actor.setHpr(0,0,90)
 			displacement += Point3(-self.speed, 0, 0)
 		if 'down' in pressedKeys:
+			self.actor.setHpr(0,0,0)
 			displacement += Point3(0, 0, -self.speed)
 		if 'right' in pressedKeys:
+			self.actor.setHpr(0,0,270)
 			displacement += Point3(self.speed, 0, 0)
 			
 		if displacement[0]!=0 or displacement[1]!=0 or displacement[2]!=0:
@@ -46,3 +50,4 @@ class Character:
 		
 	def getNode(self):
 		return self.actor
+
