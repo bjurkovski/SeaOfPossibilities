@@ -30,12 +30,14 @@ class Game(State):
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
 		
-		self.camera.setPos(0, -4, 0)
+		self.camera.setPos(0, -3, -3)
 		self.camera.lookAt(0, 0, 0)
 		
 	def iterate(self):
 		State.iterate(self)
 		self.camera.look()
+		self.camera.camera.setPos(0, -3, -3)
+		self.camera.camera.lookAt(0, 0, 0)
 		self.move()
 		
 		#print(self.currentMap().isExit(self.getPlayerPos()) )
@@ -46,6 +48,17 @@ class Game(State):
 	def move(self):
 		pressedKeys = [key for key in self.keys.keys() if self.keys[key]]
 		self.characters[self.player].doAction(pressedKeys)
+		
+		sizeX = len(self.stage.maps[self.room].tiles)
+		sizeY = len(self.stage.maps[self.room].tiles[0])
+		x = int((self.characters[self.player].actor.getX() / (2.0/sizeX)) + sizeX/2)
+		y = int((self.characters[self.player].actor.getZ() / (2.0/sizeY)) + sizeY/2)
+		dir = self.stage.maps[self.room].getExit((x,y))
+		
+		print x,y,dir
+		if dir and (dir in self.stage.doors[self.room].keys()):
+			self.room = self.stage.doors[self.room][dir]
+			
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 

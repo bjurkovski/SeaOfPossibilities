@@ -49,17 +49,18 @@ class Map:
 		cfg.close()
 
 	def tileIs(self, point , tilename):
-		return tilename == self.tilemap[ self.tiles[point[0]][point[1]] ]
+		return tilename == self.tilemap[self.tiles[int(point[0])][int(point[1])]]
 
-	def isExit(self,pos):
+
+	def getExit(self,point):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
 
 		"""
 		direc = None
-		clear = self.tileIs(pos,'clear')
-
+		clear = self.tileIs(point, 'ground')
+		print clear
 		# in the first line
 		if pos[0] == 0 and clear:
 			direc = "up"
@@ -112,6 +113,7 @@ class Map:
 					m =	 Actor('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
+					m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
 					m.setScale(0.015,0.015,0.015)
 
 	def getNode(self):
@@ -123,8 +125,13 @@ class Stage:
 		data = json.loads(file.read())
 		self.start = data["start"]
 		self.maps = {}
+		self.doors = {}
 		for room in data["rooms"]:
 			self.maps[room] = Map(filename=data["rooms"][room]["map"])
+			self.doors[room] = {}
+			for door in data["rooms"][room]["doors"]:
+				self.doors[room][door] = data["rooms"][room]["doors"][door]
+			
 		file.close()
 
 	def __str__(self):
