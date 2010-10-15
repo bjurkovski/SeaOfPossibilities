@@ -15,6 +15,9 @@ class Game(State):
 		self.stage = stage
 		self.room = self.stage.start
 		
+	def getPlayerPos(self):
+		self.characters[self.player].actor.getPos()
+		
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
@@ -28,6 +31,8 @@ class Game(State):
 		State.iterate(self)
 		self.camera.look()
 		self.move()
+		
+		print(self.getPlayerPos())
 		
 		if self.keys['start']:
 			return "Paused"
