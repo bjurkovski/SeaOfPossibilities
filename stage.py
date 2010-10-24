@@ -36,7 +36,8 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
-		self.width, self.height = len(self.tiles), len(self.tiles[0])
+		self.height, self.width = len(self.tiles), len(self.tiles[0])
+		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
 		self.constructModel()
 
@@ -52,24 +53,21 @@ class Map:
 		cfg.close()
 
 	def tileIs(self, point , tilename):
-		return tilename == self.tilemap[self.tiles[int(point[0])][int(point[1])]]
+		return tilename == self.tilemap[self.tiles[int(point[1])][int(point[0])]]
 
 
 	def getExit(self,point):
 		"""
 			Returns a string representing the direction if the given point
 			is an exit and None if it's not. 
-
 		"""
 		direc = None
 		clear = self.tileIs(point, 'ground')
 		
-		minX = 0
-		maxX = len(self.tiles)-1
-		minY = 0 
-		maxY = len(self.tiles[0])-1
+		minX, maxX = 0, self.width-1
+		minY, maxY = 0, self.height-1
 		
-		print clear, maxX, maxY
+		print "getExit:", clear, maxX, maxY
 		# in the first line
 		if point[1] == maxY and clear:
 			return "up"
@@ -104,26 +102,32 @@ class Map:
 		self.nodePath = NodePath("Map")
 		cm = CardMaker('CardMaker')
 
-		for i in range(len(self.tiles)):
+		for y in range(self.height):
 			self.cards.append([])
-			for j in range(len(self.tiles[i])):
-				sx, sy =  2.0/len(self.tiles) , 2.0/len(self.tiles[i])
-				cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
+			for x in range(self.width):
+				# MUDEI ISSO PRA GIRAR O MAPA 90 GRAUS!!! [/JURK]
+				##sx, sy = 2.0/len(self.tiles), 2.0/len(self.tiles[i])
+				#sx, sy = 2.0/len(self.tiles[y]), 2.0/len(self.tiles)
+				#cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
+				cm.setFrame(self.squareWidth/2, -self.squareWidth/2, self.squareHeight/2, -self.squareHeight/2)
 				#cm.setColor(1,1,1,1)
 				card = self.nodePath.attachNewNode(cm.generate())
-				card.setPos((sx/2 + i*sx - 1 ), 0,(sy/2 + j*sy - 1))
+				##card.setPos((sx/2 + i*sx - 1), 0, (sy/2 + j*sy - 1))
+				#card.setPos((sx/2 + x*sx - 1), 0, -(sy/2 + y*sy - 1))
+				card.setPos((self.squareWidth/2 + x*self.squareWidth - 1), 0, -(self.squareHeight/2 + y*self.squareHeight - 1))
 				
 				card.setTexture(tex)
 				
-				self.cards[i].append(card)
+				self.cards[y].append(card)
 				card.reparentTo(self.nodePath)
 				
-				if self.tileIs( (i,j), 'obstacle'):
-					m =	 Actor('model/rock/rock') 
+				if self.tileIs((x,y), 'obstacle'):
+					m =	Actor('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
-					m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
-					m.setScale(0.012,0.012,0.012)
+					#m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
+					m.setPos(m.getPos() - (self.squareWidth/10, -0.08, self.squareHeight/2))
+					m.setScale(0.012, 0.012, 0.012)
 					#self.cards[i][j].setColor(1,0,0)
 
 	def getNode(self):

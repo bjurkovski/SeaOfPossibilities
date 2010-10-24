@@ -22,7 +22,35 @@ class Game(State):
 		NodePath(self.currentMap().getNode()).detachNode()
 		self.room = self.stage.doors[self.room][direction]
 		NodePath(self.currentMap().getNode()).reparentTo(render)
-		self.characters[self.player].getNode().setZ(-0.8)
+		
+		map = self.stage.maps[self.room]
+		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
+		if direction == "right":
+			x = 1
+		elif direction == "left":
+			x = map.width-2
+		elif direction == "up":
+			y = 1
+		elif direction == "down":
+			y = map.height-2
+		pos = self.gridToPos((x,y))
+		self.characters[self.player].getNode().setPos(pos[0], 0, pos[1])
+	
+	# Conversion functions, maybe we should find a better place to put them...
+	def posToGrid(self, pos):
+		map = self.stage.maps[self.room]
+		x = int(pos[0] / (map.squareWidth) + map.width/2)
+		y = int(pos[1] / (map.squareHeight) + map.height/2)
+		
+		return (x,y)
+	
+	def gridToPos(self, grid):
+		map = self.stage.maps[self.room]
+		x = (grid[0] - map.width/2) * map.squareWidth
+		y = (grid[1] - map.height/2) * map.squareHeight
+		
+		return (x,y)
+	# end of conversion functions ###############################################
 		
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
@@ -47,10 +75,7 @@ class Game(State):
 		pressedKeys = [key for key in self.keys.keys() if self.keys[key]]
 		self.characters[self.player].doAction(pressedKeys)
 		
-		sizeX = len(self.stage.maps[self.room].tiles)
-		sizeY = len(self.stage.maps[self.room].tiles[0])
-		x = int((self.characters[self.player].actor.getX() / (2.0/sizeX)) + sizeX/2)
-		y = int((self.characters[self.player].actor.getZ() / (2.0/sizeY)) + sizeY/2)
+		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
 		ex = self.stage.maps[self.room].getExit((x,y))
 		
 		print x,y,ex

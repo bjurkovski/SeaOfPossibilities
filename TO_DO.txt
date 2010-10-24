@@ -1,0 +1,9 @@
+BUGS:
+	* Character direction/rotation when hit the directional buttons
+	* Camera Position (class Cam.py NOT WORKING!!!)
+
+TODO (urgente! sexta-feira):
+	* Pegando itens do chão (e usar)
+	* Inimigos
+	* Menus
+	* Empurrando blocos no chão
