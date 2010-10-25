@@ -8,7 +8,8 @@ class Model:
 		self.data = json.loads(file.read())
 		file.close()
 		
-		#in the case of a normal model still needs to load it
+		# maybe we need to include a package to use this function
+		self.model = loader.loadModel(self.data["render"]["model"]) 
 		
 		self.readRenderData()
 		

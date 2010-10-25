@@ -18,6 +18,7 @@ class Character():
 		self.hearts = 6
 		self.maxSlots = 1
 		self.slots = []
+		self.currentSlot = 0
 		self.speed = Character.baseSpeed * self.data["speed"]
 
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
@@ -64,5 +65,13 @@ class Character():
 				self.isMoving = False
 
 		self.model.setPos(self.model.getPos() + displacement)
+		
+	def pickItem(self, itemName):
+		if len(self.slots) < self.maxSlots:
+			self.slots.append(itemName)
+		else:
+			oldItem = self.slots[self.currentSlot]
+			self.slots[self.currentSlot] = itemName
+			return oldItem
 		
 

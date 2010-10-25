@@ -105,15 +105,8 @@ class Map:
 		for y in range(self.height):
 			self.cards.append([])
 			for x in range(self.width):
-				# MUDEI ISSO PRA GIRAR O MAPA 90 GRAUS!!! [/JURK]
-				##sx, sy = 2.0/len(self.tiles), 2.0/len(self.tiles[i])
-				#sx, sy = 2.0/len(self.tiles[y]), 2.0/len(self.tiles)
-				#cm.setFrame(sx/2, -sx/2, sy/2, -sy/2)
 				cm.setFrame(self.squareWidth/2, -self.squareWidth/2, self.squareHeight/2, -self.squareHeight/2)
-				#cm.setColor(1,1,1,1)
 				card = self.nodePath.attachNewNode(cm.generate())
-				##card.setPos((sx/2 + i*sx - 1), 0, (sy/2 + j*sy - 1))
-				#card.setPos((sx/2 + x*sx - 1), 0, -(sy/2 + y*sy - 1))
 				card.setPos((self.squareWidth/2 + x*self.squareWidth - 1), 0, -(self.squareHeight/2 + y*self.squareHeight - 1))
 				
 				card.setTexture(tex)
@@ -125,10 +118,8 @@ class Map:
 					m =	Actor('model/rock/rock') 
 					m.reparentTo(card)
 					m.setHpr(0,90,0)
-					#m.setPos(m.getPos() - (sx/10, -0.08, sy/2))
-					m.setPos(m.getPos() - (self.squareWidth/10, -0.08, self.squareHeight/2))
+					m.setPos(m.getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
 					m.setScale(0.012, 0.012, 0.012)
-					#self.cards[i][j].setColor(1,0,0)
 
 	def getNode(self):
 		return self.nodePath.node()
