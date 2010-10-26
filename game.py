@@ -6,6 +6,7 @@ from direct.actor.Actor import Actor
 from panda3d.core import Point3
 
 class Game(State):
+	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
 	def __init__(self, stage, characters, player):
 		State.__init__(self)
 
@@ -61,6 +62,13 @@ class Game(State):
 		self.camera.setPos(0, -3, -3)
 		self.camera.lookAt(0, 0, 0)
 		
+		# to draw the item
+		#cm = CardMaker('CardMaker')
+		#cm.setFrame(0.2, 0, 0.2, 0)
+		#card = self.nodePath.attachNewNode(cm.generate())
+		#card.setPos((self.squareWidth/2 + x*self.squareWidth - 1), 0, -(self.squareHeight/2 + y*self.squareHeight - 1))
+		#card.setTexture(tex)
+		
 	def iterate(self):
 		State.iterate(self)
 		self.camera.look()
@@ -72,10 +80,22 @@ class Game(State):
 			return "Paused"
 
 	def move(self):
-		pressedKeys = [key for key in self.keys.keys() if self.keys[key]]
-		self.characters[self.player].doAction(pressedKeys)
-		
 		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
+		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
+		
+		for dir in directions:
+			try:
+				#mudar o "ground" pra "free" ou algo do genero depois
+				
+				# ESSA PARTE TA BUGADA PQ TAMOS CONSIDERANDO QUE O MOVIMENTO DO PERSONAGEM EH DISCRETO
+				# MAS NA VERDADE EH CONTINUO... ARRUMAR ISSO!!!
+				if self.stage.maps[self.room].tileIs((x+Game.mapOffset[dir][0],y+Game.mapOffset[dir][1]), 'ground'):
+					self.characters[self.player].doAction("walk", [dir])
+					x += Game.mapOffset[dir][0]
+					y += Game.mapOffset[dir][1]
+			except IndexError:
+				pass
+		
 		ex = self.stage.maps[self.room].getExit((x,y))
 		
 		print x,y,ex

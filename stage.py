@@ -1,6 +1,8 @@
 import json
 from panda3d.core import NodePath, CardMaker, Texture
 from direct.actor.Actor import Actor
+from model import Model
+from character import Character
 
 tex = Texture('tex')
 tex.load('tex/grass.png')
@@ -115,12 +117,13 @@ class Map:
 				card.reparentTo(self.nodePath)
 				
 				if self.tileIs((x,y), 'obstacle'):
-					m =	Actor('model/rock/rock') 
-					m.reparentTo(card)
-					m.setHpr(0,90,0)
-					m.setPos(m.getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
-					m.setScale(0.012, 0.012, 0.012)
-
+					#m = Actor('model/rock/rock') 
+					m = Model("model/rock.json")
+					m.getNode().reparentTo(card)
+					#m.setHpr(0,90,0)
+					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
+					#m.setScale(0.012, 0.012, 0.012)
+		
 	def getNode(self):
 		return self.nodePath.node()
 

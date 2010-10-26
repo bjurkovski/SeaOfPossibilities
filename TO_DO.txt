@@ -5,5 +5,5 @@ BUGS:
 TODO (urgente! sexta-feira):
 	* Pegando itens do chão (e usar)
 	* Inimigos
-	* Menus
 	* Empurrando blocos no chão
+	* Menus

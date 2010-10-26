@@ -2,9 +2,11 @@ import json
 from model import *
 from direct.actor.Actor import Actor
 from panda3d.core import Point3
+from pandac.PandaModules import CollisionNode, CollisionSphere
 
 #class Character(Model):
-class Character():
+class Character:
+	id = 0
 	baseSpeed = 0.05
 	def __init__(self, charFile):
 		#Model.__init__(self, charFile)
@@ -22,11 +24,19 @@ class Character():
 		self.speed = Character.baseSpeed * self.data["speed"]
 
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
+		
+		# Collision stuff
+		#self.collider = self.model.attachNewNode(CollisionNode('Character' + str(Character.id)))
+		#cPos = self.data["collision"]["pos"]
+		#self.collider.node().addSolid(CollisionSphere(cPos[0], cPos[1], cPos[2], self.data["collision"]["radius"]))
+		#self.collider.show()
 
 		self.isMoving = False
 		
 		# from model
 		self.readRenderData()
+		
+		Character.id += 1
 		
 	# from model
 	def readRenderData(self):
@@ -38,33 +48,34 @@ class Character():
 	def getNode(self):
 		return self.model
 		
-	def doAction(self, pressedKeys):
-		displacement = Point3(0, 0, 0)
-		
-		if 'up' in pressedKeys:
-			self.model.setHpr(0,0,180)
-			displacement += Point3(0, 0, self.speed)
-		if 'left' in pressedKeys:
-			self.model.setHpr(0,0,90)
-			displacement += Point3(-self.speed, 0, 0)
-		if 'down' in pressedKeys:
-			self.model.setHpr(0,0,0)
-			displacement += Point3(0, 0, -self.speed)
-		if 'right' in pressedKeys:
-			self.model.setHpr(0,0,270)
-			displacement += Point3(self.speed, 0, 0)
+	def doAction(self, action, param):
+		if action == "walk":
+			displacement = Point3(0, 0, 0)
 			
-		if displacement[0]!=0 or displacement[1]!=0 or displacement[2]!=0:
-			if self.isMoving is False:
-				self.model.loop("walk")
-				self.isMoving = True
-		else:
-			if self.isMoving:
-				self.model.stop()
-				#self.model.pose("walk",5) #transition between run and stop, if actor was looping 'run' animation
-				self.isMoving = False
+			if 'up' in param:
+				self.model.setHpr(0,0,180)
+				displacement += Point3(0, 0, self.speed)
+			if 'left' in param:
+				self.model.setHpr(0,0,90)
+				displacement += Point3(-self.speed, 0, 0)
+			if 'down' in param:
+				self.model.setHpr(0,0,0)
+				displacement += Point3(0, 0, -self.speed)
+			if 'right' in param:
+				self.model.setHpr(0,0,270)
+				displacement += Point3(self.speed, 0, 0)
+				
+			if displacement[0]!=0 or displacement[1]!=0 or displacement[2]!=0:
+				if self.isMoving is False:
+					self.model.loop("walk")
+					self.isMoving = True
+			else:
+				if self.isMoving:
+					self.model.stop()
+					#self.model.pose("walk",5) #transition between run and stop, if actor was looping 'run' animation
+					self.isMoving = False
 
-		self.model.setPos(self.model.getPos() + displacement)
+			self.model.setPos(self.model.getPos() + displacement)
 		
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:
