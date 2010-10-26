@@ -22,6 +22,7 @@ class Character:
 		self.slots = []
 		self.currentSlot = 0
 		self.speed = Character.baseSpeed * self.data["speed"]
+		self.stop()
 
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
 		
@@ -48,24 +49,25 @@ class Character:
 	def getNode(self):
 		return self.model
 		
-	def doAction(self, action, param):
+	def stop(self):
+		self.displacement = Point3(0, 0, 0)
+		
+	def doAction(self, action):
 		if action == "walk":
-			displacement = Point3(0, 0, 0)
-			
-			if 'up' in param:
-				self.model.setHpr(0,0,180)
-				displacement += Point3(0, 0, self.speed)
-			if 'left' in param:
-				self.model.setHpr(0,0,90)
-				displacement += Point3(-self.speed, 0, 0)
-			if 'down' in param:
-				self.model.setHpr(0,0,0)
-				displacement += Point3(0, 0, -self.speed)
-			if 'right' in param:
-				self.model.setHpr(0,0,270)
-				displacement += Point3(self.speed, 0, 0)
+			# if 'up' in param:
+				# self.model.setHpr(0,0,180)
+				# displacement += Point3(0, 0, self.speed)
+			# if 'left' in param:
+				# self.model.setHpr(0,0,90)
+				# displacement += Point3(-self.speed, 0, 0)
+			# if 'down' in param:
+				# self.model.setHpr(0,0,0)
+				# displacement += Point3(0, 0, -self.speed)
+			# if 'right' in param:
+				# self.model.setHpr(0,0,270)
+				# displacement += Point3(self.speed, 0, 0)
 				
-			if displacement[0]!=0 or displacement[1]!=0 or displacement[2]!=0:
+			if self.displacement[0]!=0 or self.displacement[1]!=0 or self.displacement[2]!=0:
 				if self.isMoving is False:
 					self.model.loop("walk")
 					self.isMoving = True
@@ -75,7 +77,7 @@ class Character:
 					#self.model.pose("walk",5) #transition between run and stop, if actor was looping 'run' animation
 					self.isMoving = False
 
-			self.model.setPos(self.model.getPos() + displacement)
+			self.model.setPos(self.model.getPos() + self.displacement)
 		
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:

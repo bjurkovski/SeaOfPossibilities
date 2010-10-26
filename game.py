@@ -80,22 +80,41 @@ class Game(State):
 			return "Paused"
 
 	def move(self):
-		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
 		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
+		
+		self.characters[self.player].stop()
+		
+		hprs = {"up": (0,0,180),
+				"left": (0,0,90),
+				"down": (0,0,0),
+				"right": (0,0,270)}
+		
+		disp = {"up": Point3(0, 0, self.characters[self.player].speed),
+				"left": Point3(-self.characters[self.player].speed, 0, 0),
+				"down": Point3(0, 0, -self.characters[self.player].speed),
+				"right": Point3(self.characters[self.player].speed, 0, 0)}
+			
+		#if self.stage.maps[self.room].tileIs((x+Game.mapOffset[dir][0],y+Game.mapOffset[dir][1]), 'ground'):
 		
 		for dir in directions:
 			try:
+				x, y = self.posToGrid((self.characters[self.player].model.getX()+disp[dir].getX(), self.characters[self.player].model.getZ()+disp[dir].getZ()))
 				#mudar o "ground" pra "free" ou algo do genero depois
-				
+				if self.stage.maps[self.room].tileIs((x,y), 'ground'):
+					self.characters[self.player].displacement += disp[dir]
+					
 				# ESSA PARTE TA BUGADA PQ TAMOS CONSIDERANDO QUE O MOVIMENTO DO PERSONAGEM EH DISCRETO
 				# MAS NA VERDADE EH CONTINUO... ARRUMAR ISSO!!!
-				if self.stage.maps[self.room].tileIs((x+Game.mapOffset[dir][0],y+Game.mapOffset[dir][1]), 'ground'):
-					self.characters[self.player].doAction("walk", [dir])
-					x += Game.mapOffset[dir][0]
-					y += Game.mapOffset[dir][1]
+				#if self.stage.maps[self.room].tileIs((x+Game.mapOffset[dir][0],y+Game.mapOffset[dir][1]), 'ground'):
+				#	self.characters[self.player].doAction("walk", [dir])
+				#	x += Game.mapOffset[dir][0]
+				#	y += Game.mapOffset[dir][1]
+				
+				self.characters[self.player].doAction("walk")
 			except IndexError:
 				pass
 		
+		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
 		ex = self.stage.maps[self.room].getExit((x,y))
 		
 		print x,y,ex
