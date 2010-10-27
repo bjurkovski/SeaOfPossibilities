@@ -40,15 +40,17 @@ class Game(State):
 	# Conversion functions, maybe we should find a better place to put them...
 	def posToGrid(self, pos):
 		map = self.stage.maps[self.room]
-		x = int(pos[0] / (map.squareWidth) + map.width/2)
-		y = int(pos[1] / (map.squareHeight) + map.height/2)
+		x = int((pos[0] + map.squareWidth/2) / (map.squareWidth) + map.width/2)
+		y = map.height - int((pos[1] + map.squareHeight/2) / (map.squareHeight) + map.height/2) - 1
 		
 		return (x,y)
 	
 	def gridToPos(self, grid):
 		map = self.stage.maps[self.room]
-		x = (grid[0] - map.width/2) * map.squareWidth
-		y = (grid[1] - map.height/2) * map.squareHeight
+		#x = (grid[0] - map.width/2) * map.squareWidth
+		x = (grid[0] + map.squareWidth/2 - map.width/2) * map.squareWidth
+		#y = -(grid[1] - map.height/2 + 1) * map.squareHeight
+		y = -(grid[1] + map.squareHeight/2 - map.height/2 + 1) * map.squareHeight
 		
 		return (x,y)
 	# end of conversion functions ###############################################
@@ -100,6 +102,7 @@ class Game(State):
 			try:
 				x, y = self.posToGrid((self.characters[self.player].model.getX()+disp[dir].getX(), self.characters[self.player].model.getZ()+disp[dir].getZ()))
 				#mudar o "ground" pra "free" ou algo do genero depois
+				#print "t:",x,y
 				if self.stage.maps[self.room].tileIs((x,y), 'ground'):
 					self.characters[self.player].displacement += disp[dir]
 					
@@ -109,11 +112,10 @@ class Game(State):
 				#	self.characters[self.player].doAction("walk", [dir])
 				#	x += Game.mapOffset[dir][0]
 				#	y += Game.mapOffset[dir][1]
-				
-				self.characters[self.player].doAction("walk")
 			except IndexError:
 				pass
 		
+		self.characters[self.player].doAction("walk")
 		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
 		ex = self.stage.maps[self.room].getExit((x,y))
 		
