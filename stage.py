@@ -24,12 +24,12 @@ class Map:
 				try:
 					self.items = data["items"]
 				except KeyError:
-					self.items = None
+					self.items = []
 					
 				try:
 					self.enemies = data["enemies"]
 				except KeyError:
-					self.enemies = None
+					self.enemies = []
 				#self.tiles = data["map"].split()
 			except:
 				print "Error creating map: %s not found." % filename

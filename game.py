@@ -21,6 +21,14 @@ class Game(State):
 	def currentMap(self):
 		return self.stage.maps[self.room]
 		
+	def exitMap(self):
+		NodePath(self.currentMap().getNode()).detachNode()
+		for enemy in self.currentMap().enemies:
+			NodePath(enemy["instance"].getNode()).detachNode()
+			
+		for item in self.currentMap().items:
+			NodePath(item["instance"].getNode()).detachNode()
+		
 	def startMap(self):
 		for enemy in self.currentMap().enemies:
 			enemy["instance"] = Character(enemy["file"])
@@ -37,7 +45,7 @@ class Game(State):
 			item["instance"].getNode().setPos(pos[0], 0, pos[1])
 
 	def changeMap(self,direction):
-		NodePath(self.currentMap().getNode()).detachNode()
+		self.exitMap()
 		self.room = self.stage.doors[self.room][direction]
 		NodePath(self.currentMap().getNode()).reparentTo(self.node)
 		
@@ -53,6 +61,8 @@ class Game(State):
 			y = map.height-2
 		pos = self.gridToPos((x,y))
 		self.characters[self.player].getNode().setPos(pos[0], 0, pos[1])
+		
+		self.startMap()
 	
 	# Conversion functions, maybe we should find a better place to put them...
 	def posToGrid(self, pos):
