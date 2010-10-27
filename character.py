@@ -4,12 +4,15 @@ from direct.actor.Actor import Actor
 from panda3d.core import Point3
 from pandac.PandaModules import CollisionNode, CollisionSphere
 
+from body import *
+
 #class Character(Model):
-class Character:
+class Character(Body):
 	id = 0
 	baseSpeed = 0.05
 	def __init__(self, charFile):
 		#Model.__init__(self, charFile)
+		Body.__init__(self, 'Charlie')
 		
 		# from model
 		file = open(charFile)

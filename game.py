@@ -123,7 +123,19 @@ class Game(State):
 		if ex and (ex in self.stage.doors[self.room].keys()):
 			self.changeMap(ex)
 
-			
+	def collision(self, a, b):
+		#if b.getType() == 'mine':
+		#	a.takeDamage()
+		if a.getType() == 'player':
+			if b.getType() == 'rock':
+				a.stop()
+			#if b.getType() == 'enemy':
+				#a.takeDamage()
+			#if b.getType() == 'item':
+				#testa se a quer pegar item (e em caso positivo, pega)
+			#(...)
+		#elif a.getType() == 'enemy'
+	
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 
