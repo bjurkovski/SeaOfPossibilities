@@ -1,5 +1,5 @@
 from state import *
-
+from character import *
 from stage import *
 
 from direct.actor.Actor import Actor
@@ -15,14 +15,31 @@ class Game(State):
 		self.player = player
 		self.stage = stage
 		self.room = self.stage.start
+		
+		self.startMap()
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
+		
+	def startMap(self):
+		for enemy in self.currentMap().enemies:
+			enemy["instance"] = Character(enemy["file"])
+			enemy["instance"].getNode().reparentTo(self.node)
+			pos = enemy["pos"]
+			pos = self.gridToPos(pos)
+			enemy["instance"].getNode().setPos(pos[0], 0, pos[1])
+			
+		for item in self.currentMap().items:
+			item["instance"] = Model(item["model"])
+			item["instance"].getNode().reparentTo(self.node)
+			pos = item["pos"]
+			pos = self.gridToPos(pos)
+			item["instance"].getNode().setPos(pos[0], 0, pos[1])
 
 	def changeMap(self,direction):
 		NodePath(self.currentMap().getNode()).detachNode()
 		self.room = self.stage.doors[self.room][direction]
-		NodePath(self.currentMap().getNode()).reparentTo(render)
+		NodePath(self.currentMap().getNode()).reparentTo(self.node)
 		
 		map = self.stage.maps[self.room]
 		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
@@ -64,8 +81,6 @@ class Game(State):
 		self.camera.setPos(0, -3, -3)
 		self.camera.lookAt(0, 0, 0)
 		
-		m = Model("model/mine.json")
-		m.getNode().reparentTo(self.node)
 		# to draw the item
 		#cm = CardMaker('CardMaker')
 		#cm.setFrame(0.2, 0, 0.2, 0)

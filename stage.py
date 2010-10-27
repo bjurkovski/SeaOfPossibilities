@@ -21,10 +21,16 @@ class Map:
 				data = json.loads(file.read())
 				file.close()
 				self.tiles = data["map"]
+				try:
+					self.items = data["items"]
+				except KeyError:
+					self.items = None
+					
+				try:
+					self.enemies = data["enemies"]
+				except KeyError:
+					self.enemies = None
 				#self.tiles = data["map"].split()
-#				for line in file.readlines():
-#					self.tiles.append([c for c in line if c != '\n'])
-#				file.close()
 			except:
 				print "Error creating map: %s not found." % filename
 				exit()
