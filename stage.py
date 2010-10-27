@@ -18,7 +18,10 @@ class Map:
 		if filename != None:
 			try:
 				file = open(filename)
-				self.tiles = file.read().split()
+				data = json.loads(file.read())
+				file.close()
+				self.tiles = data["map"]
+				#self.tiles = data["map"].split()
 #				for line in file.readlines():
 #					self.tiles.append([c for c in line if c != '\n'])
 #				file.close()

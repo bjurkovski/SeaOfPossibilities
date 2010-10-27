@@ -64,6 +64,8 @@ class Game(State):
 		self.camera.setPos(0, -3, -3)
 		self.camera.lookAt(0, 0, 0)
 		
+		m = Model("model/mine.json")
+		m.getNode().reparentTo(self.node)
 		# to draw the item
 		#cm = CardMaker('CardMaker')
 		#cm.setFrame(0.2, 0, 0.2, 0)
@@ -95,8 +97,6 @@ class Game(State):
 				"left": Point3(-self.characters[self.player].speed, 0, 0),
 				"down": Point3(0, 0, -self.characters[self.player].speed),
 				"right": Point3(self.characters[self.player].speed, 0, 0)}
-			
-		#if self.stage.maps[self.room].tileIs((x+Game.mapOffset[dir][0],y+Game.mapOffset[dir][1]), 'ground'):
 		
 		for dir in directions:
 			try:
@@ -105,13 +105,6 @@ class Game(State):
 				#print "t:",x,y
 				if self.stage.maps[self.room].tileIs((x,y), 'ground'):
 					self.characters[self.player].displacement += disp[dir]
-					
-				# ESSA PARTE TA BUGADA PQ TAMOS CONSIDERANDO QUE O MOVIMENTO DO PERSONAGEM EH DISCRETO
-				# MAS NA VERDADE EH CONTINUO... ARRUMAR ISSO!!!
-				#if self.stage.maps[self.room].tileIs((x+Game.mapOffset[dir][0],y+Game.mapOffset[dir][1]), 'ground'):
-				#	self.characters[self.player].doAction("walk", [dir])
-				#	x += Game.mapOffset[dir][0]
-				#	y += Game.mapOffset[dir][1]
 			except IndexError:
 				pass
 		

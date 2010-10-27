@@ -1,0 +1,15 @@
+{
+	"render":
+	{
+		"model": "models/teapot",
+		"scale": [0.03, 0.03, 0.03],
+		"hpr": [0, 90, 0],
+		"pos": [0, 0.0, 0]
+	},
+	
+	"collision":
+	{
+		"pos": [0, 0, 0],
+		"radius": 10
+	}
+}
