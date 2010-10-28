@@ -1,9 +1,12 @@
 BUGS:
 	* Character direction/rotation when hit the directional buttons
 	* Camera Position (class Cam.py NOT WORKING!!!)
+	* Refatorar Game.move
+	* Refatorar Game.collision (talvez criando métodos de Body que saibam como o objeto "reage" à colisão. i.e - 'mine' sabe que uma colisão com um character resulta em dano + auto-destruição)
 
 TODO (urgente! sexta-feira):
+	* Colisões (última fase: implementar o teste na layer 1)
 	* Pegando itens do chão (e usar)
-	* Inimigos
+	* Inimigos [andando]
 	* Empurrando blocos no chão
 	* Menus
