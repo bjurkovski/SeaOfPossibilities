@@ -89,5 +89,13 @@ class Character(Body):
 			oldItem = self.slots[self.currentSlot]
 			self.slots[self.currentSlot] = itemName
 			return oldItem
+	
+	def takeDamage(self, damage):
+		self.hearts -= damage
+		if self.hearts < 0:
+			self.hearts = 0
+	
+	def  isAlive(self):
+		return self.hearts > 0
 		
 

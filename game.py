@@ -36,6 +36,7 @@ class Game(State):
 			pos = enemy["pos"]
 			pos = self.gridToPos(pos)
 			enemy["instance"].getNode().setPos(pos[0], 0, pos[1])
+			enemy["instance"].type = "enemy"
 			
 		for item in self.currentMap().items:
 			item["instance"] = Model(item["model"])
@@ -43,6 +44,7 @@ class Game(State):
 			pos = item["pos"]
 			pos = self.gridToPos(pos)
 			item["instance"].getNode().setPos(pos[0], 0, pos[1])
+			item["instance"].type =  item["name"]
 
 	def changeMap(self,direction):
 		self.exitMap()
@@ -104,6 +106,7 @@ class Game(State):
 		self.camera.camera.setPos(0, -3, -3)
 		self.camera.camera.lookAt(0, 0, 0)
 		self.move()
+		self.buryDeadPeople()
 		
 		if self.keys['start']:
 			return "Paused"
@@ -130,6 +133,8 @@ class Game(State):
 				#print "t:",x,y
 				if self.stage.maps[self.room].tileIs((x,y), 'ground'):
 					self.characters[self.player].displacement += disp[dir]
+				#if not self.stage.maps[self.room].segundaCamadaIs((x,y), None) : 
+				#	self.collision(self.characters[self.player], outro_mano)
 			except IndexError:
 				pass
 		
@@ -142,17 +147,30 @@ class Game(State):
 			self.changeMap(ex)
 
 	def collision(self, a, b):
-		#if b.getType() == 'mine':
-		#	a.takeDamage()
+		if b.getType() == 'mine':
+			a.takeDamage(10)
+			self.items.remove(b)
 		if a.getType() == 'player':
-			if b.getType() == 'rock':
-				a.stop()
-			#if b.getType() == 'enemy':
-				#a.takeDamage()
+			#if b.getType() == 'rock':
+				#a.stop()
+			if b.getType() == 'enemy':
+				b.takeDamage(10)
+				a.takeDamage(10) #just tests!
+				print 'oyoyoyoy'
 			#if b.getType() == 'item':
 				#testa se a quer pegar item (e em caso positivo, pega)
 			#(...)
 		#elif a.getType() == 'enemy'
+	
+	def buryDeadPeople(self):
+		for enemy in self.currentMap().enemies:
+			if not enemy["instance"].isAlive() :
+				self.currentMap().enemies.remove(enemy)
+		#if not self.player.isAlive() : #tratar isso corretamente!
+		for char in self.characters:
+			if not self.characters[char].isAlive() :
+				self.characters.remove(char)
+		#print "GAME OVER, BITCH!!11"
 	
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
