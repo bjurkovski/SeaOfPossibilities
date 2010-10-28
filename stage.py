@@ -21,6 +21,12 @@ class Map:
 				data = json.loads(file.read())
 				file.close()
 				self.tiles = data["map"]
+				
+				# the tiles are read as string, so we need to convert them
+				# to a list to manipulate them
+				for layer in range(len(self.tiles)):
+					for y in range(len(self.tiles[layer])):
+						self.tiles[layer][y] = list(self.tiles[layer][y])
 
 				try:
 					self.items = data["items"]
@@ -32,7 +38,7 @@ class Map:
 				except KeyError:
 					self.enemies = []
 				#self.tiles = data["map"].split()
-			except:
+			except IOError:
 				print "Error creating map: %s not found." % filename
 				exit()
 		elif size != ():
@@ -67,7 +73,7 @@ class Map:
 		cfg.close()
 
 	def tileIs(self, layer, point, tilename):
-		print layer, point[1], point[0]
+		#print layer, point[1], point[0]
 		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
 

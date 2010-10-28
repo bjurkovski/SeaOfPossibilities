@@ -25,6 +25,7 @@ class Game(State):
 		pos = self.gridToPos(pos)
 		item["instance"].getNode().setPos(pos[0], item["instance"].getNode().getY(), pos[1])
 		item["instance"].type =  item["name"]
+		self.currentMap().tiles[1][item["pos"][1]][item["pos"][0]] = "i"
 	
 	def spawnEnemy(self, enemy):
 		enemy["instance"] = Character(enemy["file"])
@@ -113,7 +114,7 @@ class Game(State):
 		self.camera.camera.lookAt(0, 0, 0)
 		self.move()
 		self.buryDeadPeople()
-		
+
 		if self.keys['start']:
 			return "Paused"
 
@@ -137,7 +138,7 @@ class Game(State):
 				x, y = self.posToGrid((self.characters[self.player].model.getX()+disp[dir].getX(), self.characters[self.player].model.getZ()+disp[dir].getZ()))
 				#mudar o "ground" pra "free" ou algo do genero depois
 				#print "t:",x,y
-				if self.stage.maps[self.room].tileIs(0, (x,y), 'ground'):
+				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
 					self.characters[self.player].displacement += disp[dir]
 				#if not self.stage.maps[self.room].segundaCamadaIs((x,y), None) : 
 				#	self.collision(self.characters[self.player], outro_mano)
