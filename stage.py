@@ -21,6 +21,7 @@ class Map:
 				data = json.loads(file.read())
 				file.close()
 				self.tiles = data["map"]
+
 				try:
 					self.items = data["items"]
 				except KeyError:
@@ -36,10 +37,12 @@ class Map:
 				exit()
 		elif size != ():
 			try:
-				for i in range(size[0]):
-					self.tiles.append([])
-					for j in range(size[1]):
-						self.tiles[i].append(' ')
+				self.tiles.append([])
+				for layer in range(size[2]):
+					for i in range(size[0]):
+						self.tiles[layer].append([])
+						for j in range(size[1]):
+							self.tiles[layer][i].append(' ')
 			except:
 				print "Error creating map: expecting a size=(width, height)."
 				exit()
@@ -47,7 +50,7 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
-		self.height, self.width = len(self.tiles), len(self.tiles[0])
+		self.height, self.width = len(self.tiles[0]), len(self.tiles[0][0])
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
 		self.constructModel()
@@ -63,8 +66,9 @@ class Map:
 		
 		cfg.close()
 
-	def tileIs(self, point , tilename):
-		return tilename == self.tilemap[self.tiles[int(point[1])][int(point[0])]]
+	def tileIs(self, layer, point, tilename):
+		print layer, point[1], point[0]
+		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
 
 	def getExit(self,point):
@@ -73,7 +77,7 @@ class Map:
 			is an exit and None if it's not. 
 		"""
 		direc = None
-		clear = self.tileIs(point, 'ground')
+		clear = self.tileIs(0, point, 'ground')
 		
 		minX, maxX = 0, self.width-1
 		minY, maxY = 0, self.height-1
@@ -94,7 +98,7 @@ class Map:
 
 	def __str__(self):
 		str = ""
-		for row in self.tiles:
+		for row in self.tiles[0]:
 			for tile in row:
 				str += tile
 			str += "\n"
@@ -125,7 +129,7 @@ class Map:
 				self.cards[y].append(card)
 				card.reparentTo(self.nodePath)
 				
-				if self.tileIs((x,y), 'obstacle'):
+				if self.tileIs(1, (x,y), 'obstacle'):
 					#m = Actor('model/rock/rock') 
 					m = Model("model/rock.json")
 					m.getNode().reparentTo(card)

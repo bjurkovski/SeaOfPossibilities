@@ -18,6 +18,22 @@ class Game(State):
 		
 		self.startMap()
 
+	def spawnItem(self, item):
+		item["instance"] = Model(item["model"])
+		item["instance"].getNode().reparentTo(self.node)
+		pos = item["pos"]
+		pos = self.gridToPos(pos)
+		item["instance"].getNode().setPos(pos[0], item["instance"].getNode().getY(), pos[1])
+		item["instance"].type =  item["name"]
+	
+	def spawnEnemy(self, enemy):
+		enemy["instance"] = Character(enemy["file"])
+		enemy["instance"].getNode().reparentTo(self.node)
+		pos = enemy["pos"]
+		pos = self.gridToPos(pos)
+		enemy["instance"].getNode().setPos(pos[0], enemy["instance"].getNode().getY(), pos[1])
+		enemy["instance"].type = "enemy"
+		
 	def currentMap(self):
 		return self.stage.maps[self.room]
 		
@@ -31,20 +47,10 @@ class Game(State):
 		
 	def startMap(self):
 		for enemy in self.currentMap().enemies:
-			enemy["instance"] = Character(enemy["file"])
-			enemy["instance"].getNode().reparentTo(self.node)
-			pos = enemy["pos"]
-			pos = self.gridToPos(pos)
-			enemy["instance"].getNode().setPos(pos[0], 0, pos[1])
-			enemy["instance"].type = "enemy"
+			self.spawnEnemy(enemy)
 			
 		for item in self.currentMap().items:
-			item["instance"] = Model(item["model"])
-			item["instance"].getNode().reparentTo(self.node)
-			pos = item["pos"]
-			pos = self.gridToPos(pos)
-			item["instance"].getNode().setPos(pos[0], 0, pos[1])
-			item["instance"].type =  item["name"]
+			self.spawnItem(item)
 
 	def changeMap(self,direction):
 		self.exitMap()
@@ -62,7 +68,7 @@ class Game(State):
 		elif direction == "down":
 			y = map.height-2
 		pos = self.gridToPos((x,y))
-		self.characters[self.player].getNode().setPos(pos[0], 0, pos[1])
+		self.characters[self.player].getNode().setPos(pos[0], self.characters[self.player].getNode().getY(), pos[1])
 		
 		self.startMap()
 	
@@ -131,7 +137,7 @@ class Game(State):
 				x, y = self.posToGrid((self.characters[self.player].model.getX()+disp[dir].getX(), self.characters[self.player].model.getZ()+disp[dir].getZ()))
 				#mudar o "ground" pra "free" ou algo do genero depois
 				#print "t:",x,y
-				if self.stage.maps[self.room].tileIs((x,y), 'ground'):
+				if self.stage.maps[self.room].tileIs(0, (x,y), 'ground'):
 					self.characters[self.player].displacement += disp[dir]
 				#if not self.stage.maps[self.room].segundaCamadaIs((x,y), None) : 
 				#	self.collision(self.characters[self.player], outro_mano)
