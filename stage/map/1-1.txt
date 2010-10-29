@@ -24,6 +24,6 @@
 
 "items": [{"name": "mine", "model": "model/mine.json", "pos": [2,2]}],
 
-"enemies": [{"file": "char/Jackson", "pos": [5,5]}]
+"enemies": [{"file": "char/EvilJackson", "pos": [5,5]}]
 
 }

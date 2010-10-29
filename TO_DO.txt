@@ -4,6 +4,8 @@ BUGS:
 	* Refatorar Game.move
 	* Refatorar Game.collision (talvez criando métodos de Body que saibam como o objeto "reage" à colisão. i.e - 'mine' sabe que uma colisão com um character resulta em dano + auto-destruição)
 
+	* Constantes com os nomes das layers
+
 TODO (urgente! sexta-feira):
 	* Colisões (última fase: implementar o teste na layer 1)
 	* Pegando itens do chão (e usar)

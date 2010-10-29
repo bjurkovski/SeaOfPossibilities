@@ -135,14 +135,17 @@ class Map:
 				self.cards[y].append(card)
 				card.reparentTo(self.nodePath)
 				
+				#THIS could use a refactor
 				if self.tileIs(1, (x,y), 'obstacle'):
-					#m = Actor('model/rock/rock') 
 					m = Model("model/rock.json")
 					m.getNode().reparentTo(card)
-					#m.setHpr(0,90,0)
 					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
-					#m.setScale(0.012, 0.012, 0.012)
 		
+				if self.tileIs(1, (x,y), 'block' ):
+					m = Model("model/block.json")
+					m.getNode().reparentTo(card)
+					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
+	
 	def getNode(self):
 		return self.nodePath.node()
 

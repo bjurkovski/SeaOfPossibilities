@@ -41,13 +41,7 @@ class Character(Body):
 		self.readRenderData()
 		
 		Character.id += 1
-		
-	# from model
-	def readRenderData(self):
-		self.model.setScale(self.data["render"]["scale"][0], self.data["render"]["scale"][1], self.data["render"]["scale"][2])
-		self.model.setHpr(self.data["render"]["hpr"][0], self.data["render"]["hpr"][1], self.data["render"]["hpr"][2])
-		self.model.setPos(self.data["render"]["pos"][0], self.data["render"]["pos"][1],self.data["render"]["pos"][2])
-	
+			
 	# from model
 	def getNode(self):
 		return self.model
