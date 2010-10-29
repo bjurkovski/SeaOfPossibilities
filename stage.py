@@ -140,11 +140,13 @@ class Map:
 					m = Model("model/rock.json")
 					m.getNode().reparentTo(card)
 					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
+					m.type = "obstacle"
 		
 				if self.tileIs(1, (x,y), 'block' ):
 					m = Model("model/block.json")
 					m.getNode().reparentTo(card)
 					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
+					m.type = "block"
 	
 	def getNode(self):
 		return self.nodePath.node()

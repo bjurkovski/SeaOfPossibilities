@@ -195,6 +195,7 @@ class Game(State):
 					NodePath(b.getNode()).removeNode()
 
 		if a.getType() == 'Charlie':
+			print("Collided with", b.getType())
 			#if b.getType() == 'rock':
 				#a.stop()
 			if b.getType() == 'enemy':
@@ -205,10 +206,11 @@ class Game(State):
 			
 			#(...)
 			if b.getType() == 'block':
+				print("FUUUUUUUUUUUUU")
+				b.setPos(b.getX()+10, b.getY(),0)
 				#empurrar
 		#elif a.getType() == 'enemy'
-	
-	
+
 	def buryDeadPeople(self):
 		for enemy in self.currentMap().enemies:
 			if not enemy["instance"].isAlive() :
@@ -221,8 +223,7 @@ class Game(State):
 		for char in self.characters:
 			if not self.characters[char].isAlive() :
 				self.currentMap().characters.remove(char)
-		#print "GAME OVER, BITCH!!11"
-	
+				#print "GAME OVER, BITCH!!11"
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 
