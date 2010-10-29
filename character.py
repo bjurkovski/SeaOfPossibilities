@@ -47,6 +47,12 @@ class Character(Body):
 		return self.model
 		
 	def stop(self):
+		try:
+			if self.displacement != Point3(0, 0, 0):
+				self.old_displacement = self.displacement
+		except:
+			print('fuck')
+
 		self.displacement = Point3(0, 0, 0)
 		
 	def doAction(self, action):
@@ -75,7 +81,7 @@ class Character(Body):
 					self.isMoving = False
 
 			self.model.setPos(self.model.getPos() + self.displacement)
-		
+			self.old_displacement = self.displacement
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:
 			self.slots.append(itemName)

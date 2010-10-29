@@ -88,7 +88,6 @@ class Map:
 		minX, maxX = 0, self.width-1
 		minY, maxY = 0, self.height-1
 		
-		print "getExit:", clear, maxX, maxY
 		# in the first line
 		if point[1] == maxY and clear:
 			return "up"
@@ -116,6 +115,8 @@ class Map:
 		file.close()
 
 	def constructModel(self):
+		self.blocks = []
+
 		if self.nodePath != None:
 			self.nodePath.removeNode()
 			self.cards = []
@@ -143,10 +144,11 @@ class Map:
 					m.type = "obstacle"
 		
 				if self.tileIs(1, (x,y), 'block' ):
-					m = Model("model/block.json")
-					m.getNode().reparentTo(card)
-					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
-					m.type = "block"
+#					m = Model("model/block.json")
+#					m.getNode().reparentTo(card)
+#					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
+#					m.type = "block"
+					self.blocks.append({"pos" : (x,y), "model" : "model/block.json", "name" : "block"})
 	
 	def getNode(self):
 		return self.nodePath.node()

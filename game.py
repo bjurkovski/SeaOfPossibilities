@@ -20,6 +20,16 @@ class Game(State):
 		
 		self.startMap()
 
+	def spawnBlock(self, block):
+		block["instance"] = Model(block["model"])
+		block["instance"].getNode().reparentTo(self.node)
+		pos = block["pos"]
+		pos = self.gridToPos(pos)
+		block["instance"].getNode().setPos(pos[0], block["instance"].getNode().getY(), pos[1])
+		block["instance"].type =  block["name"]
+		self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = "b"
+
+
 	def spawnItem(self, item):
 		item["instance"] = Model(item["model"])
 		item["instance"].getNode().reparentTo(self.node)
@@ -49,12 +59,18 @@ class Game(State):
 		for item in self.currentMap().items:
 			NodePath(item["instance"].getNode()).detachNode()
 		
+		for block in self.currentMap().blocks:
+			NodePath(block["instance"].getNode()).detachNode()
+
 	def startMap(self):
 		for enemy in self.currentMap().enemies:
 			self.spawnEnemy(enemy)
 			
 		for item in self.currentMap().items:
 			self.spawnItem(item)
+
+		for block in self.currentMap().blocks:
+			self.spawnBlock(block)
 
 	def changeMap(self,direction):
 		self.exitMap()
@@ -148,6 +164,16 @@ class Game(State):
 						if item["pos"][0] == x and item["pos"][1] == y :
 							self.collision(self.characters[self.player] , item["instance"])
 							pass
+
+				elif self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
+					for block in self.currentMap().blocks:
+						if block["pos"][0] == x and block["pos"][1] == y:
+							print("Antes", block["pos"])
+							self.collision(self.characters[self.player] , block["instance"])
+							node =  block["instance"].getNode()
+							block["pos"] = self.posToGrid( (node.getX(),node.getZ()) )
+							print("Depois", block["pos"])
+
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy') :
 					for enemy in self.currentMap().enemies:
 						if enemy["pos"][0] == x and enemy["pos"][1] == y :
@@ -179,7 +205,6 @@ class Game(State):
 		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
 		ex = self.stage.maps[self.room].getExit((x,y))
 		
-		print x,y,ex
 		if ex and (ex in self.stage.doors[self.room].keys()):
 			self.changeMap(ex)
 
@@ -211,8 +236,15 @@ class Game(State):
 			
 			#(...)
 			if b.getType() == 'block':
-				print("FUUUUUUUUUUUUU")
-				b.setPos(b.getX()+10, b.getY(),0)
+				x ,y = self.posToGrid( (b.getNode().getX(), b.getNode().getZ()) )
+				print("ANtes",x,y)
+				disp = a.old_displacement
+				node = b.getNode()
+				self.currentMap().tiles[1][y][x] = ' '
+				node.setPos(node.getPos() + disp*10)
+				x ,y = self.posToGrid( (b.getNode().getX(), b.getNode().getZ()) )
+				print("Depois",x,y)
+				self.currentMap().tiles[1][y][x] = 'b'
 				#empurrar
 
 	def buryDeadPeople(self):
