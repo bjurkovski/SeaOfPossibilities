@@ -2,8 +2,9 @@ import json
 from direct.actor.Actor import Actor
 from panda3d.core import Point3
 from pandac.PandaModules import CollisionNode, CollisionSphere
+from body import *
 
-class Model:
+class Model(Body):
 	id = 0
 	def __init__(self, filename):
 		file = open(filename)
@@ -29,4 +30,3 @@ class Model:
 	
 	def getNode(self):
 		return self.model
-

@@ -34,6 +34,7 @@ class Game(State):
 		pos = self.gridToPos(pos)
 		enemy["instance"].getNode().setPos(pos[0], enemy["instance"].getNode().getY(), pos[1])
 		enemy["instance"].type = "enemy"
+		self.currentMap().tiles[1][enemy["pos"][1]][enemy["pos"][0]] = "e"
 		
 	def currentMap(self):
 		return self.stage.maps[self.room]
@@ -140,6 +141,17 @@ class Game(State):
 				#print "t:",x,y
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
 					self.characters[self.player].displacement += disp[dir]
+				elif self.stage.maps[self.room].tileIs(1, (x,y), 'item') :
+					for item in self.currentMap().items:
+						if item["pos"][0] == x and item["pos"][1] == y :
+							self.collision(self.characters[self.player] , item["instance"])
+							pass
+				elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy') :
+					for enemy in self.currentMap().enemies:
+						if enemy["pos"][0] == x and enemy["pos"][1] == y :
+							self.collision(self.characters[self.player] , enemy["instance"])
+							pass
+					
 				#if not self.stage.maps[self.room].segundaCamadaIs((x,y), None) : 
 				#	self.collision(self.characters[self.player], outro_mano)
 			except IndexError:
@@ -154,16 +166,24 @@ class Game(State):
 			self.changeMap(ex)
 
 	def collision(self, a, b):
+		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
 		if b.getType() == 'mine':
-			a.takeDamage(10)
-			self.items.remove(b)
-		if a.getType() == 'player':
+			print "OYOYOY"
+			#a.takeDamage(10)
+			#self.currentMap().items.remove()
+			for i in range(len(self.currentMap().items)):
+				if NodePath(self.currentMap().items[i]["instance"].getNode()).getX() == NodePath(b.getNode()).getX() and NodePath(self.currentMap().items[i]["instance"].getNode()).getZ() == NodePath(b.getNode()).getZ() :
+					self.currentMap().items.pop(i)
+					x, y = self.posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
+					self.currentMap().tiles[1][y][x] = ' '
+					NodePath(b.getNode()).removeNode()
+
+		if a.getType() == 'Charlie':
 			#if b.getType() == 'rock':
 				#a.stop()
 			if b.getType() == 'enemy':
 				b.takeDamage(10)
-				a.takeDamage(10) #just tests!
-				print 'oyoyoyoy'
+				#a.takeDamage(10) #just tests!
 			#if b.getType() == 'item':
 				#testa se a quer pegar item (e em caso positivo, pega)
 			#(...)
@@ -172,11 +192,15 @@ class Game(State):
 	def buryDeadPeople(self):
 		for enemy in self.currentMap().enemies:
 			if not enemy["instance"].isAlive() :
+				x, y = self.posToGrid((NodePath(enemy["instance"].getNode()).getX(), NodePath(enemy["instance"].getNode()).getZ()))
+				self.currentMap().tiles[1][y][x] = ' '
+				NodePath(enemy["instance"].getNode()).removeNode()
 				self.currentMap().enemies.remove(enemy)
+
 		#if not self.player.isAlive() : #tratar isso corretamente!
 		for char in self.characters:
 			if not self.characters[char].isAlive() :
-				self.characters.remove(char)
+				self.currentMap().characters.remove(char)
 		#print "GAME OVER, BITCH!!11"
 	
 
