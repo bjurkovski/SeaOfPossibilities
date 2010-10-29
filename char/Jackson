@@ -9,7 +9,7 @@
 
 	"render":
 	{
-		"model": "models/panda-model",
+		"model": "models/personagem/personagem",
 		"animation":
 		{
 			"walk": "models/panda-walk4"
