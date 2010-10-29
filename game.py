@@ -186,8 +186,12 @@ class Game(State):
 				#a.takeDamage(10) #just tests!
 			#if b.getType() == 'item':
 				#testa se a quer pegar item (e em caso positivo, pega)
+			
 			#(...)
+			if b.getType() == 'block':
+				#empurrar
 		#elif a.getType() == 'enemy'
+	
 	
 	def buryDeadPeople(self):
 		for enemy in self.currentMap().enemies:
