@@ -2,6 +2,8 @@ from state import *
 from character import *
 from stage import *
 
+import sys
+
 from direct.actor.Actor import Actor
 from panda3d.core import Point3
 
@@ -188,7 +190,7 @@ class Game(State):
 			#a.takeDamage(10)
 			#self.currentMap().items.remove()
 			for i in range(len(self.currentMap().items)):
-				if NodePath(self.currentMap().items[i]["instance"].getNode()).getX() == NodePath(b.getNode()).getX() and NodePath(self.currentMap().items[i]["instance"].getNode()).getZ() == NodePath(b.getNode()).getZ() :
+				if NodePath(self.currentMap().items[i]["instance"].getNode()).getX() == NodePath(b.getNode()).getX() and NodePath(self.currentMap().items[i]["instance"].getNode()).getZ() == NodePath(b.getNode()).getZ():
 					self.currentMap().items.pop(i)
 					x, y = self.posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
 					self.currentMap().tiles[1][y][x] = ' '
@@ -199,7 +201,10 @@ class Game(State):
 			#if b.getType() == 'rock':
 				#a.stop()
 			if b.getType() == 'enemy':
-				b.takeDamage(10)
+				if len(self.currentMap().items) == 0:
+					b.takeDamage(10)
+				else:
+					a.takeDamage(10)
 				#a.takeDamage(10) #just tests!
 			#if b.getType() == 'item':
 				#testa se a quer pegar item (e em caso positivo, pega)
@@ -209,11 +214,10 @@ class Game(State):
 				print("FUUUUUUUUUUUUU")
 				b.setPos(b.getX()+10, b.getY(),0)
 				#empurrar
-		#elif a.getType() == 'enemy'
 
 	def buryDeadPeople(self):
 		for enemy in self.currentMap().enemies:
-			if not enemy["instance"].isAlive() :
+			if not enemy["instance"].isAlive():
 				x, y = self.posToGrid((NodePath(enemy["instance"].getNode()).getX(), NodePath(enemy["instance"].getNode()).getZ()))
 				self.currentMap().tiles[1][y][x] = ' '
 				NodePath(enemy["instance"].getNode()).removeNode()
@@ -221,8 +225,15 @@ class Game(State):
 
 		#if not self.player.isAlive() : #tratar isso corretamente!
 		for char in self.characters:
+<<<<<<< HEAD
 			if not self.characters[char].isAlive() :
 				self.currentMap().characters.remove(char)
+=======
+			if not self.characters[char].isAlive():
+				#self.characters.remove(char)
+				print "Game Over!"
+				sys.exit()
+>>>>>>> 378d0ffcbc4402cb6e22dc76a08d7791a7981ee9
 				#print "GAME OVER, BITCH!!11"
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
