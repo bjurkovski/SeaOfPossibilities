@@ -120,10 +120,6 @@ class Game(State):
 			return "Paused"
 
 	def move(self):
-		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
-		
-		self.characters[self.player].stop()
-		
 		hprs = {"up": (0,0,180),
 				"left": (0,0,90),
 				"down": (0,0,0),
@@ -133,6 +129,10 @@ class Game(State):
 				"left": Point3(-self.characters[self.player].speed, 0, 0),
 				"down": Point3(0, 0, -self.characters[self.player].speed),
 				"right": Point3(self.characters[self.player].speed, 0, 0)}
+		
+		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
+		
+		self.characters[self.player].stop()
 		
 		for dir in directions:
 			try:
@@ -156,6 +156,22 @@ class Game(State):
 				#	self.collision(self.characters[self.player], outro_mano)
 			except IndexError:
 				pass
+				
+		#ISSO (ABAIXO) NAO FAZ SENTIDO, MAS VAI FUNCIONAR PRA AMANHA!!!!!!!!! (move inimigo)
+		for e in self.currentMap().enemies:
+			e["instance"].stop()
+			try:
+				x, y = self.posToGrid((e["instance"].model.getX()+disp["up"].getX(), e["instance"].model.getZ()+disp["up"].getZ()))
+				#mudar o "ground" pra "free" ou algo do genero depois
+				#print "t:",x,y
+				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
+					e["instance"].displacement += disp[dir]
+					
+				#if not self.stage.maps[self.room].segundaCamadaIs((x,y), None) : 
+				#	self.collision(self.characters[self.player], outro_mano)
+			except IndexError:
+				pass
+			e["instance"].doAction("walk")
 		
 		self.characters[self.player].doAction("walk")
 		x, y = self.posToGrid((self.characters[self.player].model.getX(), self.characters[self.player].model.getZ()))
