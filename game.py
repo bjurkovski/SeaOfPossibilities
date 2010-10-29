@@ -225,16 +225,10 @@ class Game(State):
 
 		#if not self.player.isAlive() : #tratar isso corretamente!
 		for char in self.characters:
-<<<<<<< HEAD
-			if not self.characters[char].isAlive() :
-				self.currentMap().characters.remove(char)
-=======
 			if not self.characters[char].isAlive():
 				#self.characters.remove(char)
 				print "Game Over!"
 				sys.exit()
->>>>>>> 378d0ffcbc4402cb6e22dc76a08d7791a7981ee9
-				#print "GAME OVER, BITCH!!11"
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 
