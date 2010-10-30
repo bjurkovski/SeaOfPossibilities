@@ -66,7 +66,7 @@ class Map:
 
 	def readConfig(self):
 
-		cfg = open("cfg/stage.cfg")	
+		cfg = open("cfg/stage.cfg")
 		
 		data = json.loads(cfg.read())
 		self.tilemap = data['tilemap']
@@ -74,7 +74,6 @@ class Map:
 		cfg.close()
 
 	def tileIs(self, layer, point, tilename):
-		#print layer, point[1], point[0]
 		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
 
@@ -126,18 +125,12 @@ class Map:
 		self.nodePath = NodePath("Map")
 		cm = CardMaker('CardMaker')
 
+		cm.setFrame(1,-1,1,-1)
+		card = self.nodePath.attachNewNode(cm.generate())
+		card.setTexture(tex)
+
 		for y in range(self.height):
-			self.cards.append([])
 			for x in range(self.width):
-				cm.setFrame(self.squareWidth/2, -self.squareWidth/2, self.squareHeight/2, -self.squareHeight/2)
-				card = self.nodePath.attachNewNode(cm.generate())
-				card.setPos((self.squareWidth/2 + x*self.squareWidth - 1), 0, -(self.squareHeight/2 + y*self.squareHeight - 1))
-				
-				card.setTexture(tex)
-				
-				self.cards[y].append(card)
-				card.reparentTo(self.nodePath)
-				
 				#THIS could use a refactor
 				if self.tileIs(1, (x,y), 'obstacle'):
 					self.obstacles.append( self.makeObject('obstacle',x,y) )

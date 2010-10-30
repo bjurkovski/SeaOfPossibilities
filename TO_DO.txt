@@ -19,7 +19,7 @@ CORRIGIR
 	* Poder carregar do json sem ter alguns atributos DONE for body.py
 	* Usar só pos contínuas e fazer o mapa converter corretamente
 	* Mover inimigo com um for each enemy no game
-	* Mudar para ser só um card
+	* Mudar para ser só um card DONE
 	
 
 
