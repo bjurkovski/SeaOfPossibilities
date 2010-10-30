@@ -20,45 +20,19 @@ class Game(State):
 		
 		self.startMap()
 
-	#TODO
-	# 3 of these methods are exactly the same
-	def spawnObstacle(self, ob):
-		ob["instance"] = Model(ob["model"])
+	def spawnObject(self, ob):
+		if ob["name"] == "enemy":
+			ob["instance"] = Character(ob["file"])
+		else:
+			ob["instance"] = Model(ob["model"])
+
 		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = ob["pos"]
 		pos = self.gridToPos(pos)
 		ob["instance"].getNode().setPos(pos[0], ob["instance"].getNode().getY(), pos[1])
 		ob["instance"].type =  ob["name"]
-		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = "#"
+		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = ob["symbol"]
 
-
-	def spawnBlock(self, block):
-		block["instance"] = Model(block["model"])
-		block["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
-		pos = block["pos"]
-		pos = self.gridToPos(pos)
-		block["instance"].getNode().setPos(pos[0], block["instance"].getNode().getY(), pos[1])
-		block["instance"].type =  block["name"]
-		self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = "b"
-
-	def spawnItem(self, item):
-		item["instance"] = Model(item["model"])
-		item["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
-		pos = item["pos"]
-		pos = self.gridToPos(pos)
-		item["instance"].getNode().setPos(pos[0], item["instance"].getNode().getY(), pos[1])
-		item["instance"].type =  item["name"]
-		self.currentMap().tiles[1][item["pos"][1]][item["pos"][0]] = "i"
-	
-	def spawnEnemy(self, enemy):
-		enemy["instance"] = Character(enemy["file"])
-		enemy["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
-		pos = enemy["pos"]
-		pos = self.gridToPos(pos)
-		enemy["instance"].getNode().setPos(pos[0], enemy["instance"].getNode().getY(), pos[1])
-		enemy["instance"].type = "enemy"
-		self.currentMap().tiles[1][enemy["pos"][1]][enemy["pos"][0]] = "e"
-		
 	def currentMap(self):
 		return self.stage.maps[self.room]
 		
@@ -68,16 +42,16 @@ class Game(State):
 	def startMap(self):
 		if not self.currentMap().started:
 			for obstacle in self.currentMap().obstacles:
-				self.spawnObstacle(obstacle)
+				self.spawnObject(obstacle)
 
 			for enemy in self.currentMap().enemies:
-				self.spawnEnemy(enemy)
+				self.spawnObject(enemy)
 			
 			for item in self.currentMap().items:
-				self.spawnItem(item)
+				self.spawnObject(item)
 
 			for block in self.currentMap().blocks:
-				self.spawnBlock(block)
+				self.spawnObject(block)
 
 			self.currentMap().started = True
 

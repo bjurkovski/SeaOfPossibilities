@@ -123,8 +123,8 @@ class Map:
 			self.cards = []
 
 		self.nodePath = NodePath("Map")
+		#the ground
 		cm = CardMaker('CardMaker')
-
 		cm.setFrame(1,-1,1,-1)
 		card = self.nodePath.attachNewNode(cm.generate())
 		card.setTexture(tex)
@@ -140,10 +140,11 @@ class Map:
 
 	def makeObject(self, obj_type, x, y):
 		models = { 'block' : 'block', 'obstacle' : 'rock' }
-
+		symbols = { 'block' : 'b', 'obstacle' : "#" }
 		obj = {"pos" : (x,y), 
 				"model" : "model/" + models[obj_type] + ".json", 
-				"name" : obj_type }
+				"name" : obj_type,
+				"symbol" :  symbols[obj_type] }
 
 		return obj
 
