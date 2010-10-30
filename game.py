@@ -20,6 +20,8 @@ class Game(State):
 		
 		self.startMap()
 
+	#TODO
+	# 3 of these methods are exactly the same
 	def spawnObstacle(self, ob):
 		ob["instance"] = Model(ob["model"])
 		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
@@ -27,7 +29,7 @@ class Game(State):
 		pos = self.gridToPos(pos)
 		ob["instance"].getNode().setPos(pos[0], ob["instance"].getNode().getY(), pos[1])
 		ob["instance"].type =  ob["name"]
-		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = "b"
+		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = "#"
 
 
 	def spawnBlock(self, block):
@@ -64,17 +66,20 @@ class Game(State):
 		NodePath(self.currentMap().getNode()).detachNode()
 
 	def startMap(self):
-		for obstacle in self.currentMap().obstacles:
-			self.spawnObstacle(obstacle)
+		if not self.currentMap().started:
+			for obstacle in self.currentMap().obstacles:
+				self.spawnObstacle(obstacle)
 
-		for enemy in self.currentMap().enemies:
-			self.spawnEnemy(enemy)
+			for enemy in self.currentMap().enemies:
+				self.spawnEnemy(enemy)
 			
-		for item in self.currentMap().items:
-			self.spawnItem(item)
+			for item in self.currentMap().items:
+				self.spawnItem(item)
 
-		for block in self.currentMap().blocks:
-			self.spawnBlock(block)
+			for block in self.currentMap().blocks:
+				self.spawnBlock(block)
+
+			self.currentMap().started = True
 
 	def changeMap(self,direction):
 		self.exitMap()
@@ -213,9 +218,7 @@ class Game(State):
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
 		if b.getType() == 'mine':
-			print "OYOYOY"
-			#a.takeDamage(10)
-			#self.currentMap().items.remove()
+		
 			for i in range(len(self.currentMap().items)):
 				if NodePath(self.currentMap().items[i]["instance"].getNode()).getX() == NodePath(b.getNode()).getX() and NodePath(self.currentMap().items[i]["instance"].getNode()).getZ() == NodePath(b.getNode()).getZ():
 					self.currentMap().items.pop(i)
@@ -232,20 +235,15 @@ class Game(State):
 					b.takeDamage(10)
 				else:
 					a.takeDamage(10)
-				#a.takeDamage(10) #just tests!
-			#if b.getType() == 'item':
-				#testa se a quer pegar item (e em caso positivo, pega)
-			
 			#(...)
 			if b.getType() == 'block':
+				#TODO refactor this
 				x ,y = self.posToGrid( (b.getNode().getX(), b.getNode().getZ()) )
-				print("ANtes",x,y)
 				disp = a.old_displacement
 				node = b.getNode()
 				self.currentMap().tiles[1][y][x] = ' '
 				node.setPos(node.getPos() + disp*10)
 				x ,y = self.posToGrid( (b.getNode().getX(), b.getNode().getZ()) )
-				print("Depois",x,y)
 				self.currentMap().tiles[1][y][x] = 'b'
 				#empurrar
 

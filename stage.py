@@ -9,6 +9,7 @@ tex.load('tex/grass.png')
 
 class Map:
 	def __init__(self, filename=None, size=()):
+		self.started = False
 		self.tiles = []
 		self.cards = []
 		self.nodePath = None
@@ -128,6 +129,15 @@ class Map:
 		for y in range(self.height):
 			self.cards.append([])
 			for x in range(self.width):
+				cm.setFrame(self.squareWidth/2, -self.squareWidth/2, self.squareHeight/2, -self.squareHeight/2)
+				card = self.nodePath.attachNewNode(cm.generate())
+				card.setPos((self.squareWidth/2 + x*self.squareWidth - 1), 0, -(self.squareHeight/2 + y*self.squareHeight - 1))
+				
+				card.setTexture(tex)
+				
+				self.cards[y].append(card)
+				card.reparentTo(self.nodePath)
+				
 				#THIS could use a refactor
 				if self.tileIs(1, (x,y), 'obstacle'):
 					self.obstacles.append( self.makeObject('obstacle',x,y) )
