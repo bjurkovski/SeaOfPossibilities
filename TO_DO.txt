@@ -15,8 +15,8 @@ TODO (urgente! sexta-feira):
 
 CORRIGIR
 
-	* Stage cria uma lista de objetos no mapa e passa pra game que reparenta
-	* Poder carregar do json sem ter alguns atributos
+	* Stage cria uma lista de objetos no mapa e passa pra game que reparenta DONE
+	* Poder carregar do json sem ter alguns atributos GONNA DO
 	* Usar só pos contínuas e fazer o mapa converter corretamente
 	* Mover inimigo com um for each enemy no game
 	* Mudar para ser só um card
