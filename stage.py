@@ -115,6 +115,7 @@ class Map:
 		file.close()
 
 	def constructModel(self):
+		self.obstacles = []
 		self.blocks = []
 
 		if self.nodePath != None:
@@ -138,18 +139,20 @@ class Map:
 				
 				#THIS could use a refactor
 				if self.tileIs(1, (x,y), 'obstacle'):
-					m = Model("model/rock.json")
-					m.getNode().reparentTo(card)
-					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
-					m.type = "obstacle"
-		
+					self.obstacles.append( self.makeObject('obstacle',x,y) )
+
 				if self.tileIs(1, (x,y), 'block' ):
-#					m = Model("model/block.json")
-#					m.getNode().reparentTo(card)
-#					m.getNode().setPos(m.getNode().getPos() - (self.squareWidth/10, 0, self.squareHeight/2))
-#					m.type = "block"
-					self.blocks.append({"pos" : (x,y), "model" : "model/block.json", "name" : "block"})
-	
+					self.blocks.append(self.makeObject('block',x,y))
+
+	def makeObject(self, obj_type, x, y):
+		models = { 'block' : 'block', 'obstacle' : 'rock' }
+
+		obj = {"pos" : (x,y), 
+				"model" : "model/" + models[obj_type] + ".json", 
+				"name" : obj_type }
+
+		return obj
+
 	def getNode(self):
 		return self.nodePath.node()
 

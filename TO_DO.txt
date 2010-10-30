@@ -12,3 +12,17 @@ TODO (urgente! sexta-feira):
 	* Inimigos [andando]
 	* Empurrando blocos no chão
 	* Menus
+
+CORRIGIR
+
+	* Stage cria uma lista de objetos no mapa e passa pra game que reparenta
+	* Poder carregar do json sem ter alguns atributos
+	* Usar só pos contínuas e fazer o mapa converter corretamente
+	* Mover inimigo com um for each enemy no game
+	* Mudar para ser só um card
+	
+
+
+
+	* Pegar todas as exceções e jogar num log
+

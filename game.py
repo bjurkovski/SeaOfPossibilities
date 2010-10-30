@@ -20,19 +20,28 @@ class Game(State):
 		
 		self.startMap()
 
+	def spawnObstacle(self, ob):
+		ob["instance"] = Model(ob["model"])
+		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
+		pos = ob["pos"]
+		pos = self.gridToPos(pos)
+		ob["instance"].getNode().setPos(pos[0], ob["instance"].getNode().getY(), pos[1])
+		ob["instance"].type =  ob["name"]
+		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = "b"
+
+
 	def spawnBlock(self, block):
 		block["instance"] = Model(block["model"])
-		block["instance"].getNode().reparentTo(self.node)
+		block["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = block["pos"]
 		pos = self.gridToPos(pos)
 		block["instance"].getNode().setPos(pos[0], block["instance"].getNode().getY(), pos[1])
 		block["instance"].type =  block["name"]
 		self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = "b"
 
-
 	def spawnItem(self, item):
 		item["instance"] = Model(item["model"])
-		item["instance"].getNode().reparentTo(self.node)
+		item["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = item["pos"]
 		pos = self.gridToPos(pos)
 		item["instance"].getNode().setPos(pos[0], item["instance"].getNode().getY(), pos[1])
@@ -41,7 +50,7 @@ class Game(State):
 	
 	def spawnEnemy(self, enemy):
 		enemy["instance"] = Character(enemy["file"])
-		enemy["instance"].getNode().reparentTo(self.node)
+		enemy["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = enemy["pos"]
 		pos = self.gridToPos(pos)
 		enemy["instance"].getNode().setPos(pos[0], enemy["instance"].getNode().getY(), pos[1])
@@ -53,16 +62,11 @@ class Game(State):
 		
 	def exitMap(self):
 		NodePath(self.currentMap().getNode()).detachNode()
-		for enemy in self.currentMap().enemies:
-			NodePath(enemy["instance"].getNode()).detachNode()
-			
-		for item in self.currentMap().items:
-			NodePath(item["instance"].getNode()).detachNode()
-		
-		for block in self.currentMap().blocks:
-			NodePath(block["instance"].getNode()).detachNode()
 
 	def startMap(self):
+		for obstacle in self.currentMap().obstacles:
+			self.spawnObstacle(obstacle)
+
 		for enemy in self.currentMap().enemies:
 			self.spawnEnemy(enemy)
 			
@@ -168,11 +172,9 @@ class Game(State):
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
 					for block in self.currentMap().blocks:
 						if block["pos"][0] == x and block["pos"][1] == y:
-							print("Antes", block["pos"])
 							self.collision(self.characters[self.player] , block["instance"])
 							node =  block["instance"].getNode()
 							block["pos"] = self.posToGrid( (node.getX(),node.getZ()) )
-							print("Depois", block["pos"])
 
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy') :
 					for enemy in self.currentMap().enemies:
