@@ -15,6 +15,7 @@ TODO (urgente! sexta-feira):
 
 CORRIGIR
 
+	* Usar instancias para modelos que repetem (tipo pedras) - checar loader.loadModelCopy()
 	* Stage cria uma lista de objetos no mapa e passa pra game que reparenta DONE
 	* Poder carregar do json sem ter alguns atributos DONE for body.py
 	* Usar só pos contínuas e fazer o mapa converter corretamente

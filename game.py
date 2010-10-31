@@ -88,7 +88,17 @@ class Game(State):
 		self.camera.camera.lookAt(0, 0, 0)   # GAMBIARRA! (camera's bug)
 		self.move()
 		self.buryDeadPeople()
-
+		
+		# print "dm:",self.currentMap().width, self.currentMap().height
+		print self.characters[self.player].getPos()
+		# ptg = self.currentMap().posToGrid(self.characters[self.player].getPos())
+		# print ptg
+		# gtp = self.currentMap().gridToPos(ptg)
+		# print gtp
+		# print self.currentMap().posToGrid(gtp)
+		# print "0",self.currentMap().gridToPos((0,0))
+		# print "sw",self.currentMap().squareWidth
+		#print "d:",self.characters[self.player].modelWidth,self.characters[self.player].modelLength,self.characters[self.player].modelHeight
 		if self.isOver:
 			return "GameOver"
 		elif self.keys['start']:
@@ -104,6 +114,11 @@ class Game(State):
 				"left": Point2(-self.characters[self.player].speed, 0),
 				"down": Point2(0, -self.characters[self.player].speed),
 				"right": Point2(self.characters[self.player].speed, 0)}
+				
+		dim = {"up": Point2(0, self.characters[self.player].modelLength/2),
+				"left": Point2(-self.characters[self.player].modelWidth/2, 0),
+				"down": Point2(0, -self.characters[self.player].modelLength/2),
+				"right": Point2(self.characters[self.player].modelWidth/2, 0)}
 		
 		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
 		
@@ -112,7 +127,7 @@ class Game(State):
 		for dir in directions:
 			try:
 				# to be re-refactored
-				x, y = self.currentMap().posToGrid(self.characters[self.player].getPos() + disp[dir])
+				x, y = self.currentMap().posToGrid(self.characters[self.player].getPos() + disp[dir] + dim[dir])
 
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
 					self.characters[self.player].displacement += disp[dir]

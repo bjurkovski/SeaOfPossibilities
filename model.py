@@ -5,7 +5,6 @@ from pandac.PandaModules import CollisionNode, CollisionSphere
 from body import *
 
 class Model(Body):
-	id = 0
 	def __init__(self, filename):
 		file = open(filename)
 		self.data = json.loads(file.read())
@@ -21,7 +20,7 @@ class Model(Body):
 		#self.collider.show()
 		
 		self.readRenderData()
-		Model.id += 1
+		self.calculateDimensions()
 		
 	def getNode(self):
 		return self.model

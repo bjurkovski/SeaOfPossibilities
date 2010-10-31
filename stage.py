@@ -150,15 +150,22 @@ class Map:
 		return obj
 		
 	def posToGrid(self, pos):
-		x = int((pos[0] + self.squareWidth/2) / (self.squareWidth) + self.width/2)
-		y = self.height - int((pos[1] + self.squareHeight/2) / (self.squareHeight) + self.height/2) - 1
+		#x = int(round(self.width/2 + (pos[0]-self.squareWidth/2)/self.squareWidth))
+		x = int(round(self.width/2 + (pos[0])/self.squareWidth))
+
+		##y = self.height-1 - int(round(self.height/2 + (pos[1]-self.squareHeight/2)/self.squareHeight))
+		#y = self.height-1 - int(round(self.height/2 + (pos[1]-self.squareHeight/2)/self.squareHeight))
+		y = self.height-1 - int(round(self.height/2 + (pos[1])/self.squareHeight))
 		
 		return (x,y)
 	
 	def gridToPos(self, grid):
-		x = (grid[0] + self.squareWidth/2 - self.width/2) * self.squareWidth
-		#y = -(grid[1] + self.squareHeight/2 - self.height/2 + 1) * self.squareHeight
-		y = (-(grid[1] + 1 - self.height) - self.height/2)*self.squareHeight -  self.squareHeight/2
+		#x = (grid[0] - self.width/2)*self.squareWidth + self.squareWidth/2
+		x = (grid[0] - self.width/2)*self.squareWidth
+		
+		##y = -(grid[1] + self.squareHeight/2 - self.height/2 + 1) * self.squareHeight
+		#y = - (grid[1] - self.height + 1 + self.height/2)*self.squareHeight + self.squareHeight/2
+		y = -(grid[1] - self.height + 1 + self.height/2)*self.squareHeight
 		
 		return (x,y)
 

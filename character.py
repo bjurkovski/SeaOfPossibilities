@@ -8,7 +8,6 @@ from body import *
 
 #class Character(Model):
 class Character(Body):
-	id = 0
 	baseSpeed = 0.05
 	def __init__(self, charFile):
 		#Model.__init__(self, charFile)
@@ -39,8 +38,7 @@ class Character(Body):
 		
 		# from model
 		self.readRenderData()
-		
-		Character.id += 1
+		self.calculateDimensions()
 			
 	# from model
 	def getNode(self):
