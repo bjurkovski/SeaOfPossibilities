@@ -48,12 +48,12 @@ class Character(Body):
 		
 	def stop(self):
 		try:
-			if self.displacement != Point3(0, 0, 0):
+			if self.displacement != Point2(0, 0):
 				self.old_displacement = self.displacement
 		except:
 			print('fuck')
 
-		self.displacement = Point3(0, 0, 0)
+		self.displacement = Point2(0, 0)
 		
 	def doAction(self, action):
 		if action == "walk":
@@ -70,7 +70,7 @@ class Character(Body):
 				# self.model.setHpr(0,0,270)
 				# displacement += Point3(self.speed, 0, 0)
 				
-			if self.displacement[0]!=0 or self.displacement[1]!=0 or self.displacement[2]!=0:
+			if self.displacement[0]!=0 or self.displacement[1]!=0:
 				if self.isMoving is False:
 					self.model.loop("walk")
 					self.isMoving = True
@@ -80,8 +80,9 @@ class Character(Body):
 					#self.model.pose("walk",5) #transition between run and stop, if actor was looping 'run' animation
 					self.isMoving = False
 
-			self.model.setPos(self.model.getPos() + self.displacement)
-			self.old_displacement = self.displacement
+			self.setPos(self.getPos() + self.displacement)
+			self.oldDisplacement = self.displacement
+			
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:
 			self.slots.append(itemName)

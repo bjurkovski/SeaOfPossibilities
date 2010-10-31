@@ -9,10 +9,16 @@
 ".................",
 ".................",
 ".................",
+".................",
+".................",
+".................",
 "................."],
 
 [
 "#################",
+"#               #",
+"#               #",
+"#               #",
 "#               #",
 "#               #",
 "#                ",
@@ -22,8 +28,8 @@
 "#################"]
 ],
 
-"items": [{"name": "mine", "symbol": "i" , "model": "model/mine.json", "pos": [2,2] } ],
+"items": [{"name": "mine", "symbol": "i" , "model": "model/mine.json", "pos": [2,2]}],
 
-"enemies": [{"name" : "enemy", "file": "char/EvilJackson", "pos": [5,5], "symbol" : "e"} ]
+"enemies": [{"name" : "enemy", "file": "char/EvilJackson", "pos": [5,5], "symbol" : "e"}]
 
 }

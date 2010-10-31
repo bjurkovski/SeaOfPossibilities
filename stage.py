@@ -5,7 +5,9 @@ from model import Model
 from character import Character
 
 tex = Texture('tex')
-tex.load('tex/grass.png')
+#tex.load('tex/grass.png')
+#tex.load('tex/grass_painterly.jpg')
+tex.load('tex/grasspaint.png')
 
 class Map:
 	def __init__(self, filename=None, size=()):
@@ -29,16 +31,11 @@ class Map:
 					for y in range(len(self.tiles[layer])):
 						self.tiles[layer][y] = list(self.tiles[layer][y])
 
-				try:
-					self.items = data["items"]
-				except KeyError:
-					self.items = []
+				try: self.items = data["items"]
+				except KeyError: self.items = []
 					
-				try:
-					self.enemies = data["enemies"]
-				except KeyError:
-					self.enemies = []
-				#self.tiles = data["map"].split()
+				try: self.enemies = data["enemies"]
+				except KeyError: self.enemies = []
 			except IOError:
 				print "Error creating map: %s not found." % filename
 				exit()
@@ -76,6 +73,9 @@ class Map:
 	def tileIs(self, layer, point, tilename):
 		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
+	def posIs(self, layer, pos, tilename):
+		x,y = self.posToGrid(pos)
+		return self.tileIs(layer, (x,y), tilename)
 
 	def getExit(self,point):
 		"""
@@ -125,7 +125,7 @@ class Map:
 		self.nodePath = NodePath("Map")
 		#the ground
 		cm = CardMaker('CardMaker')
-		cm.setFrame(1,-1,1,-1)
+		cm.setFrame(-1,1,-1,1)
 		card = self.nodePath.attachNewNode(cm.generate())
 		card.setTexture(tex)
 
@@ -139,6 +139,7 @@ class Map:
 					self.blocks.append(self.makeObject('block',x,y))
 
 	def makeObject(self, obj_type, x, y):
+		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
 		models = { 'block' : 'block', 'obstacle' : 'rock' }
 		symbols = { 'block' : 'b', 'obstacle' : "#" }
 		obj = {"pos" : (x,y), 
@@ -147,6 +148,19 @@ class Map:
 				"symbol" :  symbols[obj_type] }
 
 		return obj
+		
+	def posToGrid(self, pos):
+		x = int((pos[0] + self.squareWidth/2) / (self.squareWidth) + self.width/2)
+		y = self.height - int((pos[1] + self.squareHeight/2) / (self.squareHeight) + self.height/2) - 1
+		
+		return (x,y)
+	
+	def gridToPos(self, grid):
+		x = (grid[0] + self.squareWidth/2 - self.width/2) * self.squareWidth
+		#y = -(grid[1] + self.squareHeight/2 - self.height/2 + 1) * self.squareHeight
+		y = (-(grid[1] + 1 - self.height) - self.height/2)*self.squareHeight -  self.squareHeight/2
+		
+		return (x,y)
 
 	def getNode(self):
 		return self.nodePath.node()

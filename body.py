@@ -1,3 +1,5 @@
+from panda3d.core import Point2
+
 class Body:
 	id = 0
 	def __init__(self, type_):
@@ -6,7 +8,6 @@ class Body:
 		Body.id+= 1
 
 	def readRenderData(self):
-
 		try:
 			#EPIC REFACTOR! Please look at the diff
 			self.model.setScale(*self.data["render"]["scale"])
@@ -16,6 +17,17 @@ class Body:
 		except KeyError:
 			print("Using default render data for model")
 
+	def setPos(self, pos):
+		self.model.setPos(pos[0], self.model.getY(), pos[1])
+		
+	def setHeight(self, height):
+		self.model.setY(height)
+		
+	def getPos(self):
+		return Point2(self.model.getX(), self.model.getZ())
+		
+	def getHeight(self):
+		return self.model.getY()
 
 	def getType(self):
 		return self.type
