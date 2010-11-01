@@ -19,6 +19,9 @@ class Game(State):
 		self.room = self.stage.start
 		self.isOver = False
 		
+		#let's try
+		self.characters[self.player].drawStatus()
+		
 		self.startMap()
 
 	def spawnObject(self, ob):
