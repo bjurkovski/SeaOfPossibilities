@@ -117,20 +117,38 @@ class Game(State):
 		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
 		char = self.characters[self.player]
 		
+		# I know the block movement code sucks by now... i was just testing it and will refactor
+		
+		# BLOCK MOVEMENT ACTION
+		for block in self.currentMap().blocks:
+			if block["instance"].isMoving:
+				x,y = self.currentMap().posToGrid(block["instance"].getPos())
+				bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(block["instance"].direction))
+				if (x,y)==(bx,by) or self.stage.maps[self.room].tileIs(1, (bx,by), 'free'):
+					block["instance"].move(block["instance"].direction)
+					self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
+					block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
+					self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = 'b'
+				else:
+					block["instance"].stop()
+		
 		if len(directions) == 0:
 			self.characters[self.player].stop()
 			x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
+			# BLOCK MOVEMENT TRIGGER
 			if self.keys["action"] and self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
 				for block in self.currentMap().blocks:
 					if tuple(block["pos"]) == (x,y):
 						bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(char.direction))
 						if self.stage.maps[self.room].tileIs(1, (bx,by), 'free'):
 							block["instance"].move(char.direction)
-							block["pos"] = (bx, by)
+							self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
+							block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
+							self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = 'b'
 		
 		for dir in directions:
 			try:
-				# to be re-refactored
+				#TODO to be re-refactored
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
