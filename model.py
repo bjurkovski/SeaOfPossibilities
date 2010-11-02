@@ -13,3 +13,6 @@ class Model(Body):
 		self.readRenderData()
 		self.calculateDimensions()
 		
+	def move(self, direction):
+		Body.move(self, direction)
+		self.direction = direction

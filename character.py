@@ -45,12 +45,17 @@ class Character(Body):
 		angles = {"up": 270, "left": 0, "down": 90, "right": 180}
 		
 		try:
-			self.turn(angles[direction])	
+			self.setDirection(direction)
 			if self.isMoving is False:
 				self.model.loop("walk")
 			Body.move(self, direction)
 		except KeyError:
 			pass
+			
+	def setDirection(self, direction):
+		angles = {"up": 270, "left": 0, "down": 90, "right": 180} #colocar no json depois...
+		self.turn(angles[direction])
+		self.direction = direction
 			
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:

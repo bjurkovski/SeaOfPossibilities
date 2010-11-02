@@ -103,8 +103,7 @@ class Body:
 			
 	def move(self, direction):		
 		try:
-			self.displacement = self.speed[direction]
-			self.direction = direction
+			self.displacement = self.speed[direction]			
 			if self.isMoving is False:
 				self.isMoving = True
 			self.setPos(self.getPos() + self.displacement)

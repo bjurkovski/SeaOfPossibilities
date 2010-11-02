@@ -7,6 +7,7 @@ import sys
 from direct.actor.Actor import Actor
 from panda3d.core import Point2, Point3
 from panda3d.core import LightRampAttrib
+
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
 	def __init__(self, stage, characters, player):
@@ -80,14 +81,14 @@ class Game(State):
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
-
+			
 		for l in self.stage.getLights():
-			render.setLight(l)		
-
+			render.setLight(l)
+			
 		#COWABUNGA comment this to stop the madness
 		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.2, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(t0, l0, t1, l1))
-
+		
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
 		
@@ -131,13 +132,16 @@ class Game(State):
 			try:
 				# to be re-refactored
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
+
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
 					char.move(dir)
 					ex = self.stage.maps[self.room].getExit((x,y))		
 					if ex and (ex in self.stage.doors[self.room].keys()):
 						self.changeMap(ex)
+				else:
+					char.setDirection(dir)
 					
-				elif self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
+				if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 					for item in self.currentMap().items:
 						if tuple(item["pos"]) == (x,y):
 							self.collision(self.characters[self.player], item["instance"])
