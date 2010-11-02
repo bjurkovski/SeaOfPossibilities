@@ -88,7 +88,6 @@ class Game(State):
 		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.2, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(t0, l0, t1, l1))
 
-
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
 		

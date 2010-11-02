@@ -33,7 +33,11 @@ class StateMachine(FSM, ShowBase, Input):
 			'Options':  ['Title']
 		}
 
+		#enable shaders in every model
 		self.render.setShaderAuto()		
+
+		#disables mouse controlled camera
+		self.disableMouse()
 
 		self.states = {}
 		for state in self.defaultTransitions.keys():
