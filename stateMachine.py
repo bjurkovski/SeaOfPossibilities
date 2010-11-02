@@ -21,6 +21,7 @@ class StateMachine(FSM, ShowBase, Input):
 		
 		#TODO very important! I changed this from self.camera,
 		#we need to discover if this is relevant
+		# IT IS OMG BLASTOISE!!!
 		self.cam = Cam(self.cam)
 
 		self.defaultTransitions = {
@@ -31,7 +32,9 @@ class StateMachine(FSM, ShowBase, Input):
 			'GameOver': ['Title', 'Exit'],
 			'Options':  ['Title']
 		}
-		
+
+		self.render.setShaderAuto()		
+
 		self.states = {}
 		for state in self.defaultTransitions.keys():
 			self.states[state] = None
