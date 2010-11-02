@@ -135,16 +135,21 @@ class Map:
 				if self.tileIs(1, (x,y), 'obstacle'):
 					self.obstacles.append( self.makeObject('obstacle',x,y) )
 
-				if self.tileIs(1, (x,y), 'block' ):
+				elif self.tileIs(1, (x,y), 'block' ):
 					self.blocks.append(self.makeObject('block',x,y))
+
+				elif self.tileIs(1, (x,y), 'tree' ):
+					self.blocks.append(self.makeObject('tree',x,y))
 
 	def makeObject(self, obj_type, x, y):
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
-		models = { 'block' : 'block', 'obstacle' : 'rock' }
-		symbols = { 'block' : 'b', 'obstacle' : "#" }
+		# yeah I know
+		models = { 'block' : 'block', 'obstacle' : 'rock', 'tree' : 'tree' }
+		symbols = { 'block' : 'b', 'obstacle' : "#", 'tree' : 't' }
+		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
 		obj = {"pos" : (x,y), 
 				"model" : "model/" + models[obj_type] + ".json", 
-				"name" : obj_type,
+				"name" : types[obj_type],
 				"symbol" :  symbols[obj_type] }
 
 		return obj
