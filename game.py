@@ -104,22 +104,7 @@ class Game(State):
 		elif self.keys['start']:
 			return "Paused"
 
-	def move(self):
-		hprs = {"up": (0,0,180),
-				"left": (0,0,90),
-				"down": (0,0,0),
-				"right": (0,0,270)}
-		
-		disp = {"up": Point2(0, self.characters[self.player].speed),
-				"left": Point2(-self.characters[self.player].speed, 0),
-				"down": Point2(0, -self.characters[self.player].speed),
-				"right": Point2(self.characters[self.player].speed, 0)}
-				
-		dim = {"up": Point2(0, self.characters[self.player].modelLength/2),
-				"left": Point2(-self.characters[self.player].modelWidth/2, 0),
-				"down": Point2(0, -self.characters[self.player].modelLength/2),
-				"right": Point2(self.characters[self.player].modelWidth/2, 0)}
-		
+	def move(self):		
 		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
 		
 		self.characters[self.player].stop()
@@ -127,10 +112,12 @@ class Game(State):
 		for dir in directions:
 			try:
 				# to be re-refactored
-				x, y = self.currentMap().posToGrid(self.characters[self.player].getPos() + disp[dir] + dim[dir])
+				char = self.characters[self.player]
+				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
-					self.characters[self.player].displacement += disp[dir]
+					#char.displacement += char.getSpeed(dir)
+					char.move(dir)
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 					for item in self.currentMap().items:
 						if tuple(item["pos"]) == (x,y):
@@ -148,7 +135,7 @@ class Game(State):
 			except IndexError:
 				pass
 		
-		self.characters[self.player].doAction("walk")
+		#self.characters[self.player].doAction("walk")
 		x, y = self.currentMap().posToGrid(self.characters[self.player].getPos())
 		ex = self.stage.maps[self.room].getExit((x,y))
 		
@@ -177,14 +164,13 @@ class Game(State):
 					a.takeDamage(10)
 			#(...)
 			if b.getType() == 'block':
-				#TODO refactor this
 				x ,y = self.currentMap().posToGrid(b.getPos())
 				disp = a.oldDisplacement
-				self.currentMap().tiles[1][y][x] = ' '
-				b.setPos(b.getPos() + disp*10)
-				x ,y = self.currentMap().posToGrid(b.getPos())
-				self.currentMap().tiles[1][y][x] = 'b'
-				#empurrar
+				fx,fy = self.currentMap().posToGrid(b.getPos() + disp*10)
+				if self.stage.maps[self.room].tileIs(1, (fx,fy), 'free'):
+					b.setPos(b.getPos() + disp*10)
+					self.currentMap().tiles[1][y][x] = ' '
+					self.currentMap().tiles[1][fy][fx] = 'b'
 
 	def buryDeadPeople(self):
 		for enemy in self.currentMap().enemies:

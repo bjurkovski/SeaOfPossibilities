@@ -23,6 +23,19 @@ class Body:
 		self.modelWidth = size[0]
 		self.modelLength = size[2]
 		self.modelHeight = size[1]
+		
+	def rotateHpr(self, H, P, R):
+		h,p,r = self.model.getHpr()
+		self.model.setHpr(h+H, p+P, r+R)
+		self.calculateDimensions()
+	
+	def setHpr(self, hpr):
+		self.model.setHpr(hpr)
+		self.calculateDimensions()
+		
+	def turn(self, degrees):
+		self.model.setP(degrees)
+		self.calculateDimensions()
 
 	def setPos(self, pos):
 		self.model.setPos(pos[0], self.model.getY(), pos[1])
