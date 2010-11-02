@@ -19,6 +19,9 @@ class Game(State):
 		self.room = self.stage.start
 		self.isOver = False
 		
+		#let's try
+		self.characters[self.player].drawStatus()
+		
 		self.startMap()
 
 	def spawnObject(self, ob):
@@ -84,8 +87,7 @@ class Game(State):
 	def iterate(self):
 		State.iterate(self)
 		self.camera.look()
-		self.camera.camera.setPos(0, -3, -3) # GAMBIARRA! (camera's bug)
-		self.camera.camera.lookAt(0, 0, 0)   # GAMBIARRA! (camera's bug)
+
 		self.move()
 		self.buryDeadPeople()
 		

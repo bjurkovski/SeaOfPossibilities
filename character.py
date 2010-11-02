@@ -2,7 +2,8 @@ import json
 from model import *
 from direct.actor.Actor import Actor
 from panda3d.core import Point3
-from pandac.PandaModules import CollisionNode, CollisionSphere
+
+from direct.gui.OnscreenText import OnscreenText
 
 from body import *
 
@@ -33,19 +34,15 @@ class Character(Body):
 		self.stop()
 
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
-		
-		# Collision stuff
-		#self.collider = self.model.attachNewNode(CollisionNode('Character' + str(Character.id)))
-		#cPos = self.data["collision"]["pos"]
-		#self.collider.node().addSolid(CollisionSphere(cPos[0], cPos[1], cPos[2], self.data["collision"]["radius"]))
-		#self.collider.show()
 
 		self.isMoving = False
 		
 		# from model
 		self.readRenderData()
 		self.calculateDimensions()
-			
+		
+		self.name = self.data["name"]
+
 	# from model
 	def getNode(self):
 		return self.model
@@ -112,7 +109,13 @@ class Character(Body):
 			oldItem = self.slots[self.currentSlot]
 			self.slots[self.currentSlot] = itemName
 			return oldItem
-	
+
+	def drawStatus(self):
+		#should draw character status...
+		self.statusString = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.5,-0.95), scale = .07)
+		self.statusString.setText("%s 	HP: %s" % (self.name,self.hearts) )
+		pass
+
 	def takeDamage(self, damage):
 		self.hearts -= damage
 		if self.hearts < 0:

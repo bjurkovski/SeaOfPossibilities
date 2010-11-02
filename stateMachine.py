@@ -19,7 +19,9 @@ class StateMachine(FSM, ShowBase, Input):
 		ShowBase.__init__(self)
 		Input.__init__(self)
 		
-		self.cam = Cam(self.camera)
+		#TODO very important! I changed this from self.camera,
+		#we need to discover if this is relevant
+		self.cam = Cam(self.cam)
 
 		self.defaultTransitions = {
 			'Title':    ['NewGame', 'Options', 'Exit'],
