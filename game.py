@@ -81,7 +81,7 @@ class Game(State):
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
 		
-		self.camera.setPos(0, -3, -3)
+		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
 		
 	def iterate(self):
@@ -128,7 +128,7 @@ class Game(State):
 		
 		for dir in directions:
 			try:
-				# to be re-refactored
+				#TODO to be re-refactored
 				x, y = self.currentMap().posToGrid(self.characters[self.player].getPos() + disp[dir] + dim[dir])
 
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
