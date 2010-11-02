@@ -1,5 +1,6 @@
 import json
-from panda3d.core import NodePath, CardMaker, Texture, PointLight, Vec4, Point3
+from panda3d.core import NodePath, CardMaker, Texture, Vec4, Point3
+from panda3d.core import PointLight, DirectionalLight, AmbientLight, Spotlight
 from direct.actor.Actor import Actor
 from model import Model
 from character import Character
@@ -201,15 +202,33 @@ class Stage:
 		i = 0
 
 		for light in light_data:
-			
+			name = '%s light %d' % (light['type'], i )
+			pl = None
+
 			if light['type'] == 'point':
-				pl = PointLight('light %d' % (i) )
-				#wtf! I know...			
+
+				pl = PointLight( name )
 				pl.setPoint(Point3(*light['pos']))
 				pl.setColor(Vec4(*light['color']) )
+			
+			elif light['type'] == 'directional':
+				pl = DirectionalLight( name )
+				pl.setColor(Vec4(*light['color']) )
+				#pl.lookAt( Point3(*light['lookAt']) )
+				#pl.setHpr( Point3(*light['hpr']) )
 
+			elif light['type'] == 'ambient':
+				pl = AmbientLight( name )
+				pl.setColor(Vec4(*light['color']) )
+
+			#not implemented
+			#elif light['type'] == 'spotlight':
+			#	pl = Spotlight( name )
+
+			#if it's allright
+			if pl != None: 
 				self.lights.append( NodePath(pl) )
-			#elif light['type'] == 'directional':
+			#
 								
 			i += 1
 
