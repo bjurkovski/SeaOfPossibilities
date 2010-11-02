@@ -201,12 +201,16 @@ class Stage:
 		i = 0
 
 		for light in light_data:
-			pl = PointLight('light %d' % (i) )
-			#wtf! I know...			
-			pl.setPoint(Point3(*light['pos']))
-			pl.setColor(Vec4(*light['color']) )
+			
+			if light['type'] == 'point':
+				pl = PointLight('light %d' % (i) )
+				#wtf! I know...			
+				pl.setPoint(Point3(*light['pos']))
+				pl.setColor(Vec4(*light['color']) )
 
-			self.lights.append( NodePath(pl) )
+				self.lights.append( NodePath(pl) )
+			#elif light['type'] == 'directional':
+								
 			i += 1
 
 	def getLights(self):

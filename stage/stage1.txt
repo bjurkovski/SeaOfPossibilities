@@ -7,8 +7,7 @@
 		"2": { "map": "stage/map/1-2.txt", "doors": {"left": "1"}}
 	} ,
 
-	"lights" : [ {"type" : "point" , "color" : [1,1,1,0] , "pos" : [1,-1,0] } ,
-				 {"type" : "point" , "color" : [1,1,1,0] , "pos" : [-2,0,0] } 
+	"lights" : [ {"type" : "point" , "color" : [1,1,1,1] , "pos" : [0,-1,0] }  
 			   ]
 }
 

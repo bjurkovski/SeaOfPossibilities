@@ -6,7 +6,7 @@ import sys
 
 from direct.actor.Actor import Actor
 from panda3d.core import Point2, Point3
-
+from panda3d.core import LightRampAttrib
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
 	def __init__(self, stage, characters, player):
@@ -83,6 +83,11 @@ class Game(State):
 
 		for l in self.stage.getLights():
 			render.setLight(l)		
+
+		#COWABUNGA comment this to stop the madness
+		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.2, 1))
+		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(t0, l0, t1, l1))
+
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
