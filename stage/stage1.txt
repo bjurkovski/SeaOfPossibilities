@@ -1,9 +1,14 @@
 {
 	"stage-map": "stage1-map.txt",
 	"start": "1",
+
 	"rooms": {
 		"1": { "map": "stage/map/1-1.txt", "doors": {"right": "2"}},
 		"2": { "map": "stage/map/1-2.txt", "doors": {"left": "1"}}
-	}
+	} ,
+
+	"lights" : [ {"type" : "point" , "color" : [1,1,1,0] , "pos" : [1,-1,0] } ,
+				 {"type" : "point" , "color" : [1,1,1,0] , "pos" : [-2,0,0] } 
+			   ]
 }
 

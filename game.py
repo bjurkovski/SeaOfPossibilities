@@ -80,7 +80,10 @@ class Game(State):
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
-		
+
+		for l in self.stage.getLights():
+			render.setLight(l)		
+
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
 		
