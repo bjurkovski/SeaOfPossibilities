@@ -1,13 +1,13 @@
 import json
-from panda3d.core import NodePath, CardMaker, Texture
+from panda3d.core import NodePath, CardMaker, Texture, PointLight, Vec4, Point3
 from direct.actor.Actor import Actor
 from model import Model
 from character import Character
 
 tex = Texture('tex')
 #tex.load('tex/grass.png')
-#tex.load('tex/grass_painterly.jpg')
-tex.load('tex/grasspaint.png')
+tex.load('tex/grass_painterly.jpg')
+#tex.load('tex/grasspaint.png')
 
 class Map:
 	def __init__(self, filename=None, size=()):
@@ -23,8 +23,9 @@ class Map:
 				file = open(filename)
 				data = json.loads(file.read())
 				file.close()
+
 				self.tiles = data["map"]
-				
+
 				# the tiles are read as string, so we need to convert them
 				# to a list to manipulate them
 				for layer in range(len(self.tiles)):
@@ -135,16 +136,21 @@ class Map:
 				if self.tileIs(1, (x,y), 'obstacle'):
 					self.obstacles.append( self.makeObject('obstacle',x,y) )
 
-				if self.tileIs(1, (x,y), 'block' ):
+				elif self.tileIs(1, (x,y), 'block' ):
 					self.blocks.append(self.makeObject('block',x,y))
+
+				elif self.tileIs(1, (x,y), 'tree' ):
+					self.blocks.append(self.makeObject('tree',x,y))
 
 	def makeObject(self, obj_type, x, y):
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
-		models = { 'block' : 'block', 'obstacle' : 'rock' }
-		symbols = { 'block' : 'b', 'obstacle' : "#" }
+		# yeah I know
+		models = { 'block' : 'block', 'obstacle' : 'rock', 'tree' : 'tree' }
+		symbols = { 'block' : 'b', 'obstacle' : "#", 'tree' : 't' }
+		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
 		obj = {"pos" : (x,y), 
 				"model" : "model/" + models[obj_type] + ".json", 
-				"name" : obj_type,
+				"name" : types[obj_type],
 				"symbol" :  symbols[obj_type] }
 
 		return obj
@@ -176,6 +182,9 @@ class Stage:
 	def __init__(self, stageFile):
 		file = open(stageFile)
 		data = json.loads(file.read())
+
+		self.readLights(data['lights'])
+
 		self.start = data["start"]
 		self.maps = {}
 		self.doors = {}
@@ -186,6 +195,26 @@ class Stage:
 				self.doors[room][door] = data["rooms"][room]["doors"][door]
 			
 		file.close()
+
+	def readLights(self,light_data):
+		self.lights = []
+		i = 0
+
+		for light in light_data:
+			
+			if light['type'] == 'point':
+				pl = PointLight('light %d' % (i) )
+				#wtf! I know...			
+				pl.setPoint(Point3(*light['pos']))
+				pl.setColor(Vec4(*light['color']) )
+
+				self.lights.append( NodePath(pl) )
+			#elif light['type'] == 'directional':
+								
+			i += 1
+
+	def getLights(self):
+		return self.lights
 
 	def __str__(self):
 		# to do
