@@ -22,6 +22,7 @@ class TitleScreen(State):
 		
 	def iterate(self):
 		State.iterate(self)
+		self.camera.look()
 		return self.menu.iterate()
 		
 	def selectOption(self, opt):

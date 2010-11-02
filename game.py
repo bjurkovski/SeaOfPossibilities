@@ -92,8 +92,7 @@ class Game(State):
 		self.buryDeadPeople()
 		
 		# print "dm:",self.currentMap().width, self.currentMap().height
-		print self.characters[self.player].getPos()
-		# ptg = self.currentMap().posToGrid(self.characters[self.player].getPos())
+		print self.characters[self.player].getPos(), self.currentMap().posToGrid(self.characters[self.player].getPos()), self.characters[self.player].direction
 		# print ptg
 		# gtp = self.currentMap().gridToPos(ptg)
 		# print gtp
@@ -108,41 +107,45 @@ class Game(State):
 
 	def move(self):		
 		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
+		char = self.characters[self.player]
 		
-		self.characters[self.player].stop()
+		if len(directions) == 0:
+			self.characters[self.player].stop()
+			x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
+			if self.keys["action"] and self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
+				for block in self.currentMap().blocks:
+					if tuple(block["pos"]) == (x,y):
+						bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(char.direction))
+						if self.stage.maps[self.room].tileIs(1, (bx,by), 'free'):
+							block["instance"].move(char.direction)
+							block["pos"] = (bx, by)
 		
 		for dir in directions:
 			try:
 				# to be re-refactored
-				char = self.characters[self.player]
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
-					#char.displacement += char.getSpeed(dir)
 					char.move(dir)
+					ex = self.stage.maps[self.room].getExit((x,y))		
+					if ex and (ex in self.stage.doors[self.room].keys()):
+						self.changeMap(ex)
+					
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 					for item in self.currentMap().items:
 						if tuple(item["pos"]) == (x,y):
 							self.collision(self.characters[self.player], item["instance"])
-				elif self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
-					for block in self.currentMap().blocks:
-						if tuple(block["pos"]) == (x,y):
-							self.collision(self.characters[self.player], block["instance"])
-							block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
-
+				#elif self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
+				#	for block in self.currentMap().blocks:
+				#		if tuple(block["pos"]) == (x,y):
+				#			self.collision(self.characters[self.player], block["instance"])
+				#			block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
 					for enemy in self.currentMap().enemies:
 						if tuple(enemy["pos"]) == (x,y):
 							self.collision(self.characters[self.player], enemy["instance"])
 			except IndexError:
 				pass
-		
-		#self.characters[self.player].doAction("walk")
-		x, y = self.currentMap().posToGrid(self.characters[self.player].getPos())
-		ex = self.stage.maps[self.room].getExit((x,y))
-		
-		if ex and (ex in self.stage.doors[self.room].keys()):
-			self.changeMap(ex)
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
@@ -155,7 +158,7 @@ class Game(State):
 					self.currentMap().tiles[1][y][x] = ' '
 					NodePath(b.getNode()).removeNode()
 
-		if a.getType() == 'Charlie':
+		if a.getType() == 'Character':
 			print("Collided with", b.getType())
 			#if b.getType() == 'rock':
 				#a.stop()
