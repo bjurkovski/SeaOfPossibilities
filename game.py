@@ -56,7 +56,6 @@ class Game(State):
 			for block in self.currentMap().blocks:
 				self.spawnObject(block)
 
-			# quem adicionou isso, explique-se
 			self.currentMap().started = True
 
 	def changeMap(self,direction):
@@ -85,8 +84,8 @@ class Game(State):
 			render.setLight(l)		
 
 		#COWABUNGA comment this to stop the madness
-		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.2, 1))
-		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(t0, l0, t1, l1))
+		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
