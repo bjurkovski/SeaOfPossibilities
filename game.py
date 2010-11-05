@@ -1,6 +1,7 @@
 from state import *
 from character import *
 from stage import *
+from item import *
 
 import sys
 
@@ -14,6 +15,7 @@ class Game(State):
 		State.__init__(self)
 
 		# how to know the players that will be in game? a ChoosePlayer screen before the constructor?
+		self.itens = Item("cfg/itens.json")
 		self.characters = characters
 		self.player = player
 		self.stage = stage
@@ -26,10 +28,13 @@ class Game(State):
 		self.startMap()
 
 	def spawnObject(self, ob):
-		if ob["name"] == "enemy":
-			ob["instance"] = Character(ob["file"])
-		else:
-			ob["instance"] = Model(ob["model"])
+
+		if ob["type"] == "enemy":
+			ob["instance"] = Character("char/" + ob["name"])
+
+		elif ob["type"] == "item":
+			print(self.itens.getModel(ob["name"]))
+			ob["instance"] = Model( self.itens.getModel(ob["name"]) )
 
 		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = self.currentMap().gridToPos(ob["pos"])
@@ -78,6 +83,7 @@ class Game(State):
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
+		
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
 			
@@ -99,7 +105,7 @@ class Game(State):
 		self.buryDeadPeople()
 		
 		# print "dm:",self.currentMap().width, self.currentMap().height
-		print self.characters[self.player].getPos(), self.currentMap().posToGrid(self.characters[self.player].getPos()), self.characters[self.player].direction
+		#print self.characters[self.player].getPos(), self.currentMap().posToGrid(self.characters[self.player].getPos()), self.characters[self.player].direction
 		# print ptg
 		# gtp = self.currentMap().gridToPos(ptg)
 		# print gtp

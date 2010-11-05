@@ -10,7 +10,7 @@
 
 	"lights" : [ {"type" : "point" , "color" : [1,1,1,1] , "pos" : [0,-1,0] },  
 			     {"type" : "notactivated", "color" : [1,1,1,1] , "hpr" : [0,-60,0] },
-				 {"type" : "ambient" , "color" : [0.1,0.1,0.1,1] }
+				 {"type" : "ambient" , "color" : [0.1,0.1,0.5,1] }
 				]
 }
 

@@ -150,9 +150,11 @@ class Map:
 		symbols = { 'block' : 'b', 'obstacle' : "#", 'tree' : 't' }
 		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
 		obj = {"pos" : (x,y), 
-				"model" : "model/" + models[obj_type] + ".json", 
+				"instance" : Model("model/" + models[obj_type] + ".json") , 
 				"name" : types[obj_type],
-				"symbol" :  symbols[obj_type] }
+				"symbol" :  symbols[obj_type] ,
+				"type" : obj_type 
+			  }
 
 		return obj
 		
