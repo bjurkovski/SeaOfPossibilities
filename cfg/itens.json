@@ -1,0 +1,13 @@
+{
+
+	"mine" : {
+		"model" : "model/mine.json",
+		"something" : ""
+	} ,
+
+	"sword" : {
+		"model" : "model/sword.json"
+	
+	}
+
+}
