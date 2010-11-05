@@ -30,10 +30,10 @@
 
 "items": [ 
 
-	{"name": "mine", "type" : "item", "symbol": "i" , "pos": [2,2] } ,
-	{"name" : "sword", "type" : "item", "symbol": "i", "pos" : [2,4] }
+	{"name": "mine" , "pos": [2,2] } ,
+	{"name" : "sword", "pos" : [2,4] }
 ],
 
-"enemies": [ {"name" : "EvilJackson" , "type" : "enemy" , "pos": [5,5], "symbol" : "e"} ]
-
+"enemies": [ 
+	{"name" : "EvilJackson" , "type" : "enemy" , "pos": [5,5], "symbol" : "e"} ]
 }

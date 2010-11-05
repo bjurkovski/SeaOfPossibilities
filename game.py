@@ -27,20 +27,19 @@ class Game(State):
 		
 		self.startMap()
 
-	def spawnObject(self, ob):
+	def spawnObject(self, ob, ob_type):
 
-		if ob["type"] == "enemy":
+		if ob_type == "enemy":
 			ob["instance"] = Character("char/" + ob["name"])
 
-		elif ob["type"] == "item":
-			print(self.itens.getModel(ob["name"]))
+		elif ob_type == "item":
 			ob["instance"] = Model( self.itens.getModel(ob["name"]) )
 
 		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = self.currentMap().gridToPos(ob["pos"])
 		ob["instance"].setPos(pos)
-		ob["instance"].type =  ob["name"]
-		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = ob["symbol"] #to be refactored
+		ob["instance"].type =  ob_type
+		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = ob_type[0] #TODO fix this... if you try hard you can see why it works , to be refactored
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
@@ -51,16 +50,16 @@ class Game(State):
 	def startMap(self):
 		if not self.currentMap().started:
 			for obstacle in self.currentMap().obstacles:
-				self.spawnObject(obstacle)
+				self.spawnObject(obstacle,'obstacle')
 
 			for enemy in self.currentMap().enemies:
-				self.spawnObject(enemy)
+				self.spawnObject(enemy,'enemy')
 			
 			for item in self.currentMap().items:
-				self.spawnObject(item)
+				self.spawnObject(item,'item')
 
 			for block in self.currentMap().blocks:
-				self.spawnObject(block)
+				self.spawnObject(block,'block')
 
 			self.currentMap().started = True
 
@@ -104,15 +103,6 @@ class Game(State):
 		self.move()
 		self.buryDeadPeople()
 		
-		# print "dm:",self.currentMap().width, self.currentMap().height
-		#print self.characters[self.player].getPos(), self.currentMap().posToGrid(self.characters[self.player].getPos()), self.characters[self.player].direction
-		# print ptg
-		# gtp = self.currentMap().gridToPos(ptg)
-		# print gtp
-		# print self.currentMap().posToGrid(gtp)
-		# print "0",self.currentMap().gridToPos((0,0))
-		# print "sw",self.currentMap().squareWidth
-		#print "d:",self.characters[self.player].modelWidth,self.characters[self.player].modelLength,self.characters[self.player].modelHeight
 		if self.isOver:
 			return "GameOver"
 		elif self.keys['start']:
@@ -193,14 +183,11 @@ class Game(State):
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())
-			#if b.getType() == 'rock':
-				#a.stop()
 			if b.getType() == 'enemy':
 				if len(self.currentMap().items) == 0:
 					b.takeDamage(10)
 				else:
 					a.takeDamage(10)
-			#(...)
 			if b.getType() == 'block':
 				x ,y = self.currentMap().posToGrid(b.getPos())
 				disp = a.oldDisplacement
