@@ -2,12 +2,15 @@
 	"stage-map": "stage1-map.txt",
 	"start": "1",
 
-	"rooms": {
-		"1": { "map": "stage/map/1-1.txt", "doors": {"right": "2"}},
-		"2": { "map": "stage/map/1-2.txt", "doors": {"left": "1"}}
+	"rooms": 
+    {
+		"1": { "map": "stage/map/1-1.txt", "doors": {"right": "2"} },
+		"2": { "map": "stage/map/1-2.txt", "doors": {"left" : "1"} }
 	} ,
 
-	"lights" : [ {"type" : "point" , "color" : [1,1,1,1] , "pos" : [0,-1,0] }  
-			   ]
+	"lights" : [ {"type" : "point" , "color" : [1,1,1,1] , "pos" : [0,-1,0] },  
+			     {"type" : "notactivated", "color" : [1,1,1,1] , "hpr" : [0,-60,0] },
+				 {"type" : "ambient" , "color" : [0.1,0.1,0.5,1] }
+				]
 }
 
