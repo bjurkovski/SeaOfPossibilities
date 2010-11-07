@@ -12,7 +12,7 @@ class Character(Body):
 		
 		self.level = 1
 		self.hearts = 6
-		self.maxSlots = 1
+		self.maxSlots = 2
 		self.slots = []
 		self.currentSlot = 0
 
