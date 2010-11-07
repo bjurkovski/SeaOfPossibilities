@@ -12,13 +12,13 @@ class Character(Body):
 		
 		self.level = 1
 		self.hearts = 6
-		self.maxSlots = 2
 		self.slots = []
 		self.currentSlot = 0
 
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
 		self.name = self.data["name"]
-
+		self.maxSlots = self.data["slots"]
+		
 		self.stop()
 		self.isMoving = False
 		
