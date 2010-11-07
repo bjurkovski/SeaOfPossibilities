@@ -35,5 +35,5 @@
 ],
 
 "enemies": [ 
-	{"name" : "EvilJackson" , "type" : "enemy" , "pos": [5,5], "symbol" : "e"} ]
+	{"name" : "EvilJackson" , "pos": [5,5] } ]
 }

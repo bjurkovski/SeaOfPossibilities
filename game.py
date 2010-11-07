@@ -172,7 +172,7 @@ class Game(State):
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
-		if b.getType() == 'mine':
+		if b.getType() == 'item':
 		
 			for i in range(len(self.currentMap().items)):
 				if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):

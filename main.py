@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from game import *
 from stateMachine import *
 
