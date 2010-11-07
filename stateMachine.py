@@ -19,9 +19,6 @@ class StateMachine(FSM, ShowBase, Input):
 		ShowBase.__init__(self)
 		Input.__init__(self)
 		
-		#TODO very important! I changed this from self.camera,
-		#we need to discover if this is relevant
-		# IT IS OMG BLASTOISE!!!
 		self.cam = Cam(self.cam)
 
 		self.defaultTransitions = {

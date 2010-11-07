@@ -127,7 +127,7 @@ class Map:
 		self.nodePath = NodePath("Map")
 		#the ground
 		cm = CardMaker('CardMaker')
-		cm.setFrame(-1,1,-1,1)
+		cm.setFrame(-2,2,-2,2)
 		card = self.nodePath.attachNewNode(cm.generate())
 		card.setTexture(tex)
 
