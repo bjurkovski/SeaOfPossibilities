@@ -15,25 +15,26 @@
 "................."],
 
 [
-"#################",
-"#               #",
-"#           t   #",
-"#               #",
-"#               #",
-"#               #",
-"#                ",
-"#                ",
-"#  t            #",
-"#               #",
-"#################"]
+"ooooooooooooooooo",
+"o               o",
+"o           t   o",
+"o               o",
+"o               o",
+"o               o",
+"o                ",
+"o                ",
+"o  t            o",
+"o               o",
+"ooooooooooooooooo"]
 ],
 
-"items": [ 
+"items": [
 
 	{"name": "mine" , "pos": [2,2] } ,
-	{"name" : "sword", "pos" : [2,4] }
+	{"name" : "sword", "pos" : [5,2] }
 ],
 
-"enemies": [ 
+"enemies": [
 	{"name" : "EvilJackson" , "pos": [5,5] } ]
 }
+

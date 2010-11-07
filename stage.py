@@ -7,8 +7,8 @@ from character import Character
 
 tex = Texture('tex')
 #tex.load('tex/grass.png')
-tex.load('tex/grass_painterly.jpg')
-#tex.load('tex/grasspaint.png')
+#tex.load('tex/grass_painterly.jpg')
+tex.load('tex/grasspaint.png')
 
 class Map:
 	def __init__(self, filename=None, size=()):
@@ -147,7 +147,7 @@ class Map:
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
 		# yeah I know
 		models = { 'block' : 'block', 'obstacle' : 'rock', 'tree' : 'tree' }
-		symbols = { 'block' : 'b', 'obstacle' : "#", 'tree' : 't' }
+		symbols = { 'block' : 'b', 'obstacle' : "o", 'tree' : 't' }
 		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
 		obj = {"pos" : (x,y), 
 				"instance" : Model("model/" + models[obj_type] + ".json") , 

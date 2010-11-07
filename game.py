@@ -147,27 +147,26 @@ class Game(State):
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
+					print("FUCKING WALKING --------------")
 					char.move(dir)
 					ex = self.stage.maps[self.room].getExit((x,y))		
 					if ex and (ex in self.stage.doors[self.room].keys()):
 						self.changeMap(ex)
 				else:
+					print("--------------- NOT WALKING")
 					char.setDirection(dir)
 					
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 					for item in self.currentMap().items:
 						if tuple(item["pos"]) == (x,y):
 							self.collision(self.characters[self.player], item["instance"])
-				#elif self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
-				#	for block in self.currentMap().blocks:
-				#		if tuple(block["pos"]) == (x,y):
-				#			self.collision(self.characters[self.player], block["instance"])
-				#			block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
+				
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
 					for enemy in self.currentMap().enemies:
 						if tuple(enemy["pos"]) == (x,y):
 							self.collision(self.characters[self.player], enemy["instance"])
-			except IndexError:
+			except Exception as e:
+				print("Fuck, I knew it", e)
 				pass
 
 	def collision(self, a, b):
@@ -188,14 +187,16 @@ class Game(State):
 					b.takeDamage(10)
 				else:
 					a.takeDamage(10)
-			if b.getType() == 'block':
-				x ,y = self.currentMap().posToGrid(b.getPos())
-				disp = a.oldDisplacement
-				fx,fy = self.currentMap().posToGrid(b.getPos() + disp*10)
-				if self.stage.maps[self.room].tileIs(1, (fx,fy), 'free'):
-					b.setPos(b.getPos() + disp*10)
-					self.currentMap().tiles[1][y][x] = ' '
-					self.currentMap().tiles[1][fy][fx] = 'b'
+					
+			#strange, this makes no effect anymore
+#			if b.getType() == 'block':
+#				x ,y = self.currentMap().posToGrid(b.getPos())
+#				disp = a.oldDisplacement
+#				fx,fy = self.currentMap().posToGrid(b.getPos() + disp*10)
+#				if self.stage.maps[self.room].tileIs(1, (fx,fy), 'free'):
+#					b.setPos(b.getPos() + disp*10)
+#					self.currentMap().tiles[1][y][x] = ' '
+#					self.currentMap().tiles[1][fy][fx] = 'b'
 
 	def buryDeadPeople(self):
 		for enemy in self.currentMap().enemies:
