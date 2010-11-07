@@ -25,6 +25,10 @@ class Character(Body):
 		self.readRenderData()
 		self.calculateDimensions()
 		
+		# initialize character status string
+		self.statusString = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.7,-0.85), scale = .08)
+
+		
 	def stop(self):
 		Body.stop(self)
 		self.model.stop()
@@ -59,6 +63,7 @@ class Character(Body):
 			
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:
+			print("Picking this %s" % (itemName) )
 			self.slots.append(itemName)
 		else:
 			oldItem = self.slots[self.currentSlot]
@@ -67,8 +72,8 @@ class Character(Body):
 
 	def drawStatus(self):
 		#should draw character status...
-		self.statusString = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.5,-0.95), scale = .07)
-		self.statusString.setText("%s 	HP: %s" % (self.name,self.hearts) )
+
+		self.statusString.setText("%s 	HP: %s\nItens: %s" % (self.name,self.hearts,self.slots) )
 		pass
 
 	def takeDamage(self, damage):

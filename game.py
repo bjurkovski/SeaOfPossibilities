@@ -22,8 +22,6 @@ class Game(State):
 		self.room = self.stage.start
 		self.isOver = False
 		
-		#let's try
-		self.characters[self.player].drawStatus()
 		
 		self.startMap()
 
@@ -103,6 +101,9 @@ class Game(State):
 		self.move()
 		self.buryDeadPeople()
 		
+		#let's try
+		self.characters[self.player].drawStatus()
+		
 		if self.isOver:
 			return "GameOver"
 		elif self.keys['start']:
@@ -147,13 +148,11 @@ class Game(State):
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
-					print("FUCKING WALKING --------------")
 					char.move(dir)
 					ex = self.stage.maps[self.room].getExit((x,y))		
 					if ex and (ex in self.stage.doors[self.room].keys()):
 						self.changeMap(ex)
 				else:
-					print("--------------- NOT WALKING")
 					char.setDirection(dir)
 					
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
@@ -166,7 +165,7 @@ class Game(State):
 						if tuple(enemy["pos"]) == (x,y):
 							self.collision(self.characters[self.player], enemy["instance"])
 			except Exception as e:
-				print("Fuck, I knew it", e)
+				print(e)
 				pass
 
 	def collision(self, a, b):
@@ -179,24 +178,15 @@ class Game(State):
 					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
 					self.currentMap().tiles[1][y][x] = ' '
 					NodePath(b.getNode()).removeNode()
+					a.pickItem(b)
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())
 			if b.getType() == 'enemy':
 				if len(self.currentMap().items) == 0:
-					b.takeDamage(10)
+					b.takeDamage(1)
 				else:
-					a.takeDamage(10)
-					
-			#strange, this makes no effect anymore
-#			if b.getType() == 'block':
-#				x ,y = self.currentMap().posToGrid(b.getPos())
-#				disp = a.oldDisplacement
-#				fx,fy = self.currentMap().posToGrid(b.getPos() + disp*10)
-#				if self.stage.maps[self.room].tileIs(1, (fx,fy), 'free'):
-#					b.setPos(b.getPos() + disp*10)
-#					self.currentMap().tiles[1][y][x] = ' '
-#					self.currentMap().tiles[1][fy][fx] = 'b'
+					a.takeDamage(1)
 
 	def buryDeadPeople(self):
 		for enemy in self.currentMap().enemies:
