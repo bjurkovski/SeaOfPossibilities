@@ -178,7 +178,7 @@ class Game(State):
 					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
 					self.currentMap().tiles[1][y][x] = ' '
 					NodePath(b.getNode()).removeNode()
-					a.pickItem(b.__class__.__name__)
+					a.pickItem(b)
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())

@@ -12,7 +12,11 @@ class Model(Body):
 		
 		self.readRenderData()
 		self.calculateDimensions()
-		
+	
+	def __repr__(self):
+		return "M"
+	
 	def move(self, direction):
 		Body.move(self, direction)
 		self.direction = direction
+
