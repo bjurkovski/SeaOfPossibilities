@@ -2,12 +2,13 @@
 
 	"mine" : {
 		"model" : "model/mine.json",
-		"something" : ""
+		"symbol" : "M"
 	} ,
 
 	"sword" : {
-		"model" : "model/sword.json"
-	
+		"model" : "model/sword.json",
+		"symbol" : "Swd"
 	}
 
 }
+

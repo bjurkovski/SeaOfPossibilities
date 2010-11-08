@@ -15,7 +15,6 @@ class Game(State):
 		State.__init__(self)
 
 		# how to know the players that will be in game? a ChoosePlayer screen before the constructor?
-		self.itens = Item("cfg/itens.json")
 		self.characters = characters
 		self.player = player
 		self.stage = stage
@@ -31,7 +30,9 @@ class Game(State):
 			ob["instance"] = Character("char/" + ob["name"])
 
 		elif ob_type == "item":
-			ob["instance"] = Model( self.itens.getModel(ob["name"]) )
+			pass
+			#instance is ready when we have an item
+			#ob["instance"] = Model( self.itens.getModel(ob["name"]) )
 
 		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = self.currentMap().gridToPos(ob["pos"])

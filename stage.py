@@ -1,9 +1,13 @@
+
 import json
+
+from item import Item
+from model import Model
+from character import Character
+
 from panda3d.core import NodePath, CardMaker, Texture, Vec4, Point3
 from panda3d.core import PointLight, DirectionalLight, AmbientLight, Spotlight
 from direct.actor.Actor import Actor
-from model import Model
-from character import Character
 
 tex = Texture('tex')
 #tex.load('tex/grass.png')
@@ -15,7 +19,11 @@ class Map:
 		self.started = False
 		self.tiles = []
 		self.cards = []
+		self.items = []
+		
 		self.nodePath = None
+		
+		self.itens_ref = Item('cfg/itens.json')
 
 		self.readConfig()
 
@@ -27,17 +35,21 @@ class Map:
 
 				self.tiles = data["map"]
 
-				# the tiles are read as string, so we need to convert them
-				# to a list to manipulate them
 				for layer in range(len(self.tiles)):
 					for y in range(len(self.tiles[layer])):
 						self.tiles[layer][y] = list(self.tiles[layer][y])
 
-				try: self.items = data["items"]
+				#reading map metadata
+				try: 
+					for i in data["items"]:
+						instance = self.itens_ref.getInstance( i['name'] )
+						instance['pos'] = i['pos']
+						self.items.append(instance) 
 				except KeyError: self.items = []
 					
 				try: self.enemies = data["enemies"]
 				except KeyError: self.enemies = []
+
 			except IOError:
 				print "Error creating map: %s not found." % filename
 				exit()
@@ -60,8 +72,6 @@ class Map:
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
 		self.constructModel()
-
-		print(self)
 
 	def readConfig(self):
 
@@ -182,6 +192,7 @@ class Map:
 		return self.nodePath.node()
 
 class Stage:
+
 	def __init__(self, stageFile):
 		file = open(stageFile)
 		data = json.loads(file.read())
@@ -208,7 +219,6 @@ class Stage:
 			pl = None
 
 			if light['type'] == 'point':
-
 				pl = PointLight( name )
 				pl.setPoint(Point3(*light['pos']))
 				pl.setColor(Vec4(*light['color']) )
@@ -216,8 +226,6 @@ class Stage:
 			elif light['type'] == 'directional':
 				pl = DirectionalLight( name )
 				pl.setColor(Vec4(*light['color']) )
-				#pl.lookAt( Point3(*light['lookAt']) )
-				#pl.setHpr( Point3(*light['hpr']) )
 
 			elif light['type'] == 'ambient':
 				pl = AmbientLight( name )
@@ -230,8 +238,7 @@ class Stage:
 			#if it's allright
 			if pl != None: 
 				self.lights.append( NodePath(pl) )
-			#
-								
+
 			i += 1
 
 	def getLights(self):

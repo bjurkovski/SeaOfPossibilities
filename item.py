@@ -1,5 +1,6 @@
 import json
-
+from model import Model
+ 
 class Item():
 
 	def __init__(self,filename):
@@ -9,8 +10,14 @@ class Item():
 		file.close()		
 		
 
-	def getModel(self,name):
-		return self.data[name]['model']
-		
+	def getInstance(self, name):
+		return {
+			'name' : name,
+			'instance' : Model(self.data[name]['model']),
+			'symbol' : self.data[name]['symbol'],
+			'type' : 'item'
+		}
+
+
 
 
