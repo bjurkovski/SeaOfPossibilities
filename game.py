@@ -30,6 +30,7 @@ class Game(State):
 
 		if ob_type == "enemy":
 			ob["instance"] = Character("char/" + ob["name"])
+			self.players.append( ComputerPlayer(ob["instance"], ob["instance"].id) )
 
 		elif ob_type == "item":
 			pass
@@ -83,6 +84,8 @@ class Game(State):
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
+
+		print('Starting new game')
 
 		char = self.characters[self.player]
 		self.players.append( HumanPlayer( char , char.id ) )
