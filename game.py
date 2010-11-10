@@ -2,6 +2,7 @@ from state import *
 from character import *
 from stage import *
 from item import *
+from player import *
 
 import sys
 
@@ -21,6 +22,7 @@ class Game(State):
 		self.room = self.stage.start
 		self.isOver = False
 		
+		self.players = []
 		
 		self.startMap()
 
@@ -81,6 +83,9 @@ class Game(State):
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
+
+		char = self.characters[self.player]
+		self.players.append( HumanPlayer( char , char.id ) )
 		
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
