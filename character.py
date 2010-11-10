@@ -22,6 +22,9 @@ class Character(Body):
 		self.stop()
 		self.isMoving = False
 		
+		self.tryToMove = []
+		self.tryToDo = None
+		
 		self.readRenderData()
 		self.calculateDimensions()
 		

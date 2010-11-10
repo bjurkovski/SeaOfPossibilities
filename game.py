@@ -30,7 +30,7 @@ class Game(State):
 
 		if ob_type == "enemy":
 			ob["instance"] = Character("char/" + ob["name"])
-			self.players.append( ComputerPlayer(ob["instance"], ob["instance"].id) )
+			self.players.append( ComputerPlayer(ob["instance"]) )
 
 		elif ob_type == "item":
 			pass
@@ -88,7 +88,7 @@ class Game(State):
 		print('Starting new game')
 
 		char = self.characters[self.player]
-		self.players.append( HumanPlayer( char , char.id ) )
+		self.players.append( HumanPlayer( char , keys ) )
 		
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
@@ -107,7 +107,9 @@ class Game(State):
 		State.iterate(self)
 		self.camera.look()
 
-		self.move()
+		self.sendCommands()
+		self.processActions()
+		#self.move()
 		self.buryDeadPeople()
 		
 		#let's try
@@ -212,6 +214,81 @@ class Game(State):
 				self.isOver = True
 
 
+	def sendCommands(self):
+		try:
+			for player in self.players :
+				player.sendCommand()
+		except Exception as e:
+			print(e)
+			pass
+	
+	def processActions(self):
+		try:
+			for char in self.characters:
+				char = self.characters[char]
+				#1st Step: Process movements
+				for dir in char.tryToMove :
+					try:
+						print(dir)
+						#TODO to be re-refactored
+						x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
+						if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
+							char.move(dir)
+							ex = self.stage.maps[self.room].getExit((x,y))		
+							if ex and (ex in self.stage.doors[self.room].keys()):
+								self.changeMap(ex)
+						else:
+							char.setDirection(dir)
+							
+						if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
+							for item in self.currentMap().items:
+								if tuple(item["pos"]) == (x,y):
+									self.collision(self.characters[self.player], item["instance"])
+						
+						elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
+							for enemy in self.currentMap().enemies:
+								if tuple(enemy["pos"]) == (x,y):
+									self.collision(self.characters[self.player], enemy["instance"])
+					except Exception as e:
+						print(e)
+						pass
+				#2nd Step: Process actions
+				#TODO
+			
+			for char in self.currentMap().enemies:
+				char = char["instance"]
+				#1st Step: Process movements
+				for dir in char.tryToMove :
+					try:
+						print(dir)
+						#TODO to be re-refactored
+						x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
+
+						if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
+							char.move(dir)
+							ex = self.stage.maps[self.room].getExit((x,y))		
+							if ex and (ex in self.stage.doors[self.room].keys()):
+								self.changeMap(ex)
+						else:
+							char.setDirection(dir)
+							
+						if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
+							for item in self.currentMap().items:
+								if tuple(item["pos"]) == (x,y):
+									self.collision(self.characters[self.player], item["instance"])
+						
+						elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
+							for enemy in self.currentMap().enemies:
+								if tuple(enemy["pos"]) == (x,y):
+									self.collision(self.characters[self.player], enemy["instance"])
+					except Exception as e:
+						print(e)
+						pass
+				#2nd Step: Process actions
+				#TODO
+		except Exception as e:
+			print(e)
+			pass
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 
