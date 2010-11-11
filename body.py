@@ -22,7 +22,10 @@ class Body:
 					  "right": Point2(speed, 0)}
 		self.isMoving = False
 		self.displacement = Point2(0,0)
-		
+
+		#I know this is the biggest stupidity, sorry...
+		self.extra	= None	
+
 		Body.id+= 1
 		
 	def getNode(self):

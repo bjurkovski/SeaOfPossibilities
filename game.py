@@ -33,9 +33,9 @@ class Game(State):
 			self.players.append( ComputerPlayer(ob["instance"]) )
 
 		elif ob_type == "item":
-			pass
 			#instance is ready when we have an item
-			#ob["instance"] = Model( self.itens.getModel(ob["name"]) )
+			# This is not what it looks like, I can explain!			
+			ob["instance"].extra = ob
 
 		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		pos = self.currentMap().gridToPos(ob["pos"])
@@ -107,9 +107,9 @@ class Game(State):
 		State.iterate(self)
 		self.camera.look()
 
-		self.sendCommands()
-		self.processActions()
-		#self.move()
+		#self.sendCommands()
+		#self.processActions()
+		self.move()
 		self.buryDeadPeople()
 		
 		#let's try
@@ -123,7 +123,16 @@ class Game(State):
 	def move(self):		
 		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
 		char = self.characters[self.player]
-		
+
+		if self.keys['attack']:
+			self.keys['attack'] = False		
+			print('Using %s' % (char.currentItem()) )
+
+		if self.keys['cancel']:
+			self.keys['cancel'] = False	
+			print('Changing slot')
+			char.changeSlot()
+
 		# I know the block movement code sucks by now... i was just testing it and will refactor
 		
 		# BLOCK MOVEMENT ACTION
@@ -169,7 +178,7 @@ class Game(State):
 				if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 					for item in self.currentMap().items:
 						if tuple(item["pos"]) == (x,y):
-							self.collision(self.characters[self.player], item["instance"])
+							self.collision(self.characters[self.player], item['instance'])
 				
 				elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
 					for enemy in self.currentMap().enemies:
@@ -181,6 +190,7 @@ class Game(State):
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
+		
 		if b.getType() == 'item':
 		
 			for i in range(len(self.currentMap().items)):
@@ -189,7 +199,9 @@ class Game(State):
 					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
 					self.currentMap().tiles[1][y][x] = ' '
 					NodePath(b.getNode()).removeNode()
-					a.pickItem(b)
+
+					# again this is idiotic, but forgive me
+					a.pickItem(b.extra)
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())

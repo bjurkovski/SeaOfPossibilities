@@ -63,7 +63,12 @@ class Character(Body):
 		angles = {"up": 270, "left": 0, "down": 90, "right": 180} #colocar no json depois...
 		self.turn(angles[direction])
 		self.direction = direction
-			
+
+	def changeSlot(self):
+		self.currentSlot += 1
+		if self.currentSlot >= len(self.slots):
+			self.currentSlot = 0			
+
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:
 			print("Picking this %s" % (itemName) )
@@ -73,10 +78,27 @@ class Character(Body):
 			self.slots[self.currentSlot] = itemName
 			return oldItem
 
+	def currentItem(self):
+		if len(self.slots) > 1:	
+			return self.slots[self.currentSlot]['symbol']
+		else:
+			return None
+
 	def drawStatus(self):
 		#should draw character status...
+		slots = '[ '
+		i = 0
 
-		self.statusString.setText("%s 	HP: %s\nItens: %s" % (self.name,self.hearts,self.slots) )
+		for s in self.slots:
+			if i == self.currentSlot:
+				slots += '>' 
+
+			slots += s['symbol'] + ' '
+			i += 1
+
+		slots += ']'
+
+		self.statusString.setText("%s 	HP: %s\nItens: %s" % (self.name,self.hearts,slots ) )
 		pass
 
 	def takeDamage(self, damage):
