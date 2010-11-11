@@ -224,8 +224,8 @@ class Game(State):
 	
 	def processActions(self):
 		try:
-			for char in self.characters:
-				char = self.characters[char]
+			for char in self.characters.values():
+				#char = self.characters[char]
 				#1st Step: Process movements
 				for dir in char.tryToMove :
 					try:

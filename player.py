@@ -28,7 +28,8 @@ class HumanPlayer(Player):
 		Player.sendCommand(self)
 		
 		#directions = [key for key in ["up%d"%(self.id),"down%d"%(self.id),"left%d"%(self.id),"right%d"%(self.id)] if self.keys[key]]
-		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
+		#directions = [key for key in ["up","down","left","right"] if self.keys[key]]
+		directions = [key for key in ["up","down","left","right"] if self.keys[key] or self.keys[key+"%d"%(self.id)]]
 		self.character.tryToMove = directions
 		
 		#actions = [key for key in ["action%d"%(self.id),"attack%d"%(self.id),"cancel%d"%(self.id)] if self.keys[key]]
