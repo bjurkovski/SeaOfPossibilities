@@ -28,9 +28,6 @@ class Character(Body):
 		self.readRenderData()
 		self.calculateDimensions()
 		
-		# initialize character status string
-		self.statusString = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.7,-0.85), scale = .08)
-
 		
 	def stop(self):
 		Body.stop(self)
@@ -62,7 +59,9 @@ class Character(Body):
 			pass
 			
 	def setDirection(self, direction):
-		angles = {"up": 270, "left": 0, "down": 90, "right": 180} #colocar no json depois...
+		angles = {"up": 270, "left": 0, "down": 90, "right": 180} 
+		#colocar no json depois...
+
 		self.turn(angles[direction])
 		self.direction = direction
 
@@ -86,22 +85,23 @@ class Character(Body):
 		else:
 			return None
 
-	def drawStatus(self):
+	def getStatus(self):
 		#should draw character status...
 		slots = '[ '
 		i = 0
 
 		for s in self.slots:
 			if i == self.currentSlot:
-				slots += '>' 
+				slots += '>'
+			else:
+				slots += '  ' 
 
 			slots += s['symbol'] + ' '
 			i += 1
 
 		slots += ']'
 
-		self.statusString.setText("%s 	HP: %s\nItens: %s" % (self.name,self.hearts,slots ) )
-		pass
+		return "%s 	HP: %s\nItens: %s" % (self.name,self.hearts,slots )
 
 	def takeDamage(self, damage):
 		self.hearts -= damage

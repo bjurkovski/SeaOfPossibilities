@@ -27,6 +27,10 @@ class Game(State):
 		
 		self.startMap()
 
+		# initialize character status string
+		self.statusString = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.7,-0.75), scale = .08)
+
+
 	def spawnObject(self, ob, ob_type):
 
 		if ob_type == "enemy":
@@ -99,7 +103,7 @@ class Game(State):
 			render.setLight(l)
 			
 		#COWABUNGA comment this to stop the madness
-		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
 
 		self.camera.setPos(0, -2.5, -2.5)
@@ -115,7 +119,7 @@ class Game(State):
 		self.buryDeadPeople()
 		
 		#let's try
-		self.characters[self.player].drawStatus()
+		self.statusString.setText('Room: ' + self.room + '\n' + self.characters[self.player].getStatus())
 		
 		if self.isOver:
 			return "GameOver"
@@ -174,19 +178,16 @@ class Game(State):
 					#TODO to be re-refactored
 					x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
-					try:
-						if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
-							char.move(dir)
-							
-							ex = self.stage.maps[self.room].getExit((x,y))		
-							print(ex)
-							if ex and (ex in self.stage.doors[self.room].keys()):
-								self.changeMap(ex)
+					if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
+						char.move(dir)
+						
+						ex = self.stage.maps[self.room].getExit((x,y))
+						if ex and (ex in self.stage.doors[self.room].keys()):
+							self.changeMap(ex)
 						else:
 							char.setDirection(dir)
-					except Exception as e:
-						print('fu',e)
-			
+							print('sai da frente satanas')
+
 					if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 						for item in self.currentMap().items:
 							if tuple(item["pos"]) == (x,y):
@@ -196,6 +197,7 @@ class Game(State):
 						for enemy in self.currentMap().enemies:
 							if tuple(enemy["pos"]) == (x,y):
 								self.collision(char, enemy["instance"])
+
 				except Exception as e:
 					print(e)
 					pass

@@ -38,7 +38,8 @@ class Body:
 			self.model.setPos(*self.data["render"]["pos"])
 			self.model.setColor(*self.data["render"]["color"])
 		except KeyError:
-			print("Using default render data for model")
+			pass
+			#print("Using default render data for model")
 			
 	def calculateDimensions(self):
 		min, max = self.model.getTightBounds()
