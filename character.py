@@ -45,7 +45,8 @@ class Character(Body):
 			futPos = Body.getCollisionPos(self, direction)
 			self.turn(angles[self.direction])
 			return futPos
-		except KeyError:
+		except Exception as e:
+			print('Na colisao', e)
 			return self.getPos()
 		
 	def move(self, direction):
@@ -56,7 +57,8 @@ class Character(Body):
 			if self.isMoving is False:
 				self.model.loop("walk")
 			Body.move(self, direction)
-		except KeyError:
+		except Exception as e:
+			print('no movimento', e)
 			pass
 			
 	def setDirection(self, direction):

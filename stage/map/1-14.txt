@@ -15,17 +15,17 @@
 "................."],
 
 [
-"                 ",
-"                 ",
-"                 ",
-"                 ",
-"                 ",
-"                 ",
-"                 ",
-"                 ",
-"                 ",
-"                 ",
-"                 "]
+"ooooooo  oooooooo",
+"o               o",
+"ooo             o",
+"o            o  o",
+"oobbooooooooo ooo",
+"o               o",
+"ooooooooooooobooo",
+"o               o",
+"o               o",
+"o               o",
+"ooooooo  oooooooo"]
 
 ],
 

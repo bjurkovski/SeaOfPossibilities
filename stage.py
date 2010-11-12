@@ -12,7 +12,8 @@ from direct.actor.Actor import Actor
 tex = Texture('tex')
 #tex.load('tex/grass.png')
 #tex.load('tex/grass_painterly.jpg')
-tex.load('tex/grasspaint.png')
+#tex.load('tex/grasspaint.png')
+tex.load('tex/grass_painterly_large.jpg')
 
 class Map:
 	def __init__(self, filename=None, size=()):
@@ -95,20 +96,23 @@ class Map:
 			is an exit and None if it's not. 
 		"""
 		direc = None
-		clear = self.tileIs(0, point, 'ground')
 		
 		minX, maxX = 0, self.width-1
 		minY, maxY = 0, self.height-1
 		
 		# in the first line
-		if point[1] == maxY and clear:
-			return "up"
-		# in the last line
-		if point[1] == 0 and clear:
+		if point[1] == maxY:
+			print('exit', point)
 			return "down"
-		if point[0] == 0 and clear:
+		# in the last line
+		if point[1] == 0:
+			print('exit', point)			
+			return "up"
+		if point[0] == 0:
+			print('exit', point)			
 			return "left"
-		if point[0] == maxX and clear:
+		if point[0] == maxX:
+			print('exit', point)
 			return "right"
 		
 		return direc
@@ -169,21 +173,13 @@ class Map:
 		return obj
 		
 	def posToGrid(self, pos):
-		#x = int(round(self.width/2 + (pos[0]-self.squareWidth/2)/self.squareWidth))
 		x = int(round(self.width/2 + (pos[0])/self.squareWidth))
-
-		##y = self.height-1 - int(round(self.height/2 + (pos[1]-self.squareHeight/2)/self.squareHeight))
-		#y = self.height-1 - int(round(self.height/2 + (pos[1]-self.squareHeight/2)/self.squareHeight))
 		y = self.height-1 - int(round(self.height/2 + (pos[1])/self.squareHeight))
 		
 		return (x,y)
 	
 	def gridToPos(self, grid):
-		#x = (grid[0] - self.width/2)*self.squareWidth + self.squareWidth/2
 		x = (grid[0] - self.width/2)*self.squareWidth
-		
-		##y = -(grid[1] + self.squareHeight/2 - self.height/2 + 1) * self.squareHeight
-		#y = - (grid[1] - self.height + 1 + self.height/2)*self.squareHeight + self.squareHeight/2
 		y = -(grid[1] - self.height + 1 + self.height/2)*self.squareHeight
 		
 		return (x,y)

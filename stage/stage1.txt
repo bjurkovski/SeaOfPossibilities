@@ -20,7 +20,7 @@
 
 		"4": { 
 				"map": "stage/map/1-4.txt", 
-				"doors": {"left" : "3" , "right" : "5" , "down" : "7" } 
+				"doors": {"left" : "3" , "right" : "5" , "down" : "8" } 
 			 },
 
 		"5": { 
