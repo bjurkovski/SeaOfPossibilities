@@ -125,10 +125,13 @@ class Game(State):
 			return "Paused"
 
 	def move(self):		
-		directions = [key for key in ["up","down","left","right"] if self.keys[key]]
-		
 		for char in [self.characters[self.player], self.characters[self.player2]]:
 		#char = self.characters[self.player]
+			add = "1"
+			if char == self.characters[self.player]:
+				add = ""
+				
+			directions = [key for key in ["up","down","left","right"] if self.keys[key+add]]
 
 			if self.keys['attack']:
 				self.keys['attack'] = False		
@@ -184,12 +187,12 @@ class Game(State):
 					if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 						for item in self.currentMap().items:
 							if tuple(item["pos"]) == (x,y):
-								self.collision(self.characters[self.player], item['instance'])
+								self.collision(char, item['instance'])
 					
 					elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
 						for enemy in self.currentMap().enemies:
 							if tuple(enemy["pos"]) == (x,y):
-								self.collision(self.characters[self.player], enemy["instance"])
+								self.collision(char, enemy["instance"])
 				except Exception as e:
 					print(e)
 					pass
