@@ -155,7 +155,7 @@ class Game(State):
 						block["instance"].stop()
 			
 			if len(directions) == 0:
-				self.characters[self.player].stop()
+				char.stop()
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
 				# BLOCK MOVEMENT TRIGGER
 				if self.keys["action"] and self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
