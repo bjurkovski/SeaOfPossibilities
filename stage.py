@@ -85,11 +85,11 @@ class Map:
 		
 		cfg.close()
 
-	def tileType(layer, point):
+	def tileType(self, layer, point):
 		return self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
-	def tileIs(self, layer, point, tilename):
-		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
+#	def tileIs(self, layer, point, tilename):
+#		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
 	def posIs(self, layer, pos, tilename):
 		x,y = self.posToGrid(pos)
@@ -153,10 +153,14 @@ class Map:
 
 		for y in range(self.height):
 			for x in range(self.width):
+				# TO DO: MUDAR NOME
+				a = {"block": self.blocks,
+					 "obstacle": self.obstacles,
+					 "tree": self.obstacles}
 				tType = self.tileType(Map.COLLISION, (x,y))
 				if tType != 'free':
-					self.obstacles.append(self.makeObject(tType, x,y))
-s
+					a[tType].append(self.makeObject(tType, x,y))
+
 	def makeObject(self, obj_type, x, y):
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
 		# yeah I know

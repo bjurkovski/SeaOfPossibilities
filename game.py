@@ -87,7 +87,7 @@ class Game(State):
 		self.characters[self.player2].setDirection(self.characters[self.player].direction)
 		
 		self.startMap()
-		
+
 	def register(self, render, camera, keys):
 		State.register(self, render, camera, keys)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
@@ -153,7 +153,7 @@ class Game(State):
 				if block["instance"].isMoving:
 					x,y = self.currentMap().posToGrid(block["instance"].getPos())
 					bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(block["instance"].direction))
-					if (x,y)==(bx,by) or self.stage.maps[self.room].tileIs(1, (bx,by), 'free'):
+					if (x,y)==(bx,by) or self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
 						block["instance"].move(block["instance"].direction)
 						self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
 						block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
@@ -165,22 +165,23 @@ class Game(State):
 				char.stop()
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
 				# BLOCK MOVEMENT TRIGGER
-				if self.keys["action"+add] and self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
+				if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
 					for block in self.currentMap().blocks:
 						if tuple(block["pos"]) == (x,y):
+							print "vo chuta essa merda"
 							bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(char.direction))
-							if self.stage.maps[self.room].tileIs(1, (bx,by), 'free'):
+							if self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
 								block["instance"].move(char.direction)
 								self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
 								block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
 								self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = 'b'
 			
 			for dir in directions:
-				try:
+				#try:
 					#TODO to be re-refactored
 					x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
-					if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
+					if self.stage.maps[self.room].tileType(1, (x,y)) == 'free':
 						char.move(dir)
 						
 						ex = self.stage.maps[self.room].getExit((x,y))
@@ -188,21 +189,20 @@ class Game(State):
 							self.changeMap(ex)
 					else:
 						char.setDirection(dir)
-						print(dir,'sai da frente satanas')
 
-					if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
+					if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
 						for item in self.currentMap().items:
 							if tuple(item["pos"]) == (x,y):
 								self.collision(char, item['instance'])
 					
-					elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
+					elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
 						for enemy in self.currentMap().enemies:
 							if tuple(enemy["pos"]) == (x,y):
 								self.collision(char, enemy["instance"])
 
-				except Exception as e:
-					print(e)
-					pass
+				#except Exception as e:
+				#	print(e)
+				#	pass
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
