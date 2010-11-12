@@ -55,7 +55,7 @@
 
 		"11": { 
 				"map": "stage/map/1-11.txt", 
-				"doors": {"left" : "12" , "right" : "11", "up" : "18" } 
+				"doors": {"left" : "12" , "right" : "10", "up" : "18" } 
 			 },
 
 		"12": { 

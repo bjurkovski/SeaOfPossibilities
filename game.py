@@ -83,6 +83,8 @@ class Game(State):
 		elif direction == "up":  y = map.height-2
 		pos = self.currentMap().gridToPos((x,y))
 		self.characters[self.player].setPos(pos)
+		self.characters[self.player2].setPos(pos)
+		self.characters[self.player2].setDirection(self.characters[self.player].direction)
 		
 		self.startMap()
 		
@@ -184,9 +186,9 @@ class Game(State):
 						ex = self.stage.maps[self.room].getExit((x,y))
 						if ex and (ex in self.stage.doors[self.room].keys()):
 							self.changeMap(ex)
-						else:
-							char.setDirection(dir)
-							print('sai da frente satanas')
+					else:
+						char.setDirection(dir)
+						print(dir,'sai da frente satanas')
 
 					if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
 						for item in self.currentMap().items:

@@ -16,6 +16,8 @@ tex = Texture('tex')
 tex.load('tex/grass_painterly_large.jpg')
 
 class Map:
+	GROUND = 0
+	COLLISION = 1
 	def __init__(self, filename=None, size=()):
 		self.started = False
 		self.tiles = []
@@ -69,7 +71,7 @@ class Map:
 			print "Error creating map: please provide either the filename or the size to be allocated."
 			exit()
 
-		self.height, self.width = len(self.tiles[0]), len(self.tiles[0][0])
+		self.height, self.width = len(self.tiles[Map.GROUND]), len(self.tiles[Map.GROUND][0])
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
 		self.constructModel()
@@ -82,6 +84,9 @@ class Map:
 		self.tilemap = data['tilemap']
 		
 		cfg.close()
+
+	def tileType(layer, point):
+		return self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
 	def tileIs(self, layer, point, tilename):
 		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
@@ -118,8 +123,9 @@ class Map:
 		return direc
 
 	def __str__(self):
+		# WRONG!!!!
 		str = ""
-		for row in self.tiles[0]:
+		for row in self.tiles[Map.GROUND]:
 			for tile in row:
 				str += tile
 			str += "\n"
@@ -147,16 +153,10 @@ class Map:
 
 		for y in range(self.height):
 			for x in range(self.width):
-				#THIS could use a refactor
-				if self.tileIs(1, (x,y), 'obstacle'):
-					self.obstacles.append( self.makeObject('obstacle',x,y) )
-
-				elif self.tileIs(1, (x,y), 'block' ):
-					self.blocks.append(self.makeObject('block',x,y))
-
-				elif self.tileIs(1, (x,y), 'tree' ):
-					self.blocks.append(self.makeObject('tree',x,y))
-
+				tType = self.tileType(Map.COLLISION, (x,y))
+				if tType != 'free':
+					self.obstacles.append(self.makeObject(tType, x,y))
+s
 	def makeObject(self, obj_type, x, y):
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
 		# yeah I know
