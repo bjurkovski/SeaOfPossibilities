@@ -30,23 +30,20 @@ class Game(State):
 		# initialize character status string
 		self.statusString = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.7,-0.75), scale = .08)
 
+	def spawnObject(self, ob ):
 
-	def spawnObject(self, ob, ob_type):
-
-		if ob_type == "enemy":
-			ob["instance"] = Character("char/" + ob["name"])
-			self.players.append( ComputerPlayer(ob["instance"]) )
-
-		elif ob_type == "item":
+		if ob.type == "item":
 			#instance is ready when we have an item
-			# This is not what it looks like, I can explain!			
-			ob["instance"].extra = ob
+			# This is not what it looks like, I can explain!
+			print('need to make item')
+			#ob["instance"].extra = ob
 
-		ob["instance"].getNode().reparentTo(NodePath(self.currentMap().getNode()))
-		pos = self.currentMap().gridToPos(ob["pos"])
-		ob["instance"].setPos(pos)
-		ob["instance"].type =  ob_type
-		self.currentMap().tiles[1][ob["pos"][1]][ob["pos"][0]] = ob_type[0] #TODO fix this... if you try hard you can see why it works , to be refactored
+		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
+		x,y = self.currentMap().posToGrid(ob.getPos())
+
+		print(ob.name)
+		print(x,y)
+		self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
@@ -57,16 +54,13 @@ class Game(State):
 	def startMap(self):
 		if not self.currentMap().started:
 			for obstacle in self.currentMap().obstacles:
-				self.spawnObject(obstacle,'obstacle')
-
-			for enemy in self.currentMap().enemies:
-				self.spawnObject(enemy,'enemy')
+				self.spawnObject(obstacle)
 			
 			for item in self.currentMap().items:
-				self.spawnObject(item,'item')
+				self.spawnObject(item)
 
 			for block in self.currentMap().blocks:
-				self.spawnObject(block,'block')
+				self.spawnObject(block)
 
 			self.currentMap().started = True
 
@@ -105,7 +99,7 @@ class Game(State):
 			render.setLight(l)
 			
 		#COWABUNGA comment this to stop the madness
-		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
 
 		self.camera.setPos(0, -2.5, -2.5)
@@ -128,7 +122,7 @@ class Game(State):
 		elif self.keys['start']:
 			return "Paused"
 
-	def move(self):		
+	def move(self):
 		for char in [self.characters[self.player], self.characters[self.player2]]:
 		#char = self.characters[self.player]
 			add = "1"

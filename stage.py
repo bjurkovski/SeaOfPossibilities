@@ -42,18 +42,8 @@ class Map:
 					for y in range(len(self.tiles[layer])):
 						self.tiles[layer][y] = list(self.tiles[layer][y])
 
-				#reading map metadata
-				try: 
-					for i in data["items"]:
-						instance = self.itens_ref.getInstance( i['name'] )
-						instance['pos'] = i['pos']
-						self.items.append(instance) 
-				except KeyError: self.items = []
-					
-				try: self.enemies = data["enemies"]
-				except KeyError: self.enemies = []
-
-			except IOError:
+			except IOError as e:
+				print e
 				print "Error creating map: %s not found." % filename
 				exit()
 		elif size != ():
@@ -73,6 +63,23 @@ class Map:
 
 		self.height, self.width = len(self.tiles[Map.GROUND]), len(self.tiles[Map.GROUND][0])
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
+
+#reading map metadata
+		try: 
+			for i in data["items"]:
+				instance = self.itens_ref.getInstance( i['name'] )
+				instance['pos'] = i['pos']
+				self.items.append(instance) 
+		except KeyError as e: 
+			print('Error', e)
+			self.items = []
+			
+		try: 
+			self.enemies = data["enemies"]
+			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
+		except KeyError: 
+			print('Error', e)
+			self.enemies = []
 
 		self.constructModel()
 
@@ -167,15 +174,27 @@ class Map:
 		models = { 'block' : 'block', 'obstacle' : 'rock', 'tree' : 'tree' }
 		symbols = { 'block' : 'b', 'obstacle' : "o", 'tree' : 't' }
 		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
-		obj = {"pos" : (x,y), 
-				"instance" : Model("model/" + models[obj_type] + ".json") , 
-				"name" : types[obj_type],
-				"symbol" :  symbols[obj_type] ,
-				"type" : obj_type 
-			  }
-
-		return obj
 		
+		instance = Model("model/" + models[obj_type] + ".json")
+		instance.setPos( (x,y) )
+		instance.originalPos = (x,y)
+		instance.name = types[obj_type]
+		instance.symbol = symbols[obj_type]
+		instance.type = obj_type
+
+		return instance
+	
+	def makeCharacter(self,char,cType):
+		c = Character('char/' + char['name'])
+		c.setPos(self.gridToPos(char['pos']))
+		c.originalPos = self.gridToPos(char['pos'])
+		c.type = cType
+		# GAMBIT
+		c.symbol = cType[0]
+		c.name = char['name']
+
+		return c
+
 	def posToGrid(self, pos):
 		x = int(round(self.width/2 + (pos[0])/self.squareWidth))
 		y = self.height-1 - int(round(self.height/2 + (pos[1])/self.squareHeight))

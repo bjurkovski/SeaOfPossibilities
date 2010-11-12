@@ -5,12 +5,17 @@ class Body:
 	id = 0
 	baseSpeed = 0.05
 	def __init__(self, filename, type):
+		
+		#TODO deveria ser local, temporaria 
 		file = open(filename)
 		self.data = json.loads(file.read())
 		file.close()
 		
 		self.type = type
 		self.id = Body.id
+
+		self.originalPos = None
+
 		speed = 0
 		try: speed = Body.baseSpeed * self.data["speed"]
 		except KeyError: pass
@@ -27,7 +32,7 @@ class Body:
 		self.extra	= None	
 
 		Body.id+= 1
-		
+
 	def getNode(self):
 		return self.model
 
