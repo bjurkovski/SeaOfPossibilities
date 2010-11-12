@@ -125,7 +125,9 @@ class Game(State):
 		char = self.characters[self.player]
 
 		if self.keys['attack']:
-			self.keys['attack'] = False		
+			self.keys['attack'] = False
+			if self.keys['cancel']:	
+		
 			print('Using %s' % (char.currentItem()) )
 
 		if self.keys['cancel']:

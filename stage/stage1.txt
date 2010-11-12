@@ -4,8 +4,94 @@
 
 	"rooms":
     {
-		"1": { "map": "stage/map/1-1.txt", "doors": {"right": "2"} },
-		"2": { "map": "stage/map/1-2.txt", "doors": {"left" : "1"} }
+		"1": { "map": "stage/map/1-1.txt", 
+			   "doors": {"right": "2"} 
+			 },
+
+		"2": { 
+				"map": "stage/map/1-2.txt", 
+				"doors": {"left" : "1", "down" : "3" } 
+			 },
+
+		"3": { 
+				"map": "stage/map/1-3.txt", 
+				"doors": {"up" : "2", "right" : "4"} 
+			 },
+
+		"4": { 
+				"map": "stage/map/1-4.txt", 
+				"doors": {"left" : "3" , "right" : "5" , "down" : "7" } 
+			 },
+
+		"5": { 
+				"map": "stage/map/1-5.txt", 
+				"doors": {"left" : "4" , "right" : "6" } 
+			 },
+		
+		"6": { 
+				"map": "stage/map/1-6.txt", 
+				"doors": {"left" : "5" , "right" : "SECRET" , "up" : "7" } 
+			 },
+
+		"7": { 
+				"map": "stage/map/1-7.txt", 
+				"doors": { "down" : "6" } 
+			 },
+
+		"8": { 
+				"map": "stage/map/1-8.txt", 
+				"doors": {"up" : "4" , "down" : "9" } 
+			 },
+
+		"9": { 
+				"map": "stage/map/1-9.txt", 
+				"doors": {"up" : "8" , "down" : "10" } 
+			 },
+
+		"10": { 
+				"map": "stage/map/1-10.txt", 
+				"doors": {"up" : "9" , "left" : "11" } 
+			 },
+
+		"11": { 
+				"map": "stage/map/1-11.txt", 
+				"doors": {"left" : "12" , "right" : "11", "up" : "18" } 
+			 },
+
+		"12": { 
+				"map": "stage/map/1-12.txt", 
+				"doors": { "up" : "14", "right" : "11", "down" : "13" } 
+			 },
+
+		"13": { 
+				"map": "stage/map/1-13.txt", 
+				"doors": { "up" : "12" } 
+			 },
+
+		"14": { 
+				"map": "stage/map/1-14.txt", 
+				"doors": { "right" : "18" , "up" : "15", "down" : "12" } 
+			 },
+
+		"15": { 
+				"map": "stage/map/1-15.txt", 
+				"doors": { "up" : 16, "right" : "17" , "down" : "14" } 
+			 },
+
+		"16": { 
+				"map": "stage/map/1-16.txt", 
+				"doors": { "down" :  "15"  } 
+			 },
+
+		"17": { 
+				"map": "stage/map/1-17.txt", 
+				"doors": {"down" : "18" , "left" : "15" } 
+			 },
+
+		"18": { 
+				"map": "stage/map/1-18.txt", 
+				"doors": { "up" : "17" } 
+			 }
 	} ,
 
 	"lights" : [ {"type" : "point" , "color" : [1,1,1,1] , "pos" : [0,-1,0] },
