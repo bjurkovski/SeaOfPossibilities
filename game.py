@@ -161,7 +161,7 @@ class Game(State):
 				char.stop()
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
 				# BLOCK MOVEMENT TRIGGER
-				if self.keys["action"] and self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
+				if self.keys["action"+add] and self.stage.maps[self.room].tileIs(1, (x,y), 'block'):
 					for block in self.currentMap().blocks:
 						if tuple(block["pos"]) == (x,y):
 							bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(char.direction))
