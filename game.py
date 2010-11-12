@@ -12,12 +12,13 @@ from panda3d.core import LightRampAttrib
 
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
-	def __init__(self, stage, characters, player):
+	def __init__(self, stage, characters, player, player2):
 		State.__init__(self)
 
 		# how to know the players that will be in game? a ChoosePlayer screen before the constructor?
 		self.characters = characters
 		self.player = player
+		self.player2 = player2
 		self.stage = stage
 		self.room = self.stage.start
 		self.isOver = False
@@ -89,6 +90,9 @@ class Game(State):
 
 		char = self.characters[self.player]
 		self.players.append( HumanPlayer( char , keys ) )
+		
+		char2 = self.characters[self.player2]
+		self.players.append(HumanPlayer( char2 , keys ))
 		
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)

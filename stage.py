@@ -12,7 +12,8 @@ from direct.actor.Actor import Actor
 tex = Texture('tex')
 #tex.load('tex/grass.png')
 #tex.load('tex/grass_painterly.jpg')
-tex.load('tex/grasspaint.png')
+#tex.load('tex/grasspaint.png')
+tex.load('tex/grass_painterly_large.jpg')
 
 class Map:
 	def __init__(self, filename=None, size=()):
