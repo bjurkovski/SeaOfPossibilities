@@ -1,23 +1,21 @@
 import json
-from model import Model
- 
-class Item():
+from model import *
 
-	def __init__(self,filename):
-		
-		file = open(filename)
-		self.data = json.loads(file.read())
-		file.close()		
-		
+def loadItens():
+	file = open('cfg/itens.json')
+	data = json.loads(file.read())
+	file.close()		
+	return data
 
-	def getInstance(self, name):
-		return {
-			'name' : name,
-			'instance' : Model(self.data[name]['model']),
-			'symbol' : self.data[name]['symbol'],
-			'type' : 'item'
-		}
+class Item(Model):
 
+	ITENS = loadItens()
+
+	def __init__(self,itemName):
+		Model.__init__(self, Item.ITENS[itemName]['model'])
+		self.name = itemName
+		self.type = 'item'
+		self.symbol = Item.ITENS[self.name]['symbol']
 
 
 

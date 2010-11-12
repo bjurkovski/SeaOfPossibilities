@@ -33,15 +33,12 @@ class Game(State):
 	def spawnObject(self, ob ):
 
 		if ob.type == "item":
-			#instance is ready when we have an item
-			# This is not what it looks like, I can explain!
 			print('need to make item')
-			#ob["instance"].extra = ob
 
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
-		print(ob.name)
+		print(ob.name, ob.getPos() )
 		print(x,y)
 		self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
 

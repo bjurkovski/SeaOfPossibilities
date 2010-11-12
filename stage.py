@@ -21,15 +21,14 @@ class Map:
 	def __init__(self, filename=None, size=()):
 		self.started = False
 		self.tiles = []
-		self.cards = []
 		self.items = []
 		
 		self.nodePath = None
-		
-		self.itens_ref = Item('cfg/itens.json')
 
 		self.readConfig()
 
+		# TODO, stop giving the option to create the map from within code
+		# it's mostly useless
 		if filename != None:
 			try:
 				file = open(filename)
@@ -64,12 +63,13 @@ class Map:
 		self.height, self.width = len(self.tiles[Map.GROUND]), len(self.tiles[Map.GROUND][0])
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
-#reading map metadata
+		#reading map metadata
 		try: 
 			for i in data["items"]:
-				instance = self.itens_ref.getInstance( i['name'] )
-				instance['pos'] = i['pos']
-				self.items.append(instance) 
+				instance = Item( i['name'] )
+				instance.setPos( i['pos'] )
+				self.items.append(instance)
+
 		except KeyError as e: 
 			print('Error', e)
 			self.items = []
