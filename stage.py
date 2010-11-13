@@ -65,20 +65,26 @@ class Map:
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
 #reading map metadata
-		try: 
+		try:
 			for i in data["items"]:
-				instance = self.itens_ref.getInstance( i['name'] )
-				instance['pos'] = i['pos']
+				item = self.itens_ref.getInstance( i['name'] )
+				instance = item["instance"]
+				instance.setPos(self.gridToPos(i['pos']))
+				instance.originalPos = instance.getPos()
+				instance.type = "item"
+				instance.symbol = "i"
+				instance.name = item["name"]
 				self.items.append(instance) 
 		except KeyError as e: 
-			print('Error', e)
+			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS..... 
+			print('Error reading items: %s' % e)
 			self.items = []
 			
 		try: 
 			self.enemies = data["enemies"]
 			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
-		except KeyError: 
-			print('Error', e)
+		except KeyError as e: 
+			print('Error reading enemies: %s' % e)
 			self.enemies = []
 
 		self.constructModel()

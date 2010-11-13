@@ -32,18 +32,24 @@ class Game(State):
 
 	def spawnObject(self, ob ):
 
-		if ob.type == "item":
-			#instance is ready when we have an item
-			# This is not what it looks like, I can explain!
-			print('need to make item')
-			#ob["instance"].extra = ob
-
+		try:
+			if ob.type == "item":
+				#instance is ready when we have an item
+				# This is not what it looks like, I can explain!
+				print('need to make item')
+				#ob["instance"].extra = ob
+		except AttributeError:
+			print ob
+			
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
 		print(ob.name)
 		print(x,y)
-		self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
+		try:
+			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
+		except IndexError:
+			print ob.id
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
@@ -201,17 +207,17 @@ class Game(State):
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
 		
-		if b.getType() == 'item':
-		
-			for i in range(len(self.currentMap().items)):
-				if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):
-					self.currentMap().items.pop(i)
-					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
-					self.currentMap().tiles[1][y][x] = ' '
-					NodePath(b.getNode()).removeNode()
+		# commented while fixing the bugs
+		# if b.getType() == 'item':
+			# for i in range(len(self.currentMap().items)):
+				# if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):
+					# self.currentMap().items.pop(i)
+					# x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
+					# self.currentMap().tiles[1][y][x] = ' '
+					# NodePath(b.getNode()).removeNode()
 
-					# again this is idiotic, but forgive me
-					a.pickItem(b.extra)
+					# # again this is idiotic, but forgive me
+					# a.pickItem(b.extra)
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())
@@ -222,13 +228,14 @@ class Game(State):
 					a.takeDamage(1)
 
 	def buryDeadPeople(self):
-		for enemy in self.currentMap().enemies:
-			if not enemy["instance"].isAlive():
-				x, y = self.currentMap().posToGrid(NodePath(enemy["instance"].getNode()).getPos())
-				self.currentMap().tiles[1][y][x] = ' '
-				NodePath(enemy["instance"].getNode()).removeNode()
-				self.currentMap().enemies.remove(enemy)
-				#self.currentMap().enemies.pop(e)
+		# commented while fixing the bugs
+		# for enemy in self.currentMap().enemies:
+			# if not enemy["instance"].isAlive():
+				# x, y = self.currentMap().posToGrid(NodePath(enemy["instance"].getNode()).getPos())
+				# self.currentMap().tiles[1][y][x] = ' '
+				# NodePath(enemy["instance"].getNode()).removeNode()
+				# self.currentMap().enemies.remove(enemy)
+				# #self.currentMap().enemies.pop(e)
 
 		#if not self.player.isAlive() : #tratar isso corretamente!
 		for char in self.characters:
