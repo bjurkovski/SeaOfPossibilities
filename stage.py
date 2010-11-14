@@ -183,7 +183,7 @@ class Map:
 		
 		instance = Model("model/" + models[obj_type] + ".json")
 		instance.setPos(self.gridToPos((x,y)))
-		instance.originalPos = (x,y)
+		instance.originalPos = instance.getPos()
 		instance.name = types[obj_type]
 		instance.symbol = symbols[obj_type]
 		instance.type = obj_type
