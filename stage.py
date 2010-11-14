@@ -66,14 +66,10 @@ class Map:
 #reading map metadata
 		try:
 			for i in data["items"]:
-				item = self.itens_ref.getInstance( i['name'] )
-				instance = item["instance"]
-				instance.setPos(self.gridToPos(i['pos']))
-				instance.originalPos = instance.getPos()
-				instance.type = "item"
-				instance.symbol = "i"
-				instance.name = item["name"]
-				self.items.append(instance) 
+				item = Item(i['name'])
+				item.setPos(self.gridToPos( i['pos'] ) )
+				item.originalPos = item.getPos()
+				self.items.append(item) 
 		except KeyError as e: 
 			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS..... 
 			print('Error reading items: %s' % e)
