@@ -96,9 +96,6 @@ class Map:
 	def tileType(self, layer, point):
 		return self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
-#	def tileIs(self, layer, point, tilename):
-#		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
-
 	def posIs(self, layer, pos, tilename):
 		x,y = self.posToGrid(pos)
 		return self.tileIs(layer, (x,y), tilename)

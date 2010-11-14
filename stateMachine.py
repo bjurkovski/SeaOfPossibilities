@@ -31,7 +31,7 @@ class StateMachine(FSM, ShowBase, Input):
 		}
 
 		#enable shaders in every model
-		self.render.setShaderAuto()		
+		self.render.setShaderAuto()
 
 		#disables mouse controlled camera
 		self.disableMouse()
@@ -53,13 +53,13 @@ class StateMachine(FSM, ShowBase, Input):
 		self.request(initialState)
 	
 	def idle(self, task):
-		try:
-			newState = self.states[self.state].iterate()
-			if newState:
-				self.request(newState)
-		except KeyError:
-			print("Error: State '"+ self.state +"' not registered...")
-			
+#		try:
+		newState = self.states[self.state].iterate()
+		if newState:
+			self.request(newState)
+#		except KeyError as e:
+#			print("Error: State '"+ self.state +"' not registered...")
+#			print(e)
 		return task.cont
 
 	def enterTitle(self):

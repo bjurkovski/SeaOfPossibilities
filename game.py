@@ -80,8 +80,8 @@ class Game(State):
 		x, y = self.currentMap().posToGrid(self.characters[self.player].getPos())
 		if   direction == "right": x = 1
 		elif direction == "left":  x = map.width-2
-		elif direction == "down":    y = 1
-		elif direction == "up":  y = map.height-2
+		elif direction == "down":  y = 1
+		elif direction == "up":    y = map.height-2
 		pos = self.currentMap().gridToPos((x,y))
 		self.characters[self.player].setPos(pos)
 		self.characters[self.player2].setPos(pos)
@@ -106,10 +106,9 @@ class Game(State):
 			render.setLight(l)
 			
 		#COWABUNGA comment this to stop the madness
-		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
 		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
-		self.node.setShaderAuto()
 		
 		# THE TRUE CARTOON SHADER :P
 		self.separation = 1 # Pixels
@@ -190,32 +189,30 @@ class Game(State):
 								self.currentMap().tiles[1][by][bx] = 'b'
 			
 			for dir in directions:
-				#try:
-					#TODO to be re-refactored
-					x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
+				#TODO to be re-refactored
+				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
-					if self.stage.maps[self.room].tileType(1, (x,y)) == 'free':
-						char.move(dir)
-						
-						ex = self.stage.maps[self.room].getExit((x,y))
-						if ex and (ex in self.stage.doors[self.room].keys()):
-							self.changeMap(ex)
-					else:
-						char.setDirection(dir)
+				isFree = self.currentMap().tileType(Map.COLLISION, (x,y)) == 'free'
+				if  isFree:
 
-					if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
-						for item in self.currentMap().items:
-							if tuple(item["pos"]) == (x,y):
-								self.collision(char, item['instance'])
+					char.move(dir)
+					ex = self.stage.maps[self.room].getExit((x,y))
 					
-					elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-						for enemy in self.currentMap().enemies:
-							if tuple(enemy["pos"]) == (x,y):
-								self.collision(char, enemy["instance"])
+					if ex and (ex in self.stage.doors[self.room].keys()):
+						self.changeMap(ex)
+				else:
+					char.setDirection(dir)
 
-				#except Exception as e:
-				#	print(e)
-				#	pass
+				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
+					for item in self.currentMap().items:
+						if tuple( item.getPos() ) == (x,y):
+							self.collision(char, item)
+					pass
+				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+					for enemy in self.currentMap().enemies:
+						if tuple(enemy["pos"]) == (x,y):
+							self.collision(char, enemy["instance"])
+					pass
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()

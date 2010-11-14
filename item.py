@@ -15,7 +15,7 @@ class Item(Model):
 		Model.__init__(self, Item.ITENS[itemName]['model'])
 		self.name = itemName
 		self.type = 'item'
-		self.symbol = Item.ITENS[self.name]['symbol']
+		self.symbol = 'i'#Item.ITENS[self.name]['symbol']
 
 
 
