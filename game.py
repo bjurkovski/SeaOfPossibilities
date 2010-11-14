@@ -45,7 +45,7 @@ class Game(State):
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
-		print(ob.name)
+		print(ob.name, ob.getPos() )
 		print(x,y)
 		try:
 			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
