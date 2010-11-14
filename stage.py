@@ -15,7 +15,7 @@ tex.load('tex/grass_painterly_large.jpg')
 class Map:
 	GROUND = 0
 	COLLISION = 1
-	def __init__(self, filename=None, size=()):
+	def __init__(self, filename):
 		self.started = False
 		self.tiles = []
 		self.items = []
@@ -24,60 +24,44 @@ class Map:
 
 		self.readConfig()
 
-		# TODO, stop giving the option to create the map from within code
-		# it's mostly useless
-		if filename != None:
-			try:
-				file = open(filename)
-				data = json.loads(file.read())
-				file.close()
+		try:
+			file = open(filename)
+			data = json.loads(file.read())
+			file.close()
 
-				self.tiles = data["map"]
+			self.tiles = data["map"]
 
-				for layer in range(len(self.tiles)):
-					for y in range(len(self.tiles[layer])):
-						self.tiles[layer][y] = list(self.tiles[layer][y])
+			for layer in range(len(self.tiles)):
+				for y in range(len(self.tiles[layer])):
+					self.tiles[layer][y] = list(self.tiles[layer][y])
 
-			except IOError as e:
-				print e
-				print "Error creating map: %s not found." % filename
-				exit()
-		elif size != ():
-			try:
-				self.tiles.append([])
-				for layer in range(size[2]):
-					for i in range(size[0]):
-						self.tiles[layer].append([])
-						for j in range(size[1]):
-							self.tiles[layer][i].append(' ')
-			except:
-				print "Error creating map: expecting a size=(width, height)."
-				exit()
-		else:
-			print "Error creating map: please provide either the filename or the size to be allocated."
+		except IOError as e:
+			print e
+			print "Error creating map: %s not found." % filename
 			exit()
 
 		self.height, self.width = len(self.tiles[Map.GROUND]), len(self.tiles[Map.GROUND][0])
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
-#reading map metadata
-		#try:
-		for i in data["items"]:
-			item = Item(i['name'])
-			item.setPos(self.gridToPos( i['pos'] ) )
-			item.originalPos = item.getPos()
-			self.items.append(item) 
-		#except KeyError as e: 
+		#reading map metadata
+		try:
+			for i in data["items"]:
+				item = Item(i['name'])
+				item.setPos(self.gridToPos( i['pos'] ) )
+				item.originalPos = item.getPos()
+				self.items.append(item) 
+		except KeyError as e: 
 			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS..... 
-#			print('Error reading items: %s' % e)
-#			self.items = []
+			# Nao meu, o mapa pode vir se o campo itens e o programa nao pode fechar...
+			print('Error reading items: %s' % e)
+			self.items = []
 			
-#		try: 
-		self.enemies = data["enemies"]
-		self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
-#		except KeyError as e: 
-#			print('Error reading enemies: %s' % e)
-#			self.enemies = []
+		try: 
+			self.enemies = data["enemies"]
+			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
+		except KeyError as e: 
+			print('Error reading enemies: %s' % e)
+			self.enemies = []
 
 		self.constructModel()
 
