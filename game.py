@@ -114,7 +114,10 @@ class Game(State):
 		# THE TRUE CARTOON SHADER :P
 		self.separation = 1 # Pixels
 		self.filters = CommonFilters(base.win, self.camera.camera)
+		# cell shading
 		filterok = self.filters.setCartoonInk(separation=self.separation)
+		# glow
+		filterok = self.filters.setBloom(blend=(0.5,0.5,0.5,1), desat=-0.5, intensity=1.0, size="small")
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
