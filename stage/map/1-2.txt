@@ -26,7 +26,14 @@
 "o            o  o",
 "o            o  o",
 "oooooooooooooo  o"]
-]
+],
+
+"items": [
+
+],
+
+"enemies": [ ]
+
 
 }
 

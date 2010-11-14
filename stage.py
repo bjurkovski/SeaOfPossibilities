@@ -10,9 +10,6 @@ from panda3d.core import PointLight, DirectionalLight, AmbientLight, Spotlight
 from direct.actor.Actor import Actor
 
 tex = Texture('tex')
-#tex.load('tex/grass.png')
-#tex.load('tex/grass_painterly.jpg')
-#tex.load('tex/grasspaint.png')
 tex.load('tex/grass_painterly_large.jpg')
 
 class Map:
@@ -64,23 +61,23 @@ class Map:
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
 #reading map metadata
-		try:
-			for i in data["items"]:
-				item = Item(i['name'])
-				item.setPos(self.gridToPos( i['pos'] ) )
-				item.originalPos = item.getPos()
-				self.items.append(item) 
-		except KeyError as e: 
+		#try:
+		for i in data["items"]:
+			item = Item(i['name'])
+			item.setPos(self.gridToPos( i['pos'] ) )
+			item.originalPos = item.getPos()
+			self.items.append(item) 
+		#except KeyError as e: 
 			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS..... 
-			print('Error reading items: %s' % e)
-			self.items = []
+#			print('Error reading items: %s' % e)
+#			self.items = []
 			
-		try: 
-			self.enemies = data["enemies"]
-			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
-		except KeyError as e: 
-			print('Error reading enemies: %s' % e)
-			self.enemies = []
+#		try: 
+		self.enemies = data["enemies"]
+		self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
+#		except KeyError as e: 
+#			print('Error reading enemies: %s' % e)
+#			self.enemies = []
 
 		self.constructModel()
 

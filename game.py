@@ -35,22 +35,20 @@ class Game(State):
 
 		try:
 			if ob.type == "item":
-				#instance is ready when we have an item
-				# This is not what it looks like, I can explain!
 				print('need to make item')
-				#ob["instance"].extra = ob
-		except AttributeError:
-			print ob
+		except AttributeError as e:
+			print('Attr error, ', ob , e)
 			
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
 		print(ob.name, ob.getPos() )
 		print(x,y)
+
 		try:
 			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
-		except IndexError:
-			print ob.id
+		except IndexError as e:
+			print('Index error: ' , ob.id, e )
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
@@ -111,12 +109,12 @@ class Game(State):
 		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
 		
 		# THE TRUE CARTOON SHADER :P
-		self.separation = 1 # Pixels
-		self.filters = CommonFilters(base.win, self.camera.camera)
-		# cell shading
-		filterok = self.filters.setCartoonInk(separation=self.separation)
-		# glow
-		filterok = self.filters.setBloom(blend=(0.5,0.5,0.5,1), desat=-0.5, intensity=1.0, size="small")
+#		self.separation = 1 # Pixels
+#		self.filters = CommonFilters(base.win, self.camera.camera)
+#		# cell shading
+#		filterok = self.filters.setCartoonInk(separation=self.separation)
+#		# glow
+#		filterok = self.filters.setBloom(blend=(0.5,0.5,0.5,1), desat=-0.5, intensity=1.0, size="small")
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
@@ -207,27 +205,27 @@ class Game(State):
 					for item in self.currentMap().items:
 						if tuple( item.getPos() ) == (x,y):
 							self.collision(char, item)
-					pass
+					
 				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
 					for enemy in self.currentMap().enemies:
 						if tuple(enemy["pos"]) == (x,y):
 							self.collision(char, enemy["instance"])
-					pass
+
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
 		
 		# commented while fixing the bugs
-		# if b.getType() == 'item':
-			# for i in range(len(self.currentMap().items)):
-				# if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):
-					# self.currentMap().items.pop(i)
-					# x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
-					# self.currentMap().tiles[1][y][x] = ' '
-					# NodePath(b.getNode()).removeNode()
+		if b.getType() == 'item':
+			for i in range(len(self.currentMap().items)):
+				if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):
+					self.currentMap().items.pop(i)
+					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
+					self.currentMap().tiles[1][y][x] = ' '
+					NodePath(b.getNode()).removeNode()
 
-					# # again this is idiotic, but forgive me
-					# a.pickItem(b.extra)
+					# again this is idiotic, but forgive me
+					a.pickItem(b.extra)
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())
