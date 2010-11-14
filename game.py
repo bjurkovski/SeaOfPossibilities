@@ -45,12 +45,7 @@ class Game(State):
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
-		print(ob.name, ob.getPos() )
-		print(x,y)
-		try:
-			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
-		except IndexError:
-			print ob.id
+		self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
