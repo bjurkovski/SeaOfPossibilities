@@ -9,6 +9,7 @@ import sys
 from direct.actor.Actor import Actor
 from panda3d.core import Point2, Point3
 from panda3d.core import LightRampAttrib
+from direct.filter.CommonFilters import CommonFilters
 
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
@@ -32,15 +33,24 @@ class Game(State):
 
 	def spawnObject(self, ob ):
 
-		if ob.type == "item":
-			print('need to make item')
-
+		try:
+			if ob.type == "item":
+				#instance is ready when we have an item
+				# This is not what it looks like, I can explain!
+				print('need to make item')
+				#ob["instance"].extra = ob
+		except AttributeError:
+			print ob
+			
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
 		print(ob.name, ob.getPos() )
 		print(x,y)
-		self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
+		try:
+			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
+		except IndexError:
+			print ob.id
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
@@ -96,8 +106,18 @@ class Game(State):
 			render.setLight(l)
 			
 		#COWABUNGA comment this to stop the madness
-		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
+		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
+		self.node.setShaderAuto()
+		
+		# THE TRUE CARTOON SHADER :P
+		self.separation = 1 # Pixels
+		self.filters = CommonFilters(base.win, self.camera.camera)
+		# cell shading
+		filterok = self.filters.setCartoonInk(separation=self.separation)
+		# glow
+		filterok = self.filters.setBloom(blend=(0.5,0.5,0.5,1), desat=-0.5, intensity=1.0, size="small")
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
@@ -141,16 +161,17 @@ class Game(State):
 			
 			# BLOCK MOVEMENT ACTION
 			for block in self.currentMap().blocks:
-				if block["instance"].isMoving:
-					x,y = self.currentMap().posToGrid(block["instance"].getPos())
-					bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(block["instance"].direction))
+				if block.isMoving:
+					x,y = self.currentMap().posToGrid(block.getPos())
+					bx, by = self.currentMap().posToGrid(block.getCollisionPos(block.direction))
 					if (x,y)==(bx,by) or self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
-						block["instance"].move(block["instance"].direction)
-						self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
-						block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
-						self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = 'b'
+						bx,by = self.currentMap().posToGrid(block.getPos())
+						self.currentMap().tiles[1][by][bx] = ' '
+						block.move(block.direction)
+						bx,by = self.currentMap().posToGrid(block.getPos())
+						self.currentMap().tiles[1][by][bx] = 'b'
 					else:
-						block["instance"].stop()
+						block.stop()
 			
 			if len(directions) == 0:
 				char.stop()
@@ -158,14 +179,15 @@ class Game(State):
 				# BLOCK MOVEMENT TRIGGER
 				if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
 					for block in self.currentMap().blocks:
-						if tuple(block["pos"]) == (x,y):
+						if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
 							print "vo chuta essa merda"
-							bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(char.direction))
+							bx, by = self.currentMap().posToGrid(block.getCollisionPos(char.direction))
 							if self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
-								block["instance"].move(char.direction)
-								self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
-								block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
-								self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = 'b'
+								bx,by = self.currentMap().posToGrid(block.getPos())
+								self.currentMap().tiles[1][by][bx] = ' '
+								block.move(char.direction)
+								bx,by = self.currentMap().posToGrid(block.getPos())
+								self.currentMap().tiles[1][by][bx] = 'b'
 			
 			for dir in directions:
 				#try:
@@ -198,17 +220,17 @@ class Game(State):
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
 		
-		if b.getType() == 'item':
-		
-			for i in range(len(self.currentMap().items)):
-				if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):
-					self.currentMap().items.pop(i)
-					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
-					self.currentMap().tiles[1][y][x] = ' '
-					NodePath(b.getNode()).removeNode()
+		# commented while fixing the bugs
+		# if b.getType() == 'item':
+			# for i in range(len(self.currentMap().items)):
+				# if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):
+					# self.currentMap().items.pop(i)
+					# x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
+					# self.currentMap().tiles[1][y][x] = ' '
+					# NodePath(b.getNode()).removeNode()
 
-					# again this is idiotic, but forgive me
-					a.pickItem(b.extra)
+					# # again this is idiotic, but forgive me
+					# a.pickItem(b.extra)
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())
@@ -219,13 +241,14 @@ class Game(State):
 					a.takeDamage(1)
 
 	def buryDeadPeople(self):
-		for enemy in self.currentMap().enemies:
-			if not enemy["instance"].isAlive():
-				x, y = self.currentMap().posToGrid(NodePath(enemy["instance"].getNode()).getPos())
-				self.currentMap().tiles[1][y][x] = ' '
-				NodePath(enemy["instance"].getNode()).removeNode()
-				self.currentMap().enemies.remove(enemy)
-				#self.currentMap().enemies.pop(e)
+		# commented while fixing the bugs
+		# for enemy in self.currentMap().enemies:
+			# if not enemy["instance"].isAlive():
+				# x, y = self.currentMap().posToGrid(NodePath(enemy["instance"].getNode()).getPos())
+				# self.currentMap().tiles[1][y][x] = ' '
+				# NodePath(enemy["instance"].getNode()).removeNode()
+				# self.currentMap().enemies.remove(enemy)
+				# #self.currentMap().enemies.pop(e)
 
 		#if not self.player.isAlive() : #tratar isso corretamente!
 		for char in self.characters:
