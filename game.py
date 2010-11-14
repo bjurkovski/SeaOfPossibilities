@@ -9,6 +9,7 @@ import sys
 from direct.actor.Actor import Actor
 from panda3d.core import Point2, Point3
 from panda3d.core import LightRampAttrib
+from direct.filter.CommonFilters import CommonFilters
 
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
@@ -105,8 +106,15 @@ class Game(State):
 			render.setLight(l)
 			
 		#COWABUNGA comment this to stop the madness
-		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
+		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
+		self.node.setShaderAuto()
+		
+		# THE TRUE CARTOON SHADER :P
+		self.separation = 1 # Pixels
+		self.filters = CommonFilters(base.win, self.camera.camera)
+		filterok = self.filters.setCartoonInk(separation=self.separation)
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
@@ -150,16 +158,17 @@ class Game(State):
 			
 			# BLOCK MOVEMENT ACTION
 			for block in self.currentMap().blocks:
-				if block["instance"].isMoving:
-					x,y = self.currentMap().posToGrid(block["instance"].getPos())
-					bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(block["instance"].direction))
+				if block.isMoving:
+					x,y = self.currentMap().posToGrid(block.getPos())
+					bx, by = self.currentMap().posToGrid(block.getCollisionPos(block.direction))
 					if (x,y)==(bx,by) or self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
-						block["instance"].move(block["instance"].direction)
-						self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
-						block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
-						self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = 'b'
+						bx,by = self.currentMap().posToGrid(block.getPos())
+						self.currentMap().tiles[1][by][bx] = ' '
+						block.move(block.direction)
+						bx,by = self.currentMap().posToGrid(block.getPos())
+						self.currentMap().tiles[1][by][bx] = 'b'
 					else:
-						block["instance"].stop()
+						block.stop()
 			
 			if len(directions) == 0:
 				char.stop()
@@ -167,14 +176,15 @@ class Game(State):
 				# BLOCK MOVEMENT TRIGGER
 				if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
 					for block in self.currentMap().blocks:
-						if tuple(block["pos"]) == (x,y):
+						if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
 							print "vo chuta essa merda"
-							bx, by = self.currentMap().posToGrid(block["instance"].getCollisionPos(char.direction))
+							bx, by = self.currentMap().posToGrid(block.getCollisionPos(char.direction))
 							if self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
-								block["instance"].move(char.direction)
-								self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = ' '
-								block["pos"] = self.currentMap().posToGrid(block["instance"].getPos())
-								self.currentMap().tiles[1][block["pos"][1]][block["pos"][0]] = 'b'
+								bx,by = self.currentMap().posToGrid(block.getPos())
+								self.currentMap().tiles[1][by][bx] = ' '
+								block.move(char.direction)
+								bx,by = self.currentMap().posToGrid(block.getPos())
+								self.currentMap().tiles[1][by][bx] = 'b'
 			
 			for dir in directions:
 				#try:

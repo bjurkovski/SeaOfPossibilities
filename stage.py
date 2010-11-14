@@ -182,7 +182,7 @@ class Map:
 		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
 		
 		instance = Model("model/" + models[obj_type] + ".json")
-		instance.setPos( (x,y) )
+		instance.setPos(self.gridToPos((x,y)))
 		instance.originalPos = (x,y)
 		instance.name = types[obj_type]
 		instance.symbol = symbols[obj_type]
