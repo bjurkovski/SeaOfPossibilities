@@ -118,10 +118,10 @@ class Map:
 			return "down"
 		# in the last line
 		if point[1] == 0:
-			print('exit', point)			
+			print('exit', point)
 			return "up"
 		if point[0] == 0:
-			print('exit', point)			
+			print('exit', point)
 			return "left"
 		if point[0] == maxX:
 			print('exit', point)
@@ -198,7 +198,7 @@ class Map:
 	def posToGrid(self, pos):
 		x = int(round(self.width/2 + (pos[0])/self.squareWidth))
 		y = self.height-1 - int(round(self.height/2 + (pos[1])/self.squareHeight))
-		
+
 		return (x,y)
 	
 	def gridToPos(self, grid):
