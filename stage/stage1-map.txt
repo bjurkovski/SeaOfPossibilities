@@ -1,0 +1,516 @@
+{
+
+"var_clean_ground" : [
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+"................."
+],
+
+"maps" : {
+
+"1" : { 
+
+[ "var_clean_ground" , 
+
+[
+"ooooooooooooooooo",
+"o               o",
+"o           t   o",
+"o               o",
+"o               o",
+"o               o",
+"o                ",
+"o                ",
+"o  t            o",
+"o               o",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+	{"name": "mine" , "pos": [2,2] } ,
+	{"name" : "sword", "pos" : [5,2] }
+],
+
+"enemies": [
+	{"name" : "EvilJackson" , "pos": [5,5] } 
+]
+
+}
+
+
+"2" : {
+
+[
+
+"var_clean_ground",
+
+[
+"ooooooooooooooooo",
+"o          b  ooo",
+"o          b    o",
+"o          b    o",
+"o      ooooooo  o",
+"o            o  o",
+"             o  o",
+"             o  o",
+"o            o  o",
+"o            o  o",
+"oooooooooooooo  o"],
+
+],
+
+"items": [ ],
+
+"enemies": [ ],
+
+}
+
+
+"3" : { 
+
+[
+
+"var_clean_ground",
+
+[
+"oooooooooooooo  o",
+"o               o",
+"o       t       o",
+"o               o",
+"o               o",
+"o               o",
+"o               o",
+"oooooo           ",
+"o  t o           ",
+"o    b           ",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+
+},
+
+"4" : { 
+
+[
+
+"var_clean_ground",
+
+[
+"ooooooooooooooooo",
+"o  ooo          o",
+"ot o o    t     o",
+"oobooo     t    o",
+"o               o",
+"o                ",
+"o                ",
+"                o",
+"                o",
+"                o",
+"oo   o    ooooooo"],
+
+],
+
+"items": [ ],
+
+"enemies": [],
+
+},
+
+"5" : { 
+
+[
+
+"var_clean_ground",
+
+[
+"ooooooooooooooooo",
+"o        t   t  o",
+"o         t   t o",
+"o          t    o",
+"o               o",
+"                 ",
+"                 ",
+"o    oo         o",
+"o    oo         o",
+"o               o",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [ ],
+
+}
+
+"6" : { 
+
+[
+
+"var_clean_ground",
+
+[
+"oooooo    ooooooo",
+"o    o    o     o",
+"o    o    o     o",
+"o    o          o",
+"o    oooooo     o",
+"                t",
+"                t",
+"o               o",
+"o               o",
+"o              bo",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+
+},
+
+"7" : { 
+
+[
+"var_clean_ground",
+
+[
+"ooooooooooooooooo",
+"o   bbb   bbb   o",
+"o  b   b b   b  o",
+"o  b    b    b  o",
+"o   b       b   o",
+"o    b     b    o",
+"o     b   b     o",
+"o      b b      o",
+"o       b       o",
+"o               o",
+"oooooo     oooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"8" : {
+
+[
+"var_clean_ground",
+
+[
+"ooo   o    oooooo",
+"oto         b  oo",
+"o o         b  bo",
+"o to         oooo",
+"o   o           o",
+"o    o          o",
+"ooo   o         o",
+"  o             o",
+"  o             o",
+"  o             o",
+"ooooooooooooo   o"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"9" : {
+
+[
+"var_clean_ground",
+
+[
+"ooooooooooooo   o",
+"o   o       o   o",
+"o  o        o   o",
+"oo          b   o",
+"ot o        o   o",
+"o   o       o   o",
+"    o       o   o",
+"    o       o   o",
+"o   o       b   o",
+"o   o       o   o",
+"ooooooooooooo   o"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"10" : {
+
+[ "var_clean_ground",
+
+[
+"oooooooooooooo  o",
+"o            o  o",
+"o   t           o",
+"o               o",
+"o               o",
+"                o",
+"           b    o",
+"o           o   o",
+"o  t      ooo   o",
+"ob              o",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"11" : {
+
+[
+"var_clean_ground",
+
+[
+"ooooooooooooooooo",
+"o        o   o  o",
+"o        o   o  o",
+"o        obbbo  o",
+"ooo             o",
+"   oo            ",
+"       o         ",
+"ooo    o        o",
+"o  oooo         o",
+"ot              o",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"12" : {
+
+[
+"var_clean_ground",
+
+[
+"ooooooo  oooooooo",
+"o               o",
+"o               o",
+"o               o",
+"o               o",
+"o                ",
+"o                ",
+"o               o",
+"o               o",
+"o               o",
+"oooo  ooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"13" : {
+
+[
+"var_clean_ground",
+
+[
+"oooo  ooooooooooo",
+"o           o   o",
+"o           o   o",
+"o    bb     ooooo",
+"o               o",
+"o               o",
+"o  t    t       o",
+"o               o",
+"o  t    t       o",
+"o   t  t        o",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"14" : {
+
+[
+"var_clean_ground",
+
+[
+"ooooooo  oooooooo",
+"o               o",
+"ooo             o",
+"o            o  o",
+"oobbooooooooo ooo",
+"o               o",
+"ooooooooooooobooo",
+"o               o",
+"o               o",
+"o               o",
+"ooooooo  oooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"15" : {
+
+[
+"var_clean_ground",
+
+[
+"oooooooooooooooooo",
+"o              to",
+"o  t            o",
+"o               o",
+"o               o",
+"o                ",
+"o      bbb       ",
+"o               o",
+"o               b",
+"o               o",
+"ooooooo  oooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"16" : {
+
+[
+"var_clean_ground",
+
+[
+"ooooooooooooooooo",
+"o              to",
+"o  t            o",
+"o      ooo      o",
+"o      ooo      o",
+"       ooo      o",
+"       ooo      o",
+"o               o",
+"o               b",
+"o               o",
+"ooooooo  oooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"17" : {
+
+[
+"var_clean_ground",
+
+[
+"oooooooooooooooooo",
+"o              to",
+"o  t            o",
+"o               o",
+"o               o",
+"       o o      o",
+"       bbb      o",
+"o               o",
+"o               b",
+"o               o",
+"ooooooo  oooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+},
+
+"18" : {
+
+[
+"var_clean_ground",
+
+[
+"ooooooo  oooooooo",
+"o               o",
+"o  ooo o o ooo  o",
+"o   o  ooo oo   o",
+"o   o  o o ooo  o",
+"o               o",
+"o  ooo oo o oo  o",
+"o  oo  o oo o o o",
+"o  ooo o  o oo  o",
+"o               o",
+"ooooooooooooooooo"],
+
+],
+
+"items": [
+
+],
+
+"enemies": [],
+
+},
+
+}

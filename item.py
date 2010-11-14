@@ -4,7 +4,7 @@ from model import *
 def loadItens():
 	file = open('cfg/itens.json')
 	data = json.loads(file.read())
-	file.close()		
+	file.close()
 	return data
 
 class Item(Model):

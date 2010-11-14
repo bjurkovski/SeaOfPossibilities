@@ -3,7 +3,7 @@
 	"start": "1",
 
 	"rooms":
-    {
+	{
 		"1": { "map": "stage/map/1-1.txt", 
 			   "doors": {"right": "2"} 
 			 },
@@ -97,6 +97,8 @@
 	"lights" : [ {"type" : "point" , "color" : [1,1,1,1] , "pos" : [0,-1,0] },
 			     {"type" : "not_used", "color" : [1,1,1,1] , "hpr" : [0,-60,0] },
 				 {"type" : "not_used" , "color" : [0.1,0.1,0.5,1] }
-				]
+				] ,
+
+	"music" : "cool_and_calm.ogg"
 }
 
