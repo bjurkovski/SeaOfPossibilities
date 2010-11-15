@@ -64,22 +64,23 @@ class Map:
 		self.squareHeight, self.squareWidth = 2.0/self.height, 2.0/self.width
 
 #reading map metadata
+		items = None
 		try:
-			for i in data["items"]:
+			items = data["items"]
+		except KeyError as e:
+			self.items = []
+		
+		if items:
+			for i in items:
 				item = Item(i['name'])
 				item.setPos(self.gridToPos( i['pos'] ) )
 				item.originalPos = item.getPos()
 				self.items.append(item) 
-		except KeyError as e: 
-			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS..... 
-			print('Error reading items: %s' % e)
-			self.items = []
-			
+		
 		try: 
 			self.enemies = data["enemies"]
 			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
 		except KeyError as e: 
-			print('Error reading enemies: %s' % e)
 			self.enemies = []
 
 		self.constructModel()
@@ -95,9 +96,6 @@ class Map:
 
 	def tileType(self, layer, point):
 		return self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
-
-#	def tileIs(self, layer, point, tilename):
-#		return tilename == self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
 	def posIs(self, layer, pos, tilename):
 		x,y = self.posToGrid(pos)
@@ -115,17 +113,13 @@ class Map:
 		
 		# in the first line
 		if point[1] == maxY:
-			print('exit', point)
 			return "down"
 		# in the last line
 		if point[1] == 0:
-			print('exit', point)
 			return "up"
 		if point[0] == 0:
-			print('exit', point)
 			return "left"
 		if point[0] == maxX:
-			print('exit', point)
 			return "right"
 		
 		return direc

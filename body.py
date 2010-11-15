@@ -13,6 +13,7 @@ class Body:
 		
 		self.type = type
 		self.id = Body.id
+		self.map = None
 
 		self.originalPos = None
 
@@ -28,9 +29,6 @@ class Body:
 		self.isMoving = False
 		self.displacement = Point2(0,0)
 
-		#I know this is the biggest stupidity, sorry...
-		self.extra	= None	
-
 		Body.id+= 1
 
 	def getNode(self):
@@ -45,6 +43,9 @@ class Body:
 		except KeyError:
 			pass
 			#print("Using default render data for model")
+			
+	def setMap(self, map):
+		self.map = map
 			
 	def calculateDimensions(self):
 		min, max = self.model.getTightBounds()
@@ -110,13 +111,36 @@ class Body:
 		except KeyError:
 			return self.getPos()
 			
-	def move(self, direction):		
+	def setDirection(self, direction):
+		self.direction = direction
+			
+	def move(self, direction):
 		try:
-			self.displacement = self.speed[direction]			
-			if self.isMoving is False:
-				self.isMoving = True
-			self.setPos(self.getPos() + self.displacement)
-			self.oldDisplacement = self.displacement
-			self.displacement = Point2(0,0)
+			inTiles = ["block", "obstacle", "tree"]
+			x,y = self.map.posToGrid(self.getPos())
+			cx, cy = self.map.posToGrid(self.getCollisionPos(self.direction))
+			
+			try:
+				if (x,y)==(cx,cy) or self.map.tileType(1, (cx,cy)) == 'free':
+					if self.type in inTiles:
+						cx,cy = self.map.posToGrid(self.getPos())
+						self.map.tiles[1][cy][cx] = ' '
+					
+					#block.move(block.direction)
+					self.displacement = self.speed[direction]			
+					if self.isMoving is False:
+						self.isMoving = True
+					self.setPos(self.getPos() + self.displacement)
+					self.oldDisplacement = self.displacement
+					self.displacement = Point2(0,0)
+					
+					if self.type in inTiles:
+						cx,cy = self.map.posToGrid(self.getPos())
+						self.map.tiles[1][cy][cx] = self.symbol #'b'
+				else:
+					self.setDirection(direction)
+					self.stop()
+			except IndexError:
+				pass
 		except KeyError:
 			pass

@@ -41,7 +41,8 @@ class Game(State):
 				#ob["instance"].extra = ob
 		except AttributeError:
 			print ob
-			
+		
+		ob.setMap(self.currentMap())
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
@@ -65,6 +66,9 @@ class Game(State):
 				self.spawnObject(block)
 
 			self.currentMap().started = True
+			
+		self.characters[self.player].setMap(self.currentMap())
+		self.characters[self.player2].setMap(self.currentMap())
 
 	def changeMap(self,direction):
 		self.exitMap()
@@ -89,10 +93,10 @@ class Game(State):
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 
 		char = self.characters[self.player]
-		self.players.append( HumanPlayer( char , keys ) )
+		self.players.append(HumanPlayer(char, keys))
 		
 		char2 = self.characters[self.player2]
-		self.players.append(HumanPlayer( char2 , keys ))
+		self.players.append(HumanPlayer(char2 , keys))
 		
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
@@ -157,60 +161,33 @@ class Game(State):
 			# BLOCK MOVEMENT ACTION
 			for block in self.currentMap().blocks:
 				if block.isMoving:
-					x,y = self.currentMap().posToGrid(block.getPos())
-					bx, by = self.currentMap().posToGrid(block.getCollisionPos(block.direction))
-					if (x,y)==(bx,by) or self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
-						bx,by = self.currentMap().posToGrid(block.getPos())
-						self.currentMap().tiles[1][by][bx] = ' '
-						block.move(block.direction)
-						bx,by = self.currentMap().posToGrid(block.getPos())
-						self.currentMap().tiles[1][by][bx] = 'b'
-					else:
-						block.stop()
+					block.move(block.direction)
 			
-			if len(directions) == 0:
-				char.stop()
-				x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
-				# BLOCK MOVEMENT TRIGGER
-				if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
-					for block in self.currentMap().blocks:
-						if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
-							print "vo chuta essa merda"
-							bx, by = self.currentMap().posToGrid(block.getCollisionPos(char.direction))
-							if self.stage.maps[self.room].tileType(1, (bx,by)) == 'free':
-								bx,by = self.currentMap().posToGrid(block.getPos())
-								self.currentMap().tiles[1][by][bx] = ' '
-								block.move(char.direction)
-								bx,by = self.currentMap().posToGrid(block.getPos())
-								self.currentMap().tiles[1][by][bx] = 'b'
+#			if len(directions) == 0:
+#				char.stop()
+			x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
+			# BLOCK MOVEMENT TRIGGER
+			if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
+				for block in self.currentMap().blocks:
+					if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
+						block.move(char.direction)
 			
 			for dir in directions:
-				#try:
-					#TODO to be re-refactored
-					x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
-
-					if self.stage.maps[self.room].tileType(1, (x,y)) == 'free':
-						char.move(dir)
-						
-						ex = self.stage.maps[self.room].getExit((x,y))
-						if ex and (ex in self.stage.doors[self.room].keys()):
-							self.changeMap(ex)
-					else:
-						char.setDirection(dir)
-
-					if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
-						for item in self.currentMap().items:
-							if tuple(item["pos"]) == (x,y):
-								self.collision(char, item['instance'])
-					
-					elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-						for enemy in self.currentMap().enemies:
-							if tuple(enemy["pos"]) == (x,y):
-								self.collision(char, enemy["instance"])
-
-				#except Exception as e:
-				#	print(e)
-				#	pass
+				char.move(dir)
+				x, y = self.currentMap().posToGrid(char.getPos())
+				if self.currentMap().tileType(1, (x,y)) == 'item':
+					for item in self.currentMap().items:
+						if tuple(item["pos"]) == (x,y):
+							self.collision(char, item['instance'])
+				
+				elif self.currentMap().tileType(1, (x,y)) == 'enemy':
+					for enemy in self.currentMap().enemies:
+						if tuple(enemy["pos"]) == (x,y):
+							self.collision(char, enemy["instance"])
+				
+				ex = self.stage.maps[self.room].getExit((x,y))
+				if ex and (ex in self.stage.doors[self.room].keys()):
+					self.changeMap(ex)
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()

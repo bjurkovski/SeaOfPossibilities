@@ -18,5 +18,5 @@ class Model(Body):
 	
 	def move(self, direction):
 		Body.move(self, direction)
-		self.direction = direction
+		Body.setDirection(self, direction)
 

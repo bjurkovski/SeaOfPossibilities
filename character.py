@@ -49,21 +49,17 @@ class Character(Body):
 	def move(self, direction):
 		angles = {"up": 270, "left": 0, "down": 90, "right": 180}
 		
-		try:
-			self.setDirection(direction)
-			if self.isMoving is False:
-				self.model.loop("walk")
-			Body.move(self, direction)
-		except Exception as e:
-			print('no movimento', e)
-			pass
+		self.setDirection(direction)
+		if self.isMoving is False:
+			self.model.loop("walk")
+		Body.move(self, direction)
 			
 	def setDirection(self, direction):
+		Body.setDirection(self, direction)
 		angles = {"up": 270, "left": 0, "down": 90, "right": 180} 
 		#colocar no json depois...
 
 		self.turn(angles[direction])
-		self.direction = direction
 
 	def changeSlot(self):
 		self.currentSlot += 1
