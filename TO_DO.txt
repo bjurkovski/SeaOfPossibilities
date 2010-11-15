@@ -14,3 +14,18 @@ TO DO:
 			Char.id == Item.id pode retornar true, o que nao queremos!!
 		* Usar strings como prefixo: objeto.id = "Tipo" + Classe.id
 	* Usar instancias para modelos que repetem (tipo pedras) - checar loader.loadModelCopy()
+
+DESIGNER (Fialho eh o responsavel por repassar a ele):
+	* Personagem principal
+		* Parado, Caminhando, Chutando pedra, bracos pra cima (pra pegar item), atirando item, tomando dano
+	* Gancho
+		* Parado
+	* Inimigo
+		* Caminhando, tomando dano, atacando
+	* Fruta (pra recuperar vida)
+		* Parada
+	* Barril (ou coisa do tipo)
+		* (pra ser agarrado pelo personagem e atirado nos inimigos)
+		* Parado, Sendo destruido
+		
+	* Se houver duvida quanto ao proposito ou definicao de alguma das animacoes, pede pra ele ver videos do pateta no youtube
