@@ -163,8 +163,9 @@ class Game(State):
 				if block.isMoving:
 					block.move(block.direction)
 			
-#			if len(directions) == 0:
-#				char.stop()
+			if len(directions) == 0:
+				char.stop()
+				
 			x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
 			# BLOCK MOVEMENT TRIGGER
 			if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
