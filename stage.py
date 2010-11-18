@@ -204,24 +204,12 @@ class Stage:
 
 		for room in data["rooms"]:
 			
-			# may be read from a separate file if specified
-			try:
-				mapIsFile = data["rooms"][room]["map"]
-			except KeyError:
-				mapIsFile = None
-
-			if mapIsFile:
-				file = open(filename)
-				data = json.loads(file.read())
-				file.close()
-				self.maps[room] = Map(data)
-			else:
-				self.maps[room] = Map(mapData[room])
+			self.maps[room] = Map(mapData[room])
 
 			self.doors[room] = {}
 
-			for door in data["rooms"][room]["doors"]:
-				self.doors[room][door] = data["rooms"][room]["doors"][door]
+			for door in data["rooms"][room]:
+				self.doors[room][door] = data["rooms"][room][door]
 
 		stFile.close()
 		mpFile.close()
