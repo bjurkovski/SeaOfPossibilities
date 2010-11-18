@@ -5,92 +5,79 @@
 
 	"rooms":
 	{
-		"1": { "map": "stage/map/1-1.txt", 
+		"1": {  
 			   "doors": {"right": "2"} 
 			 },
 
 		"2": { 
-				"map": "stage/map/1-2.txt", 
+				 
 				"doors": {"left" : "1", "down" : "3" } 
 			 },
 
 		"3": { 
-				"map": "stage/map/1-3.txt", 
+				
 				"doors": {"up" : "2", "right" : "4"} 
 			 },
 
 		"4": { 
-				"map": "stage/map/1-4.txt", 
+				
 				"doors": {"left" : "3" , "right" : "5" , "down" : "8" } 
 			 },
 
 		"5": { 
-				"map": "stage/map/1-5.txt", 
+				
 				"doors": {"left" : "4" , "right" : "6" } 
 			 },
 		
-		"6": { 
-				"map": "stage/map/1-6.txt", 
+		"6": {  
 				"doors": {"left" : "5" , "right" : "SECRET" , "up" : "7" } 
 			 },
 
-		"7": { 
-				"map": "stage/map/1-7.txt", 
+		"7": {  
 				"doors": { "down" : "6" } 
 			 },
 
-		"8": { 
-				"map": "stage/map/1-8.txt", 
+		"8": {  
 				"doors": {"up" : "4" , "down" : "9" } 
 			 },
 
-		"9": { 
-				"map": "stage/map/1-9.txt", 
+		"9": {  
 				"doors": {"up" : "8" , "down" : "10" } 
 			 },
 
-		"10": { 
-				"map": "stage/map/1-10.txt", 
+		"10": {  
 				"doors": {"up" : "9" , "left" : "11" } 
 			 },
 
-		"11": { 
-				"map": "stage/map/1-11.txt", 
+		"11": {  
 				"doors": {"left" : "12" , "right" : "10", "up" : "18" } 
 			 },
 
-		"12": { 
-				"map": "stage/map/1-12.txt", 
+		"12": {  
 				"doors": { "up" : "14", "right" : "11", "down" : "13" } 
 			 },
 
-		"13": { 
-				"map": "stage/map/1-13.txt", 
+		"13": {  
 				"doors": { "up" : "12" } 
 			 },
 
-		"14": { 
-				"map": "stage/map/1-14.txt", 
+		"14": {  
 				"doors": { "right" : "18" , "up" : "15", "down" : "12" } 
 			 },
 
-		"15": { 
-				"map": "stage/map/1-15.txt", 
+		"15": {  
 				"doors": { "up" : 16, "right" : "17" , "down" : "14" } 
 			 },
 
-		"16": { 
-				"map": "stage/map/1-16.txt", 
+		"16": {  
 				"doors": { "down" :  "15"  } 
 			 },
 
-		"17": { 
-				"map": "stage/map/1-17.txt", 
+		"17": {  
 				"doors": {"down" : "18" , "left" : "15" } 
 			 },
 
-		"18": { 
-				"map": "stage/map/1-18.txt", 
+		"18": {  
 				"doors": { "up" : "17" } 
 			 }
 	} ,

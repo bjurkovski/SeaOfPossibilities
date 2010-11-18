@@ -15,7 +15,7 @@ tex.load('tex/grass_painterly_large.jpg')
 class Map:
 	GROUND = 0
 	COLLISION = 1
-	def __init__(self, filename):
+	def __init__(self, data):
 		self.started = False
 		self.tiles = []
 		self.items = []
@@ -25,9 +25,6 @@ class Map:
 		self.readConfig()
 
 		try:
-			file = open(filename)
-			data = json.loads(file.read())
-			file.close()
 
 			self.tiles = data["map"]
 
@@ -214,9 +211,12 @@ class Stage:
 				mapIsFile = None
 
 			if mapIsFile:
-				self.maps[room] = Map(mapIsFile)
+				file = open(filename)
+				data = json.loads(file.read())
+				file.close()
+				self.maps[room] = Map(data)
 			else:
-				self.maps[room] = mapData['maps'][room]
+				self.maps[room] = Map(mapData[room])
 
 			self.doors[room] = {}
 
