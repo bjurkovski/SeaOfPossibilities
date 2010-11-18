@@ -83,10 +83,11 @@ class StateMachine(FSM, ShowBase, Input):
 		# to do: read this from a config file
 		# or from user interface
 		if not self.states[self.newState]:
-			initialStage = "stage/stage1.txt"
+			initialStage = "stage/stage1.txt", "stage/stage1-map.txt"
 			chars = {'Jackson': Character("char/Jackson"),
 					'Jackson2': Character("char/Jackson2")}
-			self.states[self.newState] = Game(Stage(initialStage), chars, "Jackson", "Jackson2")
+			
+			self.states[self.newState] = Game(Stage(*initialStage), chars, "Jackson", "Jackson2")
 			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
 		else:
 			self.states[self.newState].enter()

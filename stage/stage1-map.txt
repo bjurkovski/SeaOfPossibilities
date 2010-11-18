@@ -12,26 +12,29 @@
 ".................",
 ".................",
 "................."
-],
-
-"maps" : {
+] ,
 
 "1" : { 
 
-[ "var_clean_ground" , 
+"map" : 
+
+[ 
+
+"var_clean_ground" , 
 
 [
-"ooooooooooooooooo",
-"o               o",
-"o           t   o",
-"o               o",
-"o               o",
-"o               o",
-"o                ",
-"o                ",
-"o  t            o",
-"o               o",
-"ooooooooooooooooo"],
+	"ooooooooooooooooo",
+	"o               o",
+	"o           t   o",
+	"o               o",
+	"o               o",
+	"o               o",
+	"o                ",
+	"o                ",
+	"o  t            o",
+	"o               o",
+	"ooooooooooooooooo"
+]
 
 ],
 
@@ -44,12 +47,12 @@
 	{"name" : "EvilJackson" , "pos": [5,5] } 
 ]
 
-}
+},
 
 
 "2" : {
 
-[
+"map" :  [
 
 "var_clean_ground",
 
@@ -64,20 +67,20 @@
 "             o  o",
 "o            o  o",
 "o            o  o",
-"oooooooooooooo  o"],
+"oooooooooooooo  o"]
 
 ],
 
 "items": [ ],
 
-"enemies": [ ],
+"enemies": [ ]
 
-}
+},
 
 
 "3" : { 
 
-[
+"map" :  [
 
 "var_clean_ground",
 
@@ -92,21 +95,19 @@
 "oooooo           ",
 "o  t o           ",
 "o    b           ",
-"ooooooooooooooooo"],
+"ooooooooooooooooo"]
 
 ],
 
-"items": [
+"items": [],
 
-],
-
-"enemies": [],
+"enemies": []
 
 },
 
 "4" : { 
 
-[
+"map" : [
 
 "var_clean_ground",
 
@@ -121,19 +122,19 @@
 "                o",
 "                o",
 "                o",
-"oo   o    ooooooo"],
+"oo   o    ooooooo"]
 
 ],
 
 "items": [ ],
 
-"enemies": [],
+"enemies": []
 
 },
 
 "5" : { 
 
-[
+"map" : [
 
 "var_clean_ground",
 
@@ -148,21 +149,19 @@
 "o    oo         o",
 "o    oo         o",
 "o               o",
-"ooooooooooooooooo"],
+"ooooooooooooooooo"]
 
 ],
 
-"items": [
+"items": [ ],
 
-],
+"enemies": [ ]
 
-"enemies": [ ],
-
-}
+},
 
 "6" : { 
 
-[
+"map" : [
 
 "var_clean_ground",
 
@@ -177,7 +176,7 @@
 "o               o",
 "o               o",
 "o              bo",
-"ooooooooooooooooo"],
+"ooooooooooooooooo"]
 
 ],
 
@@ -185,13 +184,13 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 
 },
 
 "7" : { 
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -205,7 +204,7 @@
 "o      b b      o",
 "o       b       o",
 "o               o",
-"oooooo     oooooo"],
+"oooooo     oooooo"]
 
 ],
 
@@ -213,12 +212,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "8" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -232,7 +231,7 @@
 "  o             o",
 "  o             o",
 "  o             o",
-"ooooooooooooo   o"],
+"ooooooooooooo   o"]
 
 ],
 
@@ -240,12 +239,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "9" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -259,7 +258,7 @@
 "    o       o   o",
 "o   o       b   o",
 "o   o       o   o",
-"ooooooooooooo   o"],
+"ooooooooooooo   o"]
 
 ],
 
@@ -267,12 +266,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "10" : {
 
-[ "var_clean_ground",
+"map" : [ "var_clean_ground",
 
 [
 "oooooooooooooo  o",
@@ -285,7 +284,7 @@
 "o           o   o",
 "o  t      ooo   o",
 "ob              o",
-"ooooooooooooooooo"],
+"ooooooooooooooooo"]
 
 ],
 
@@ -293,12 +292,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "11" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -312,7 +311,7 @@
 "ooo    o        o",
 "o  oooo         o",
 "ot              o",
-"ooooooooooooooooo"],
+"ooooooooooooooooo"]
 
 ],
 
@@ -320,12 +319,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "12" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -339,7 +338,7 @@
 "o               o",
 "o               o",
 "o               o",
-"oooo  ooooooooooo"],
+"oooo  ooooooooooo"]
 
 ],
 
@@ -347,12 +346,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "13" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -366,7 +365,7 @@
 "o               o",
 "o  t    t       o",
 "o   t  t        o",
-"ooooooooooooooooo"],
+"ooooooooooooooooo"]
 
 ],
 
@@ -374,12 +373,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "14" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -393,7 +392,7 @@
 "o               o",
 "o               o",
 "o               o",
-"ooooooo  oooooooo"],
+"ooooooo  oooooooo"]
 
 ],
 
@@ -401,12 +400,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "15" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -420,7 +419,7 @@
 "o               o",
 "o               b",
 "o               o",
-"ooooooo  oooooooo"],
+"ooooooo  oooooooo"]
 
 ],
 
@@ -428,12 +427,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "16" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -447,7 +446,7 @@
 "o               o",
 "o               b",
 "o               o",
-"ooooooo  oooooooo"],
+"ooooooo  oooooooo"]
 
 ],
 
@@ -455,12 +454,12 @@
 
 ],
 
-"enemies": [],
+"enemies": []
 },
 
 "17" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -474,20 +473,18 @@
 "o               o",
 "o               b",
 "o               o",
-"ooooooo  oooooooo"],
+"ooooooo  oooooooo"]
 
 ],
 
-"items": [
+"items": [],
 
-],
-
-"enemies": [],
+"enemies": []
 },
 
 "18" : {
 
-[
+"map" : [
 "var_clean_ground",
 
 [
@@ -501,16 +498,14 @@
 "o  oo  o oo o o o",
 "o  ooo o  o oo  o",
 "o               o",
-"ooooooooooooooooo"],
+"ooooooooooooooooo"]
 
 ],
 
-"items": [
+"items": [],
 
-],
+"enemies": []
 
-"enemies": [],
-
-},
+}
 
 }

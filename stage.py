@@ -187,22 +187,44 @@ class Map:
 
 class Stage:
 
-	def __init__(self, stageFile):
-		file = open(stageFile)
-		data = json.loads(file.read())
+	def __init__(self, stageFile, mapFile = None):
+		stFile = open(stageFile)
+		
+		if mapFile:
+			mpFile = open(mapFile)
 
-		self.readLights(data['lights'])
+		data = json.loads(stFile.read())
+
+		if mapFile:
+			mapData = json.loads(mpFile.read())
+
+		self.readLights( data["lights"] )
 
 		self.start = data["start"]
+		
 		self.maps = {}
 		self.doors = {}
+
 		for room in data["rooms"]:
-			self.maps[room] = Map(filename=data["rooms"][room]["map"])
+			
+			# may be read from a separate file if specified
+			try:
+				mapIsFile = data["rooms"][room]["map"]
+			except KeyError:
+				mapIsFile = None
+
+			if mapIsFile:
+				self.maps[room] = Map(mapIsFile)
+			else:
+				self.maps[room] = mapData['maps'][room]
+
 			self.doors[room] = {}
+
 			for door in data["rooms"][room]["doors"]:
 				self.doors[room][door] = data["rooms"][room]["doors"][door]
-			
-		file.close()
+
+		stFile.close()
+		mpFile.close()
 
 	def readLights(self,light_data):
 		self.lights = []
