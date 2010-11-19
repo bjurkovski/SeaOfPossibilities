@@ -1,23 +1,31 @@
-BUGS:
-	* Character direction/rotation when hit the directional buttons
-	* Camera Position (class Cam.py NOT WORKING!!!)
-	* Refatorar Game.move
-	* Refatorar Game.collision (talvez criando métodos de Body que saibam como o objeto "reage" à colisão. i.e - 'mine' sabe que uma colisão com um character resulta em dano + auto-destruição)
-
-	* Constantes com os nomes das layers
-
-TODO (urgente! sexta-feira):
-	* Colisões (última fase: implementar o teste na layer 1)
-	* Pegando itens do chão (e usar)
-	* Inimigos [andando]
-	* Empurrando blocos no chão
-	* Menus
-
-CORRIGIR
-
+TO DO:
+	* NÃO PHUCKING ADICIONAR COISAS NOVAS ATÉ CORRIGIR AS PORQUICES ATUAIS!!!!!!!!!!!!!
+	* Organizar os arquivos (ACABAR COM A PASTA "cfg", cada arquivo deve estar na sua pasta semantica correta)
+		* Padronizar as extensões:
+			* Characters: .char
+			* Model: .mod
+			* Mapa: .map
+			* Stage: .stg
+	* Criar um Singleton para managear resources (Jurk tem uma ideia quer fazer isso do jeito dele! - discutam com ele se acharem necessário)
+	* Resolver de uma vez por todas: ou terminar a classe do Apus (DE DEIXAR TUDO FUNCIONANDO, DIREITO, MEIO LOGO) ou deixar do jeito que tá)
+		* Levar em conta a última refatoração (Body tem uma referência pro map e um move interno)
+	* ARRUMAR de uma vez por todas a questão dos IDs de Body, Item, Char, sei lá, o diabo a quatro
+		* NÃO PODE usar somente um valor numérico, pq a linguagem desconsidera o tipo, entao
+			Char.id == Item.id pode retornar true, o que nao queremos!!
+		* Usar strings como prefixo: objeto.id = "Tipo" + Classe.id
 	* Usar instancias para modelos que repetem (tipo pedras) - checar loader.loadModelCopy()
-	* Usar só pos contínuas e fazer o mapa converter corretamente
-	* Mover inimigo com um for each enemy no game	
 
-	* Pegar todas as exceções e jogar num log
-
+DESIGNER (Fialho eh o responsavel por repassar a ele):
+	* Personagem principal
+		* Parado, Caminhando, Chutando pedra, bracos pra cima (pra pegar item), atirando item, tomando dano
+	* Gancho
+		* Parado
+	* Inimigo
+		* Caminhando, tomando dano, atacando
+	* Fruta (pra recuperar vida)
+		* Parada
+	* Barril (ou coisa do tipo)
+		* (pra ser agarrado pelo personagem e atirado nos inimigos)
+		* Parado, Sendo destruido
+		
+	* Se houver duvida quanto ao proposito ou definicao de alguma das animacoes, pede pra ele ver videos do pateta no youtube

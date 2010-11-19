@@ -42,7 +42,12 @@ class Map:
 
 		#reading map metadata
 		try:
-			for i in data["items"]:
+			items = data["items"]
+		except KeyError as e:
+			self.items = []
+		
+		try:
+			for i in items:
 				item = Item(i['name'])
 				item.setPos(self.gridToPos( i['pos'] ) )
 				item.originalPos = item.getPos()
@@ -57,7 +62,6 @@ class Map:
 			self.enemies = data["enemies"]
 			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
 		except KeyError as e: 
-			print('Error reading enemies: %s' % e)
 			self.enemies = []
 
 		self.constructModel()
@@ -86,17 +90,13 @@ class Map:
 		
 		# in the first line
 		if point[1] == maxY:
-			print('exit', point)
 			return "down"
 		# in the last line
 		if point[1] == 0:
-			print('exit', point)
 			return "up"
 		if point[0] == 0:
-			print('exit', point)
 			return "left"
 		if point[0] == maxX:
-			print('exit', point)
 			return "right"
 		
 		return direc
@@ -149,7 +149,7 @@ class Map:
 		
 		instance = Model("model/" + models[obj_type] + ".json")
 		instance.setPos(self.gridToPos((x,y)))
-		instance.originalPos = (x,y)
+		instance.originalPos = instance.getPos()
 		instance.name = types[obj_type]
 		instance.symbol = symbols[obj_type]
 		instance.type = obj_type
