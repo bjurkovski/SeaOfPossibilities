@@ -192,7 +192,6 @@ class Game(State):
 
 				isFree = self.currentMap().tileType(Map.COLLISION, (x,y)) == 'free'
 				if  isFree:
-
 					char.move(dir)
 					ex = self.stage.maps[self.room].getExit((x,y))
 					
@@ -201,9 +200,11 @@ class Game(State):
 				else:
 					char.setDirection(dir)
 
-				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
+				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':					
 					for item in self.currentMap().items:
+						print(item.getPos() ,(x,y))
 						if tuple( item.getPos() ) == (x,y):
+							print("colidindo mesmo")
 							self.collision(char, item)
 					
 				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
