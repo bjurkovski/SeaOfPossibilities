@@ -37,25 +37,3 @@ class HumanPlayer(Player):
 		if len(actions) != 0 :
 			self.character.tryToDo = actions[0] #Soh deve executar uma action!
 		
-		
-
-		
-class ComputerPlayer(Player):
-	def __init__ (self, character, id = -1) :
-		Player.__init__(self, character, id)
-	
-	def sendCommand(self) :
-		Player.sendCommand(self)
-		#directions = ["up%d"%(self.id),"right%d"%(self.id)]
-		directions = ["up","right"]
-		self.character.tryToMove = directions
-		#ok, isso vai mudar!
-
-
-class ClientPlayer(Player): #comofas com os sockets?
-	def __init__ (self, character, id = -1) :
-		Player.__init__(self, character, id)
-	
-	def sendCommand(self) :
-		Player.sendCommand(self)
-		#ok, isso vai mudar!

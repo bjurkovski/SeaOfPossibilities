@@ -108,16 +108,16 @@ class Game(State):
 			render.setLight(l)
 			
 		#COWABUNGA comment this to stop the madness
-		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
 		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
 		
 		# THE TRUE CARTOON SHADER :P
 #		self.separation = 1 # Pixels
 #		self.filters = CommonFilters(base.win, self.camera.camera)
-#		# cell shading
+		# cell shading
 #		filterok = self.filters.setCartoonInk(separation=self.separation)
-#		# glow
+		# glow
 #		filterok = self.filters.setBloom(blend=(0.5,0.5,0.5,1), desat=-0.5, intensity=1.0, size="small")
 
 		self.camera.setPos(0, -2.5, -2.5)
@@ -238,84 +238,7 @@ class Game(State):
 		for char in self.characters:
 			if not self.characters[char].isAlive():
 				self.isOver = True
-
-
-	def sendCommands(self):
-		try:
-			for player in self.players :
-				player.sendCommand()
-		except Exception as e:
-			print(e)
-			pass
 	
-	def processActions(self):
-		try:
-			for char in self.characters.values():
-				#char = self.characters[char]
-				#1st Step: Process movements
-				for dir in char.tryToMove :
-					try:
-						print(dir)
-						#TODO to be re-refactored
-						x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
 
-						if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
-							char.move(dir)
-							
-							ex = self.stage.maps[self.room].getExit((x,y))		
-							if ex and (ex in self.stage.doors[self.room].keys()):
-								self.changeMap(ex)
-						else:
-							char.setDirection(dir)
-							
-						if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
-							for item in self.currentMap().items:
-								if tuple(item["pos"]) == (x,y):
-									self.collision(self.characters[self.player], item["instance"])
-						
-						elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
-							for enemy in self.currentMap().enemies:
-								if tuple(enemy["pos"]) == (x,y):
-									self.collision(self.characters[self.player], enemy["instance"])
-					except Exception as e:
-						print(e.message)
-						pass
-				#2nd Step: Process actions
-				#TODO
-			
-			for char in self.currentMap().enemies:
-				char = char["instance"]
-				#1st Step: Process movements
-				for dir in char.tryToMove :
-					try:
-						print(dir)
-						#TODO to be re-refactored
-						x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
-
-						if self.stage.maps[self.room].tileIs(1, (x,y), 'free'):
-							char.move(dir)
-							ex = self.stage.maps[self.room].getExit((x,y))		
-							if ex and (ex in self.stage.doors[self.room].keys()):
-								self.changeMap(ex)
-						else:
-							char.setDirection(dir)
-							
-						if self.stage.maps[self.room].tileIs(1, (x,y), 'item'):
-							for item in self.currentMap().items:
-								if tuple(item["pos"]) == (x,y):
-									self.collision(self.characters[self.player], item["instance"])
-						
-						elif self.stage.maps[self.room].tileIs(1, (x,y), 'enemy'):
-							for enemy in self.currentMap().enemies:
-								if tuple(enemy["pos"]) == (x,y):
-									self.collision(self.characters[self.player], enemy["instance"])
-					except Exception as e:
-						print(e)
-						pass
-				#2nd Step: Process actions
-				#TODO
-		except Exception as e:
-			print(e)
-			pass
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 

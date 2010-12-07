@@ -19,6 +19,8 @@ class StateMachine(FSM, ShowBase, Input):
 		ShowBase.__init__(self)
 		Input.__init__(self)
 		
+		self.lastTaskTime = 0
+		
 		self.cam = Cam(self.cam)
 
 		self.defaultTransitions = {
@@ -54,9 +56,12 @@ class StateMachine(FSM, ShowBase, Input):
 	
 	def idle(self, task):
 #		try:
-		newState = self.states[self.state].iterate()
-		if newState:
-			self.request(newState)
+		if task.time - self.lastTaskTime > 0.032: #0.016
+			newState = self.states[self.state].iterate()
+			if newState:
+				self.request(newState)
+				
+			self.lastTaskTime = task.time
 #		except KeyError as e:
 #			print("Error: State '"+ self.state +"' not registered...")
 #			print(e)
