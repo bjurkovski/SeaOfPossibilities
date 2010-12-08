@@ -3,6 +3,7 @@ from character import *
 from stage import *
 from item import *
 from player import *
+from music import *
 
 import sys
 
@@ -23,13 +24,21 @@ class Game(State):
 		self.stage = stage
 		self.room = self.stage.start
 		self.isOver = False
-		
+
 		self.players = []
-		
+
 		self.startMap()
 
+		self.music = Music('default')
+		self.music.addTrack('cool_and_calm')
+
+		self.music.setCurrent('cool_and_calm')
+		self.music.play()
+
 		# initialize character status string
-		self.statusString = OnscreenText(mayChange= True , style=1, fg=(1,1,1,1), pos=(0.7,-0.75), scale = .08)
+		self.statusString = OnscreenText(mayChange= True ,
+		                                 style=1, fg=(1,1,1,1),
+		                                 pos=(0.7,-0.75), scale = .08)
 
 	def spawnObject(self, ob ):
 
@@ -38,8 +47,8 @@ class Game(State):
 				print('need to make item')
 		except AttributeError as e:
 			print('Attr error, ', ob , e)
-		
-		ob.setMap(self.currentMap())	
+
+		ob.setMap(self.currentMap())
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
@@ -53,7 +62,7 @@ class Game(State):
 
 	def currentMap(self):
 		return self.stage.maps[self.room]
-		
+
 	def exitMap(self):
 		NodePath(self.currentMap().getNode()).detachNode()
 
@@ -61,7 +70,7 @@ class Game(State):
 		if not self.currentMap().started:
 			for obstacle in self.currentMap().obstacles:
 				self.spawnObject(obstacle)
-			
+
 			for item in self.currentMap().items:
 				self.spawnObject(item)
 
@@ -69,7 +78,7 @@ class Game(State):
 				self.spawnObject(block)
 
 			self.currentMap().started = True
-			
+
 		self.characters[self.player].setMap(self.currentMap())
 		self.characters[self.player2].setMap(self.currentMap())
 
@@ -77,7 +86,7 @@ class Game(State):
 		self.exitMap()
 		self.room = self.stage.doors[self.room][direction]
 		NodePath(self.currentMap().getNode()).reparentTo(self.node)
-		
+
 		map = self.stage.maps[self.room]
 		x, y = self.currentMap().posToGrid(self.characters[self.player].getPos())
 		if   direction == "right": x = 1
@@ -88,7 +97,7 @@ class Game(State):
 		self.characters[self.player].setPos(pos)
 		self.characters[self.player2].setPos(pos)
 		self.characters[self.player2].setDirection(self.characters[self.player].direction)
-		
+
 		self.startMap()
 
 	def register(self, render, camera, keys):
@@ -97,21 +106,21 @@ class Game(State):
 
 		char = self.characters[self.player]
 		self.players.append(HumanPlayer(char, keys))
-		
+
 		char2 = self.characters[self.player2]
 		self.players.append(HumanPlayer(char2 , keys))
-		
+
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
-			
+
 		for l in self.stage.getLights():
 			render.setLight(l)
-			
+
 		#COWABUNGA comment this to stop the madness
-		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
 		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
-		
+
 		# THE TRUE CARTOON SHADER :P
 #		self.separation = 1 # Pixels
 #		self.filters = CommonFilters(base.win, self.camera.camera)
@@ -122,7 +131,7 @@ class Game(State):
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
-		
+
 	def iterate(self):
 		State.iterate(self)
 		self.camera.look()
@@ -131,10 +140,10 @@ class Game(State):
 		#self.processActions()
 		self.move()
 		self.buryDeadPeople()
-		
+
 		#let's try
 		self.statusString.setText('Room: ' + self.room + '\n' + self.characters[self.player].getStatus())
-		
+
 		if self.isOver:
 			return "GameOver"
 		elif self.keys['start']:
@@ -146,35 +155,35 @@ class Game(State):
 			add = "1"
 			if char == self.characters[self.player]:
 				add = ""
-				
+
 			directions = [key for key in ["up","down","left","right"] if self.keys[key+add]]
 
 			if self.keys['attack']:
-				self.keys['attack'] = False		
+				self.keys['attack'] = False
 				print('Using %s' % (char.currentItem()) )
 
 			if self.keys['cancel']:
-				self.keys['cancel'] = False	
+				self.keys['cancel'] = False
 				print('Changing slot')
 				char.changeSlot()
 
 			# I know the block movement code sucks by now... i was just testing it and will refactor
-			
+
 			# BLOCK MOVEMENT ACTION
 			for block in self.currentMap().blocks:
 				if block.isMoving:
 					block.move(block.direction)
-			
+
 			if len(directions) == 0:
 				char.stop()
-				
+
 			x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
 			# BLOCK MOVEMENT TRIGGER
 			if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
 				for block in self.currentMap().blocks:
 					if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
 						block.move(char.direction)
-			
+
 			for dir in directions:
 				#TODO to be re-refactored
 				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
@@ -183,19 +192,19 @@ class Game(State):
 				if  isFree:
 					char.move(dir)
 					ex = self.stage.maps[self.room].getExit((x,y))
-					
+
 					if ex and (ex in self.stage.doors[self.room].keys()):
 						self.changeMap(ex)
 				else:
 					char.setDirection(dir)
 
-				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':					
+				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
 					for item in self.currentMap().items:
 						print(item.getPos() ,(x,y))
 						if tuple( item.getPos() ) == (x,y):
 							print("colidindo mesmo")
 							self.collision(char, item)
-					
+
 				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
 					for enemy in self.currentMap().enemies:
 						if tuple(enemy["pos"]) == (x,y):
@@ -203,7 +212,7 @@ class Game(State):
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
-		
+
 		# commented while fixing the bugs
 		if b.getType() == 'item':
 			for i in range(len(self.currentMap().items)):
@@ -238,7 +247,7 @@ class Game(State):
 		for char in self.characters:
 			if not self.characters[char].isAlive():
 				self.isOver = True
-	
+
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 
