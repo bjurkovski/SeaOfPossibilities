@@ -14,6 +14,7 @@ from direct.filter.CommonFilters import CommonFilters
 
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
+
 	def __init__(self, stage, characters, player, player2):
 		State.__init__(self)
 
@@ -29,11 +30,7 @@ class Game(State):
 
 		self.startMap()
 
-		self.music = Music('default')
-		self.music.addTrack('cool_and_calm')
-
-		self.music.setCurrent('cool_and_calm')
-		self.music.play()
+		self.stage.playMusic()
 
 		# initialize character status string
 		self.statusString = OnscreenText(mayChange= True ,

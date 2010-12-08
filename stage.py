@@ -4,7 +4,7 @@ import json
 from item import Item
 from model import Model
 from character import Character
-
+from music import Music
 from panda3d.core import NodePath, CardMaker, Texture, Vec4, Point3
 from panda3d.core import PointLight, DirectionalLight, AmbientLight, Spotlight
 from direct.actor.Actor import Actor
@@ -19,7 +19,7 @@ class Map:
 		self.started = False
 		self.tiles = []
 		self.items = []
-		
+
 		self.nodePath = None
 
 		self.readConfig()
@@ -45,23 +45,23 @@ class Map:
 			items = data["items"]
 		except KeyError as e:
 			self.items = []
-		
+
 		try:
 			for i in items:
 				item = Item(i['name'])
 				item.setPos(self.gridToPos( i['pos'] ) )
 				item.originalPos = item.getPos()
-				self.items.append(item) 
-		except KeyError as e: 
-			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS..... 
+				self.items.append(item)
+		except KeyError as e:
+			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS.....
 			# Nao meu, o mapa pode vir se o campo itens e o programa nao pode fechar...
 			print('Error reading items: %s' % e)
 			self.items = []
-			
-		try: 
+
+		try:
 			self.enemies = data["enemies"]
 			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
-		except KeyError as e: 
+		except KeyError as e:
 			self.enemies = []
 
 		self.constructModel()
@@ -69,10 +69,10 @@ class Map:
 	def readConfig(self):
 
 		cfg = open("cfg/stage.cfg")
-		
+
 		data = json.loads(cfg.read())
 		self.tilemap = data['tilemap']
-		
+
 		cfg.close()
 
 	def tileType(self, layer, point):
@@ -81,13 +81,13 @@ class Map:
 	def getExit(self,point):
 		"""
 			Returns a string representing the direction if the given point
-			is an exit and None if it's not. 
+			is an exit and None if it's not.
 		"""
 		direc = None
-		
+
 		minX, maxX = 0, self.width-1
 		minY, maxY = 0, self.height-1
-		
+
 		# in the first line
 		if point[1] == maxY:
 			return "down"
@@ -98,7 +98,7 @@ class Map:
 			return "left"
 		if point[0] == maxX:
 			return "right"
-		
+
 		return direc
 
 	def __str__(self):
@@ -146,7 +146,7 @@ class Map:
 		models = { 'block' : 'block', 'obstacle' : 'rock', 'tree' : 'tree' }
 		symbols = { 'block' : 'b', 'obstacle' : "o", 'tree' : 't' }
 		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
-		
+
 		instance = Model("model/" + models[obj_type] + ".json")
 		instance.setPos(self.gridToPos((x,y)))
 		instance.originalPos = instance.getPos()
@@ -155,7 +155,7 @@ class Map:
 		instance.type = obj_type
 
 		return instance
-	
+
 	def makeCharacter(self,char,cType):
 		c = Character('char/' + char['name'])
 		c.setPos(self.gridToPos(char['pos']))
@@ -172,11 +172,11 @@ class Map:
 		y = self.height-1 - int(round(self.height/2 + (pos[1])/self.squareHeight))
 
 		return (x,y)
-	
+
 	def gridToPos(self, grid):
 		x = (grid[0] - self.width/2)*self.squareWidth
 		y = -(grid[1] - self.height + 1 + self.height/2)*self.squareHeight
-		
+
 		return (x,y)
 
 	def getNode(self):
@@ -186,7 +186,7 @@ class Stage:
 
 	def __init__(self, stageFile, mapFile = None):
 		stFile = open(stageFile)
-		
+
 		if mapFile:
 			mpFile = open(mapFile)
 
@@ -198,12 +198,17 @@ class Stage:
 		self.readLights( data["lights"] )
 
 		self.start = data["start"]
-		
+
 		self.maps = {}
 		self.doors = {}
 
+		#could be better
+		self.music = Music(data['name'])
+		self.music.addTrack(data['music'])
+		self.music.setCurrent(data['music'])
+
 		for room in data["rooms"]:
-			
+
 			self.maps[room] = Map(mapData[room])
 
 			self.doors[room] = {}
@@ -213,6 +218,13 @@ class Stage:
 
 		stFile.close()
 		mpFile.close()
+
+	def setTrack(self,title):
+		self.music.setTrack(title)
+
+	def playMusic(self):
+		self.music.play()
+
 
 	def readLights(self,light_data):
 		self.lights = []
@@ -226,7 +238,7 @@ class Stage:
 				pl = PointLight( name )
 				pl.setPoint(Point3(*light['pos']))
 				pl.setColor(Vec4(*light['color']) )
-			
+
 			elif light['type'] == 'directional':
 				pl = DirectionalLight( name )
 				pl.setColor(Vec4(*light['color']) )
@@ -240,7 +252,7 @@ class Stage:
 			#	pl = Spotlight( name )
 
 			#if it's allright
-			if pl != None: 
+			if pl != None:
 				self.lights.append( NodePath(pl) )
 
 			i += 1

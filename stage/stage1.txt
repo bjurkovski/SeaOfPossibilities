@@ -1,20 +1,22 @@
 {
 	"stage-map": "stage1-map.txt",
 
+	"name" : "forest",
+
 	"start": "1",
 
 	"rooms":
 	{
-		"1": {"right": "2"}, 
+		"1": {"right": "2"},
 
 		"2": {"left" : "1", "down" : "3"  },
 
-		"3": {"up" : "2", "right" : "4"}, 			 
+		"3": {"up" : "2", "right" : "4"},
 
 		"4":   {"left" : "3" , "right" : "5" , "down" : "8" },
 
 		"5":   {"left" : "4" , "right" : "6" },
-		
+
 		"6":   {"left" : "5" , "right" : "SECRET" , "up" : "7" },
 
 		"7":   { "down" : "6" },
@@ -47,6 +49,6 @@
 				 {"type" : "not_used" , "color" : [0.1,0.1,0.5,1] }
 				] ,
 
-	"music" : "cool_and_calm.ogg"
+	"music" : "opening"
 }
 
