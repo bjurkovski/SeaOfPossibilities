@@ -49,6 +49,6 @@
 				 {"type" : "not_used" , "color" : [0.1,0.1,0.5,1] }
 				] ,
 
-	"music" : "opening"
+	"music" : "cool_and_calm"
 }
 
