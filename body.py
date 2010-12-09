@@ -104,12 +104,21 @@ class Body:
 			   "left":  Point2(-self.modelWidth/2, 0),
 			   "down":  Point2(0, -self.modelLength/2),
 			   "right": Point2(self.modelWidth/2, 0)}
+
+		sides = {"up":    ("left", "right"),
+				 "left":  ("up", "down"),
+				 "down":  ("left", "right"),
+				 "right": ("up", "down")}
 		
 		try:
-			futPos = Point2(self.getPos() + dim[direction] + self.speed[direction])
+			s = sides[direction]
+			futPos = (Point2(self.getPos() + dim[direction] + self.speed[direction] + dim[s[0]]),
+						Point2(self.getPos() + dim[direction] + self.speed[direction] + dim[s[1]]))
+			#futPos = Point2(self.getPos() + dim[direction] + self.speed[direction])
 			return futPos
 		except KeyError:
-			return self.getPos()
+			return (self.getPos(), self.getPos())
+			#return self.getPos()
 			
 	def setDirection(self, direction):
 		self.direction = direction
@@ -118,10 +127,12 @@ class Body:
 		try:
 			inTiles = ["block", "obstacle", "tree"]
 			x,y = self.map.posToGrid(self.getPos())
-			cx, cy = self.map.posToGrid(self.getCollisionPos(self.direction))
+			p1, p2 = self.getCollisionPos(self.direction)
+			cx1, cy1 = self.map.posToGrid(p1)
+			cx2, cy2 = self.map.posToGrid(p2)
 			
 			try:
-				if (x,y)==(cx,cy) or self.map.tileType(1, (cx,cy)) == 'free':
+				if ((x,y)==(cx1,cy1) or (x,y)==(cx2,cy2)) or ((self.map.tileType(1, (cx1,cy1)) == 'free') and (self.map.tileType(1, (cx2,cy2)) == 'free')):
 					if self.type in inTiles:
 						cx,cy = self.map.posToGrid(self.getPos())
 						self.map.tiles[1][cy][cx] = ' '

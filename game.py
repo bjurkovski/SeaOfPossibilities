@@ -120,7 +120,7 @@ class Game(State):
 
 		# THE TRUE CARTOON SHADER :P
 #		self.separation = 1 # Pixels
-#		self.filters = CommonFilters(base.win, self.camera.camera)
+		self.filters = CommonFilters(base.win, self.camera.camera)
 		# cell shading
 #		filterok = self.filters.setCartoonInk(separation=self.separation)
 		# glow
@@ -174,38 +174,44 @@ class Game(State):
 			if len(directions) == 0:
 				char.stop()
 
-			x, y = self.currentMap().posToGrid(char.getCollisionPos(char.direction))
+			p1, p2 = char.getCollisionPos(char.direction)
+			x1, y1 = self.currentMap().posToGrid(p1)
+			x2, y2 = self.currentMap().posToGrid(p2)
 			# BLOCK MOVEMENT TRIGGER
-			if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
-				for block in self.currentMap().blocks:
-					if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
-						block.move(char.direction)
+			for x,y in [(x1,y1), (x2,y2)]:
+				if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
+					for block in self.currentMap().blocks:
+						if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
+							block.move(char.direction)
 
 			for dir in directions:
 				#TODO to be re-refactored
-				x, y = self.currentMap().posToGrid(char.getCollisionPos(dir))
+				p1, p2 = char.getCollisionPos(dir)
+				x1, y1 = self.currentMap().posToGrid(p1)
+				x2, y2 = self.currentMap().posToGrid(p2)
 
-				isFree = self.currentMap().tileType(Map.COLLISION, (x,y)) == 'free'
+				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
 				if  isFree:
 					char.move(dir)
-					ex = self.stage.maps[self.room].getExit((x,y))
+					ex = self.stage.maps[self.room].getExit((x1,y1))
 
 					if ex and (ex in self.stage.doors[self.room].keys()):
 						self.changeMap(ex)
 				else:
 					char.setDirection(dir)
 
-				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
-					for item in self.currentMap().items:
-						print(item.getPos() ,(x,y))
-						if tuple( item.getPos() ) == (x,y):
-							print("colidindo mesmo")
-							self.collision(char, item)
+				for x,y in [(x1,y1), (x2,y2)]:
+					if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
+						for item in self.currentMap().items:
+							print(item.getPos() ,(x,y))
+							if tuple( item.getPos() ) == (x,y):
+								print("colidindo mesmo")
+								self.collision(char, item)
 
-				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-					for enemy in self.currentMap().enemies:
-						if tuple(enemy["pos"]) == (x,y):
-							self.collision(char, enemy["instance"])
+					elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+						for enemy in self.currentMap().enemies:
+							if tuple(enemy["pos"]) == (x,y):
+								self.collision(char, enemy["instance"])
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
