@@ -241,7 +241,7 @@ class Game(State):
 			for enemy in self.currentMap().enemies:
 				#TODO actually enemies are still present in the map
 				x,y = self.currentMap().posToGrid(enemy.getPos())
-				self.currentMap().tiles[Map.COLLISION][y][x] = 'e'
+				self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 				dir = ['up','down','left','right'][random.randint(0,3)]
 				p1, p2 = enemy.getCollisionPos(dir)
 				x1, y1 = self.currentMap().posToGrid(p1)
