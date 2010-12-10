@@ -65,9 +65,14 @@ class Game(State):
 
 	def exitMap(self):
 
+		for i in range(self.currentMap().width):
+			for j in range(self.currentMap().height):
+				if self.currentMap().tileType(1,(i,j)) == 'block':
+					self.currentMap().tiles[1][j][i] = ' '
+
 		for b in self.currentMap().blocks:
-			x,y = self.currentMap().posToGrid(b.originalPos)
-			print(x,y)
+			b.setPos(b.originalPos)
+			x,y = self.currentMap().posToGrid(b.getPos())
 			self.currentMap().tiles[1][y][x] = 'b'
 
 		NodePath(self.currentMap().getNode()).detachNode()
@@ -130,7 +135,7 @@ class Game(State):
 			render.setLight(l)
 
 		#COWABUNGA comment this to stop the madness
-		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
+		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
 		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
 
@@ -140,7 +145,7 @@ class Game(State):
 		# cell shading
 #		filterok = self.filters.setCartoonInk(separation=self.separation)
 		# glow
-#		filterok = self.filters.setBloom(blend=(0.5,0.5,0.5,1), desat=-0.5, intensity=1.0, size="small")
+		filterok = self.filters.setBloom(blend=(0.5,0.5,0.5,1), desat=-0.5, intensity=0.5, size="small")
 
 		self.camera.setPos(0, -2.5, -2.5)
 		self.camera.lookAt(0, 0, 0)
@@ -149,8 +154,9 @@ class Game(State):
 		State.iterate(self)
 		self.camera.look()
 
-		#self.sendCommands()
-		#self.processActions()
+		for e in self.currentMap().enemies:
+			e.IsMoving = True
+
 		self.move()
 		self.buryDeadPeople()
 
@@ -187,7 +193,7 @@ class Game(State):
 				self.liftables.append(char.lifting)
 				char.lifting = None
 
-			# I know the block movement code sucks by now... i was just testing it and will refactor
+			# I know the block movement code sucks by now (REALLY?)... i was just testing it and will refactor
 
 			# BLOCK MOVEMENT ACTION
 			for block in self.currentMap().blocks:
@@ -198,6 +204,10 @@ class Game(State):
 			for liftable in self.liftables:
 				if liftable.isMoving:
 					liftable.move(liftable.direction)
+
+			for enemy in self.currentMap().enemies:
+				if enemy.isMoving:
+					enemy.move()
 
 			if len(directions) == 0:
 				char.stop()
@@ -252,7 +262,7 @@ class Game(State):
 
 				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
 					for enemy in self.currentMap().enemies:
-						if tuple(enemy["pos"]) == (x,y):
+						if tuple(enemy.getPos()) == (x,y):
 							self.collision(char, enemy["instance"])
 
 	def collision(self, a, b):
