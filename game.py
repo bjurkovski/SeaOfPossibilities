@@ -87,7 +87,10 @@ class Game(State):
 			b.setPos(b.originalPos)
 			x,y = self.currentMap().posToGrid(b.getPos())
 			self.currentMap().tiles[1][y][x] = 'l'
-			b.getNode().reparentTo(self.render)
+			b.getNode().reparentTo(NodePath(self.currentMap().getNode()))
+
+		for char in [self.characters[self.player], self.characters[self.player2]]:
+			char.lifting = None
 
 		NodePath(self.currentMap().getNode()).detachNode()
 
@@ -201,7 +204,7 @@ class Game(State):
 				print('Changing slot')
 				char.changeSlot()
 
-			if self.keys['action'] and char.lifting:
+			if self.keys['action'+add] and char.lifting:
 				print 'atirando'
 				char.lifting.setHeight(0)
 				char.lifting.move(char.direction)
@@ -325,8 +328,14 @@ class Game(State):
 			x,y = self.currentMap().posToGrid(a.getPos())
 			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 
+			#self.currentMap().enemies = [ x for x in self.currentMap().enemies if x.getPos() != b.getPos() ]
+#			for e in self.currentMap().enemies:
+#				if e == b:
+#
+#
+
 			b.getNode().detachNode()
-			x,y = self.currentMap().posToGrid(a.getPos())
+			x,y = self.currentMap().posToGrid(b.getPos())
 			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 
 		if a.getType() == 'Character':

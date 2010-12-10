@@ -34,7 +34,7 @@ class StateMachine(FSM, ShowBase, Input):
 		}
 
 		self.music = Music('game')
-		self.music.addTrack('opening')
+		self.music.addTrack('no_entrance')
 
 		#enable shaders in every model
 		self.render.setShaderAuto()
@@ -74,7 +74,7 @@ class StateMachine(FSM, ShowBase, Input):
 
 	def enterTitle(self):
 		#TODO integrate music with the loader
-		self.music.setCurrent('opening')
+		self.music.setCurrent('no_entrance')
 		self.music.play()
 		if not self.states[self.newState]:
 			self.states[self.newState] = TitleScreen()

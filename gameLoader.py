@@ -16,9 +16,9 @@ def loadTexture(filename):
     texture = None
 
     try:
-       texture = textures[filename]
+       texture = GameLoader.textures[filename]
     except KeyError:
-       texture = GameLoader.loader.loadTexture('tex/%s.ogg' % (filename) )
+       texture = GameLoader.loader.loadTexture('tex/%s' % (filename) )
        GameLoader.textures[filename] = texture
 
     return texture

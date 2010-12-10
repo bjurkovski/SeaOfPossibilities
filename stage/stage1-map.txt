@@ -95,7 +95,7 @@
 "             o  o",
 "             o  o",
 "o            o  o",
-"o            o  o",
+"o         ll o  o",
 "oooooooooooooo  o"]
 
 ],
@@ -218,8 +218,8 @@
 "o         t   t o",
 "o          t    o",
 "o               o",
-"                 ",
-"                 ",
+"         ll      ",
+"          l      ",
 "o    oo         o",
 "o    oo         o",
 "o               o",
@@ -229,7 +229,9 @@
 
 "items": [ ],
 
-"enemies": [ ]
+"enemies": [
+	{"name" : "EvilJackson" , "pos": [2,5] }
+]
 
 },
 

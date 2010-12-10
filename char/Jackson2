@@ -1,7 +1,7 @@
 {
 	"name": "Red Jack",
 	"strenght": 1,
-	"speed": 0.2,
+	"speed": 0.5,
 
 	"gloves": true,
 	"sword": false,

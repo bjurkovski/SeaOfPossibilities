@@ -20,11 +20,13 @@ class TitleScreen(State):
 
 
 		cm = CardMaker('CardMaker-Title')
-		cm.setFrame(1, -1, 1, -1)
-		cm.setColor(0,0,0, 0.5)
+		tex = loadTexture('titlescreen.png')
+
+		cm.setFrame(-1, 1, -1, 1)
 
 		self.bg = self.node.attachNewNode(cm.generate())
 		self.bg.setPos(0, 0, 0)
+		self.bg.setTexture(tex)
 
 		menuActions = {'up': (Menu.previousOpt, self.menu),
 						'down': (Menu.nextOpt, self.menu),
@@ -33,13 +35,13 @@ class TitleScreen(State):
 
 		self.menu.registerKeys(keys, menuActions)
 
-		self.title = OnscreenText(text="Sea of Possibilities", mayChange = True , style=2,
+		self.title = OnscreenText(text="", mayChange = True , style=2,
 							 fg=(1,1,1,1), pos=(0,0.75), scale = 0.2)
 		self.text = {}
 
 		id=0
 		for opt in self.menu.options:
-			self.text[opt] = OnscreenText(text=opt, mayChange = True , style=1, fg=(1,1,1,1), pos=(0,0.1 - 0.1*id), scale = .1)
+			self.text[opt] = OnscreenText(text=opt, mayChange = True , style=1, fg=(1,1,1,1), pos=(0,-0.1 - 0.15*id), scale = .1)
 			id+=1
 
 		self.title.reparentTo(self.node)
@@ -56,7 +58,7 @@ class TitleScreen(State):
 
 		for option in self.text.keys():
 			self.text[option].setScale(0.1)
-		self.text[self.menu.options[self.menu.selected]].setScale(0.12)
+		self.text[self.menu.options[self.menu.selected]].setScale(0.15)
 
 		return self.menu.iterate()
 
