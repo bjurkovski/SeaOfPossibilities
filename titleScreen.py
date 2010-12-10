@@ -8,8 +8,8 @@ class TitleScreen(State):
 	def __init__(self):
 		State.__init__(self)
 
-		options = ['New Game', 'Options', 'Exit']
-		self.optState = ['InGame', 'Options', 'Exit']
+		options = ['New Game', 'Exit']
+		self.optState = ['InGame', 'Exit']
 
 		self.menu = Menu()
 		self.menu.addOptions(options)
