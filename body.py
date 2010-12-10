@@ -153,9 +153,6 @@ class Body:
 					self.setDirection(direction)
 					self.stop()
 
-					if self.type == "liftable":
-						print "Vou me destruir!"
-						self.getNode().removeNode()
 			except IndexError:
 				pass
 		except KeyError:

@@ -87,6 +87,7 @@ class Game(State):
 			b.setPos(b.originalPos)
 			x,y = self.currentMap().posToGrid(b.getPos())
 			self.currentMap().tiles[1][y][x] = 'l'
+			b.getNode().reparentTo(self.render)
 
 		NodePath(self.currentMap().getNode()).detachNode()
 
@@ -218,7 +219,16 @@ class Game(State):
 			for liftable in self.liftables:
 				if liftable.isMoving:
 					liftable.move(liftable.direction)
-
+					p1, p2 = liftable.getCollisionPos(liftable.direction)
+					x1, y1 = self.currentMap().posToGrid(p1)
+					x2, y2 = self.currentMap().posToGrid(p2)
+					for x,y in [(x1,y1), (x2,y2)]:
+						if self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+							for enemy in self.currentMap().enemies:
+								lPos = self.currentMap().posToGrid(enemy.getPos())
+								if tuple(lPos) == (x,y):
+									print("Colidi com inimigos")
+									self.collision(liftable, enemy)
 			if len(directions) == 0:
 				char.stop()
 
@@ -260,11 +270,11 @@ class Game(State):
 				x1, y1 = self.currentMap().posToGrid(p1)
 				x2, y2 = self.currentMap().posToGrid(p2)
 
-				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
-				if  isFree:
-					enemy.move(dir)
-				else:
-					enemy.setDirection(dir)
+#				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
+#				if  isFree:
+#					enemy.move(dir)
+#				else:
+#					enemy.setDirection(dir)
 
 				x,y = self.currentMap().posToGrid(enemy.getPos())
 				self.currentMap().tiles[Map.COLLISION][y][x] = 'e'
@@ -285,13 +295,15 @@ class Game(State):
 					for item in self.currentMap().items:
 						print(item.getPos() ,(x,y))
 						if tuple( item.getPos() ) == (x,y):
-							print("colidindo mesmo")
+							print("colidindo mesmo com itens")
 							self.collision(char, item)
 
 				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
 					for enemy in self.currentMap().enemies:
-						if tuple(enemy.getPos()) == (x,y):
-							self.collision(char, enemy["instance"])
+						lPos = self.currentMap().posToGrid(enemy.getPos())
+						if tuple(lPos) == (x,y):
+							print("Colidi com inimigos")
+							self.collision(char, enemy)
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
@@ -299,7 +311,7 @@ class Game(State):
 		# commented while fixing the bugs
 		if b.getType() == 'item':
 			for i in range(len(self.currentMap().items)):
-				if tuple(self.currentMap().items[i]["instance"].getPos()) == tuple(b.getPos()):
+				if tuple(self.currentMap().items[i].getPos()) == tuple(b.getPos()):
 					self.currentMap().items.pop(i)
 					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
 					self.currentMap().tiles[1][y][x] = ' '
@@ -307,6 +319,15 @@ class Game(State):
 
 					# again this is idiotic, but forgive me
 					a.pickItem(b.extra)
+
+		if a.getType() == 'liftable' and b.getType() == 'enemy':
+			a.getNode().detachNode()
+			x,y = self.currentMap().posToGrid(a.getPos())
+			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+
+			b.getNode().detachNode()
+			x,y = self.currentMap().posToGrid(a.getPos())
+			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())
