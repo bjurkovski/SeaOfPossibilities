@@ -21,23 +21,29 @@ class Game(State):
 
 		# how to know the players that will be in game? a ChoosePlayer screen before the constructor?
 		self.characters = characters
+
 		self.player = player
 		self.player2 = player2
+
 		self.stage = stage
 		self.room = self.stage.start
 		self.isOver = False
 
-		self.players = []
-
+		self.players = [player,player2]
+		print(self.players)
 		self.startMap()
 
 		self.stage.playMusic()
+		self.status = []
 
-		# initialize character status string
-		self.statusString = OnscreenText(mayChange= True ,
-		                                 style=1, fg=(1,1,1,1),
-		                                 pos=(0.7,-0.75), scale = .08)
-
+		posi = 0
+		for p in self.players:
+			# initialize character status string
+			self.status.append (OnscreenText(mayChange= True ,
+				                             style=1, fg=(1,1,1,1),
+				                             pos=(1.5*posi - 0.7,-0.75), scale = .08)
+			)
+			posi += 1
 
 		self.liftables = []
 
@@ -53,8 +59,8 @@ class Game(State):
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
-		print(ob.name, ob.getPos() )
-		print(x,y)
+#		print(ob.name, ob.getPos() )
+#		print(x,y)
 
 		try:
 			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
@@ -68,13 +74,19 @@ class Game(State):
 
 		for i in range(self.currentMap().width):
 			for j in range(self.currentMap().height):
-				if self.currentMap().tileType(1,(i,j)) == 'block':
+				atype = self.currentMap().tileType(1,(i,j))
+				if atype == 'block' or atype == 'liftable':
 					self.currentMap().tiles[1][j][i] = ' '
 
 		for b in self.currentMap().blocks:
 			b.setPos(b.originalPos)
 			x,y = self.currentMap().posToGrid(b.getPos())
 			self.currentMap().tiles[1][y][x] = 'b'
+
+		for b in self.currentMap().liftables:
+			b.setPos(b.originalPos)
+			x,y = self.currentMap().posToGrid(b.getPos())
+			self.currentMap().tiles[1][y][x] = 'l'
 
 		NodePath(self.currentMap().getNode()).detachNode()
 
@@ -162,7 +174,8 @@ class Game(State):
 		self.buryDeadPeople()
 
 		#let's try
-		self.statusString.setText('Room: ' + self.room + '\n' + self.characters[self.player].getStatus())
+		for i in range(2):
+			self.status[i].setText(self.characters[self.players[i]].getStatus())
 
 		if self.isOver:
 			return "GameOver"
