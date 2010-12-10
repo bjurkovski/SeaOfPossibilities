@@ -113,8 +113,8 @@ class Body:
 
 		try:
 			s = sides[direction]
-			futPos = (Point2(self.getPos() + dim[direction] + self.speed[direction] + dim[s[0]]),
-						Point2(self.getPos() + dim[direction] + self.speed[direction] + dim[s[1]]))
+			futPos = (Point2(self.getPos() + dim[direction] + self.speed[direction] + dim[s[0]]*0.5),
+						Point2(self.getPos() + dim[direction] + self.speed[direction] + dim[s[1]]*0.5))
 			#futPos = Point2(self.getPos() + dim[direction] + self.speed[direction])
 			return futPos
 		except KeyError:
