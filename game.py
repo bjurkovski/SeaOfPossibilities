@@ -4,6 +4,7 @@ from stage import *
 from item import *
 from player import *
 from music import *
+import random
 
 import sys
 
@@ -205,10 +206,6 @@ class Game(State):
 				if liftable.isMoving:
 					liftable.move(liftable.direction)
 
-			for enemy in self.currentMap().enemies:
-				if enemy.isMoving:
-					enemy.move()
-
 			if len(directions) == 0:
 				char.stop()
 
@@ -240,6 +237,18 @@ class Game(State):
 						self.changeMap(ex)
 				else:
 					char.setDirection(dir)
+
+			for enemy in self.currentMap().enemies:
+				dir = ['up','down','left','right'][random.randint(0,3)]
+				p1, p2 = enemy.getCollisionPos(dir)
+				x1, y1 = self.currentMap().posToGrid(p1)
+				x2, y2 = self.currentMap().posToGrid(p2)
+
+				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
+				if  isFree:
+					enemy.move(dir)
+				else:
+					enemy.setDirection(dir)
 
 			p1, p2 = char.getCollisionPos(char.direction)
 			x1, y1 = self.currentMap().posToGrid(p1)
