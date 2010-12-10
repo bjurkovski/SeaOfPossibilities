@@ -23,7 +23,7 @@ def loadTexture(filename):
 
     return texture
 
-def loadMusic(self,filename):
+def loadMusic(filename):
     track = None
 
     try:
