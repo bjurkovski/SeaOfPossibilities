@@ -61,6 +61,12 @@ class Game(State):
 		return self.stage.maps[self.room]
 
 	def exitMap(self):
+
+		for b in self.currentMap().blocks:
+			x,y = self.currentMap().posToGrid(b.originalPos)
+			print(x,y)
+			self.currentMap().tiles[1][y][x] = 'b'
+
 		NodePath(self.currentMap().getNode()).detachNode()
 
 	def startMap(self):
@@ -75,6 +81,9 @@ class Game(State):
 				self.spawnObject(block)
 
 			self.currentMap().started = True
+
+			for e in self.currentMap().enemies:
+				self.spawnObject(e)
 
 		self.characters[self.player].setMap(self.currentMap())
 		self.characters[self.player2].setMap(self.currentMap())
@@ -94,6 +103,7 @@ class Game(State):
 		self.characters[self.player].setPos(pos)
 		self.characters[self.player2].setPos(pos)
 		self.characters[self.player2].setDirection(self.characters[self.player].direction)
+
 
 		self.startMap()
 

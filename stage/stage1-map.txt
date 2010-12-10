@@ -60,7 +60,8 @@
 ],
 
 "enemies": [
-	{"name" : "EvilJackson" , "pos": [5,5] }
+	{"name" : "EvilJackson" , "pos": [5,5] },
+	{"name" : "EvilJackson" , "pos": [2,5] }
 ]
 
 },
@@ -101,7 +102,10 @@
 
 "items": [ ],
 
-"enemies": [ ]
+"enemies": [
+	{"name" : "EvilJackson" , "pos": [5,5] },
+	{"name" : "EvilJackson" , "pos": [2,5] }
+]
 
 },
 
@@ -141,7 +145,10 @@
 
 "items": [],
 
-"enemies": []
+"enemies": [
+	{"name" : "EvilJackson" , "pos": [5,5] },
+	{"name" : "EvilJackson" , "pos": [2,5] }
+]
 
 },
 
@@ -180,7 +187,10 @@
 
 "items": [ ],
 
-"enemies": []
+"enemies": [
+	{"name" : "EvilJackson" , "pos": [5,5] },
+	{"name" : "EvilJackson" , "pos": [2,5] }
+]
 
 },
 

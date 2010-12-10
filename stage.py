@@ -61,7 +61,9 @@ class Map:
 		try:
 			self.enemies = data["enemies"]
 			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
+			print(self.enemies)
 		except KeyError as e:
+
 			self.enemies = []
 
 		self.constructModel()
@@ -137,6 +139,7 @@ class Map:
 					 "obstacle": self.obstacles,
 					 "tree": self.obstacles}
 				tType = self.tileType(Map.COLLISION, (x,y))
+
 				if tType != 'free':
 					a[tType].append(self.makeObject(tType, x,y))
 
