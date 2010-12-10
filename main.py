@@ -15,5 +15,6 @@ if __name__ == '__main__':
 	#game = Game(Stage("stage/stage1.txt"), [])
 	#game.run()
 
-	b = StateMachine('InGame')
+	b = StateMachine('Title')
 	b.run()
+

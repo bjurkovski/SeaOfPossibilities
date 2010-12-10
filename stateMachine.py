@@ -24,7 +24,8 @@ class StateMachine(FSM, ShowBase, Input):
 		self.cam = Cam(self.cam)
 
 		self.defaultTransitions = {
-			'Title':    ['NewGame', 'Options', 'Exit'],
+			# this changed, must go back to normal
+			'Title':    ['NewGame','InGame', 'Options', 'Exit'],
 			'NewGame':  ['InGame', 'Title'],
 			'InGame':   ['Paused', 'GameOver'],
 			'Paused':   ['InGame', 'Title', 'Exit'],
@@ -59,6 +60,7 @@ class StateMachine(FSM, ShowBase, Input):
 		if task.time - self.lastTaskTime > 0.016: #0.016
 			newState = self.states[self.state].iterate()
 			if newState:
+				print(newState)
 				self.request(newState)
 
 			self.lastTaskTime = task.time
@@ -70,7 +72,7 @@ class StateMachine(FSM, ShowBase, Input):
 	def enterTitle(self):
 		if not self.states[self.newState]:
 			self.states[self.newState] = TitleScreen()
-			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
+			self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 		else:
 			self.states[self.newState].enter()
 
@@ -110,6 +112,9 @@ class StateMachine(FSM, ShowBase, Input):
 
 	def enterExit(self):
 		exit()
+
+	def exitTitle(self):
+		self.states[self.oldState].exit()
 
 	def exitPaused(self):
 		self.states[self.oldState].exit()
