@@ -45,10 +45,7 @@ class Game(State):
 			)
 			posi += 1
 
-		self.liftables = []
-
 	def spawnObject(self, ob ):
-
 		try:
 			if ob.type == "item":
 				print('need to make item')
@@ -59,8 +56,6 @@ class Game(State):
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
-#		print(ob.name, ob.getPos() )
-#		print(x,y)
 
 		try:
 			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
@@ -71,7 +66,6 @@ class Game(State):
 		return self.stage.maps[self.room]
 
 	def exitMap(self):
-
 		for i in range(self.currentMap().width):
 			for j in range(self.currentMap().height):
 				atype = self.currentMap().tileType(1,(i,j))
@@ -208,7 +202,6 @@ class Game(State):
 				print 'atirando'
 				char.lifting.setHeight(0)
 				char.lifting.move(char.direction)
-				self.liftables.append(char.lifting)
 				char.lifting = None
 
 			# I know the block movement code sucks by now (REALLY?)... i was just testing it and will refactor
@@ -219,7 +212,7 @@ class Game(State):
 					block.move(block.direction)
 
 			# LIFTABLE MOVEMENT ACTION
-			for liftable in self.liftables:
+			for liftable in self.currentMap().liftables:
 				if liftable.isMoving:
 					liftable.move(liftable.direction)
 					p1, p2 = liftable.getCollisionPos(liftable.direction)
@@ -230,8 +223,8 @@ class Game(State):
 							for enemy in self.currentMap().enemies:
 								lPos = self.currentMap().posToGrid(enemy.getPos())
 								if tuple(lPos) == (x,y):
-									print("Colidi com inimigos")
 									self.collision(liftable, enemy)
+
 			if len(directions) == 0:
 				char.stop()
 
@@ -273,11 +266,11 @@ class Game(State):
 				x1, y1 = self.currentMap().posToGrid(p1)
 				x2, y2 = self.currentMap().posToGrid(p2)
 
-#				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
-#				if  isFree:
-#					enemy.move(dir)
-#				else:
-#					enemy.setDirection(dir)
+				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
+				if  isFree:
+					enemy.move(dir)
+				else:
+					enemy.setDirection(dir)
 
 				x,y = self.currentMap().posToGrid(enemy.getPos())
 				self.currentMap().tiles[Map.COLLISION][y][x] = 'e'
@@ -298,18 +291,16 @@ class Game(State):
 					for item in self.currentMap().items:
 						print(item.getPos() ,(x,y))
 						if tuple( item.getPos() ) == (x,y):
-							print("colidindo mesmo com itens")
 							self.collision(char, item)
 
 				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
 					for enemy in self.currentMap().enemies:
 						lPos = self.currentMap().posToGrid(enemy.getPos())
 						if tuple(lPos) == (x,y):
-							print("Colidi com inimigos")
 							self.collision(char, enemy)
 
 	def collision(self, a, b):
-		print "TYPE A:", a.getType(), "TYPE B:", b.getType()
+		print "Collision: TYPE A:", a.getType(), "TYPE B:", b.getType()
 
 		# commented while fixing the bugs
 		if b.getType() == 'item':
@@ -324,19 +315,12 @@ class Game(State):
 					a.pickItem(b.extra)
 
 		if a.getType() == 'liftable' and b.getType() == 'enemy':
+			a.stop()
 			a.getNode().detachNode()
 			x,y = self.currentMap().posToGrid(a.getPos())
 			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+			b.takeDamage(10000)
 
-			#self.currentMap().enemies = [ x for x in self.currentMap().enemies if x.getPos() != b.getPos() ]
-#			for e in self.currentMap().enemies:
-#				if e == b:
-#
-#
-
-			b.getNode().detachNode()
-			x,y = self.currentMap().posToGrid(b.getPos())
-			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 
 		if a.getType() == 'Character':
 			print("Collided with", b.getType())
@@ -348,13 +332,12 @@ class Game(State):
 
 	def buryDeadPeople(self):
 		# commented while fixing the bugs
-		# for enemy in self.currentMap().enemies:
-			# if not enemy["instance"].isAlive():
-				# x, y = self.currentMap().posToGrid(NodePath(enemy["instance"].getNode()).getPos())
-				# self.currentMap().tiles[1][y][x] = ' '
-				# NodePath(enemy["instance"].getNode()).removeNode()
-				# self.currentMap().enemies.remove(enemy)
-				# #self.currentMap().enemies.pop(e)
+		for enemy in self.currentMap().enemies:
+			if not enemy.isAlive():
+				x, y = self.currentMap().posToGrid(NodePath(enemy.getNode()).getPos())
+				self.currentMap().tiles[1][y][x] = ' '
+				NodePath(enemy.getNode()).removeNode()
+				self.currentMap().enemies.remove(enemy)
 
 		#if not self.player.isAlive() : #tratar isso corretamente!
 		for char in self.characters:

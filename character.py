@@ -104,7 +104,6 @@ class Character(Body):
 		self.hearts -= damage
 		if self.hearts < 0:
 			self.hearts = 0
-		print "MINHA VIDA:", self.hearts
 	
 	def isAlive(self):
 		return self.hearts > 0

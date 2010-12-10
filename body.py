@@ -13,7 +13,7 @@ class Body:
 		file.close()
 
 		self.type = type
-		self.id = Body.id
+		self.id = "Body" + str(Body.id)
 		self.map = None
 
 		self.originalPos = None

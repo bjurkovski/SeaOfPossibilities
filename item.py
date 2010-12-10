@@ -8,9 +8,7 @@ def loadItens():
 	return data
 
 class Item(Model):
-
 	ITENS = loadItens()
-
 	def __init__(self,itemName):
 		Model.__init__(self, Item.ITENS[itemName]['model'])
 		self.name = itemName
