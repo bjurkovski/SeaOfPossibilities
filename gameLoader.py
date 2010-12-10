@@ -4,46 +4,33 @@ from direct.actor.Actor import Actor
 class GameLoader():
 
     textures = {}
-    models = {}
     tracks = {}
+    models = {}
+    loader = Loader('loader')
 
-    def __init__(self):
-        self.loader = Loader()
 
-    def loadModel(self,filename):
+def loadModel(filename):
+    return GameLoader.loader.loadModel(filename)
 
-        model = None
+def loadTexture(filename):
+    texture = None
 
-        try:
-           model = models[filename]
-        except:
-            #model = loader.loadModel('model/%s' % filename)
-            #models[filename] = model
-            pass
-        return model
+    try:
+       texture = textures[filename]
+    except KeyError:
+       texture = GameLoader.loader.loadTexture('tex/%s.ogg' % (filename) )
+       GameLoader.textures[filename] = texture
 
-    def loadTexture(self,filename):
-        texture = None
+    return texture
 
-        try:
-           texture = textures[filename]
-        except:
-           texture = loader.loadTexture('tex/%s.ogg' % (filename) )
-           textures[filename] = texture
+def loadMusic(self,filename):
+    track = None
 
-        return texture
+    try:
+       track = tracks[filename]
+    except KeyError:
+       track = GameLoader.loader.loadMusic('music/%s' % (filename) )
+       GameLoader.tracks[filename] = track
 
-    def loadMusic(self,filename):
-        track = None
-
-        try:
-           track = tracks[filename]
-        except:
-           track = self.loader.loadMusic('music/%s' % (filename) )
-           tracks[filename] = track
-
-        return track
-
-gload = GameLoader()
-#m = gload.loadMusic('ralph')
+    return track
 
