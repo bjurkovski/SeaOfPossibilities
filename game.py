@@ -37,6 +37,9 @@ class Game(State):
 		                                 style=1, fg=(1,1,1,1),
 		                                 pos=(0.7,-0.75), scale = .08)
 
+
+		self.liftables = []
+
 	def spawnObject(self, ob ):
 
 		try:
@@ -79,6 +82,9 @@ class Game(State):
 
 			for block in self.currentMap().blocks:
 				self.spawnObject(block)
+
+			for liftable in self.currentMap().liftables:
+				self.spawnObject(liftable)
 
 			self.currentMap().started = True
 
@@ -174,12 +180,24 @@ class Game(State):
 				print('Changing slot')
 				char.changeSlot()
 
+			if self.keys['action'] and char.lifting:
+				print 'atirando'
+				char.lifting.setHeight(0)
+				char.lifting.move(char.direction)
+				self.liftables.append(char.lifting)
+				char.lifting = None
+
 			# I know the block movement code sucks by now... i was just testing it and will refactor
 
 			# BLOCK MOVEMENT ACTION
 			for block in self.currentMap().blocks:
 				if block.isMoving:
 					block.move(block.direction)
+
+			# LIFTABLE MOVEMENT ACTION
+			for liftable in self.liftables:
+				if liftable.isMoving:
+					liftable.move(liftable.direction)
 
 			if len(directions) == 0:
 				char.stop()
@@ -203,6 +221,9 @@ class Game(State):
 				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
 				if  isFree:
 					char.move(dir)
+					if char.lifting:
+						char.lifting.setPos(char.getPos())
+
 					ex = self.stage.maps[self.room].getExit((x1,y1))
 
 					if ex and (ex in self.stage.doors[self.room].keys()):
@@ -210,18 +231,29 @@ class Game(State):
 				else:
 					char.setDirection(dir)
 
-				for x,y in [(x1,y1), (x2,y2)]:
-					if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
-						for item in self.currentMap().items:
-							print(item.getPos() ,(x,y))
-							if tuple( item.getPos() ) == (x,y):
-								print("colidindo mesmo")
-								self.collision(char, item)
+			p1, p2 = char.getCollisionPos(char.direction)
+			x1, y1 = self.currentMap().posToGrid(p1)
+			x2, y2 = self.currentMap().posToGrid(p2)
+			for x,y in [(x1,y1), (x2,y2)]:
+				if self.keys["action"+add] and self.currentMap().tileType(Map.COLLISION, (x,y)) == 'liftable':
+					for liftable in self.currentMap().liftables:
+						lPos = self.currentMap().posToGrid(liftable.getPos())
+						if tuple(lPos) == (x,y):
+							char.pick(liftable)
+							self.currentMap().tiles[1][y][x] = ' '
+							self.keys["action"+add] = False
 
-					elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-						for enemy in self.currentMap().enemies:
-							if tuple(enemy["pos"]) == (x,y):
-								self.collision(char, enemy["instance"])
+				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
+					for item in self.currentMap().items:
+						print(item.getPos() ,(x,y))
+						if tuple( item.getPos() ) == (x,y):
+							print("colidindo mesmo")
+							self.collision(char, item)
+
+				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+					for enemy in self.currentMap().enemies:
+						if tuple(enemy["pos"]) == (x,y):
+							self.collision(char, enemy["instance"])
 
 	def collision(self, a, b):
 		print "TYPE A:", a.getType(), "TYPE B:", b.getType()

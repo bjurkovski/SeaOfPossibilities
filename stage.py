@@ -120,6 +120,7 @@ class Map:
 	def constructModel(self):
 		self.obstacles = []
 		self.blocks = []
+		self.liftables = []
 
 		if self.nodePath != None:
 			self.nodePath.removeNode()
@@ -137,7 +138,8 @@ class Map:
 				# TO DO: MUDAR NOME
 				a = {"block": self.blocks,
 					 "obstacle": self.obstacles,
-					 "tree": self.obstacles}
+					 "tree": self.obstacles,
+					 "liftable": self.liftables}
 				tType = self.tileType(Map.COLLISION, (x,y))
 
 				if tType != 'free':
@@ -146,9 +148,9 @@ class Map:
 	def makeObject(self, obj_type, x, y):
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
 		# yeah I know
-		models = { 'block' : 'block', 'obstacle' : 'rock', 'tree' : 'tree' }
-		symbols = { 'block' : 'b', 'obstacle' : "o", 'tree' : 't' }
-		types = { 'obstacle' : 'obstacle', 'tree' : 'obstacle', 'block' : 'block'}
+		models = { 'block': 'block', 'obstacle': 'rock', 'tree': 'tree', "liftable": "liftable" }
+		symbols = { 'block': 'b', 'obstacle': "o", 'tree': 't', 'liftable': 'l' }
+		types = { 'obstacle': 'obstacle', 'tree': 'obstacle', 'block': 'block', 'liftable': 'liftable'}
 
 		instance = Model("model/" + models[obj_type] + ".json")
 		instance.setPos(self.gridToPos((x,y)))

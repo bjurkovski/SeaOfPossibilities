@@ -14,6 +14,7 @@ class Character(Body):
 		self.hearts = 6
 		self.slots = []
 		self.currentSlot = 0
+		self.lifting = None
 
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
 		self.name = self.data["name"]
@@ -107,5 +108,10 @@ class Character(Body):
 	
 	def isAlive(self):
 		return self.hearts > 0
+
+	def pick(self, liftable):
+		self.lifting = liftable
+		liftable.setPos(self.getPos())
+		liftable.setHeight(-0.07)
 		
 
