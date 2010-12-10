@@ -239,6 +239,7 @@ class Game(State):
 					char.setDirection(dir)
 
 			for enemy in self.currentMap().enemies:
+				#TODO actually enemies are still present in the map
 				dir = ['up','down','left','right'][random.randint(0,3)]
 				p1, p2 = enemy.getCollisionPos(dir)
 				x1, y1 = self.currentMap().posToGrid(p1)
@@ -249,6 +250,9 @@ class Game(State):
 					enemy.move(dir)
 				else:
 					enemy.setDirection(dir)
+
+				x,y = self.currentMap().posToGrid(enemy.getPos())
+				self.currentMap().tiles[Map.COLLISION][y][x]
 
 			p1, p2 = char.getCollisionPos(char.direction)
 			x1, y1 = self.currentMap().posToGrid(p1)
