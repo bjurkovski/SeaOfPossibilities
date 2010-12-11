@@ -154,7 +154,7 @@ class Body:
 					self.stop()
 
 			except IndexError:
-				pass
+				self.stop()
 		except KeyError:
-			pass
+			self.stop()
 

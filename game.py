@@ -30,7 +30,7 @@ class Game(State):
 		self.isOver = False
 
 		self.players = [player,player2]
-		print(self.players)
+		#print(self.players)
 		self.startMap()
 
 		self.stage.playMusic()
@@ -297,7 +297,7 @@ class Game(State):
 
 				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
 					for item in self.currentMap().items:
-						print(item.getPos() ,(x,y))
+						lPos = self.currentMap().posToGrid(item.getPos())
 						if tuple( item.getPos() ) == (x,y):
 							self.collision(char, item)
 
@@ -331,12 +331,9 @@ class Game(State):
 
 
 		if a.getType() == 'Character':
-			print("Collided with", b.getType())
+			print("Character collided with", b.getType())
 			if b.getType() == 'enemy':
-				if len(self.currentMap().items) == 0:
-					b.takeDamage(1)
-				else:
-					a.takeDamage(1)
+				a.takeDamage(1)
 
 	def buryDeadPeople(self):
 		# commented while fixing the bugs
