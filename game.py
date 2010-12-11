@@ -295,17 +295,28 @@ class Game(State):
 							self.currentMap().tiles[1][y][x] = ' '
 							self.keys["action"+add] = False
 
-				if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
-					for item in self.currentMap().items:
-						lPos = self.currentMap().posToGrid(item.getPos())
-						if tuple( item.getPos() ) == (x,y):
-							self.collision(char, item)
+				collisionTiles = ["item", "enemy"]
+				collisionElements = {"item": self.currentMap().items, "enemy": self.currentMap().enemies}
+				
+				for t in collisionTiles:
+					if self.stage.maps[self.room].tileType(1, (x,y)) == t:
+						for e in collisionElements[t]:
+							lPos = self.currentMap().posToGrid(e.getPos())
+							if tuple(lPos) == (x,y):
+								self.collision(char, e)
 
-				elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-					for enemy in self.currentMap().enemies:
-						lPos = self.currentMap().posToGrid(enemy.getPos())
-						if tuple(lPos) == (x,y):
-							self.collision(char, enemy)
+				# the part down here was generalized in the code above
+				#if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
+				#	for item in self.currentMap().items:
+				#		lPos = self.currentMap().posToGrid(item.getPos())
+				#		if tuple(lPos) == (x,y):
+				#			self.collision(char, item)
+				#
+				#elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+				#	for enemy in self.currentMap().enemies:
+				#		lPos = self.currentMap().posToGrid(enemy.getPos())
+				#		if tuple(lPos) == (x,y):
+				#			self.collision(char, enemy)
 
 	def collision(self, a, b):
 		print "Collision: TYPE A:", a.getType(), "TYPE B:", b.getType()
@@ -320,7 +331,8 @@ class Game(State):
 					NodePath(b.getNode()).removeNode()
 
 					# again this is idiotic, but forgive me
-					a.pickItem(b.extra)
+					print "need to pick the item somehow..."
+					#a.pickItem(b.extra)
 
 		if a.getType() == 'liftable' and b.getType() == 'enemy':
 			a.stop()
