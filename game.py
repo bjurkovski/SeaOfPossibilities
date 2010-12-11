@@ -168,7 +168,9 @@ class Game(State):
 		for e in self.currentMap().enemies:
 			e.IsMoving = True
 
-		self.move()
+		self.moveObjects()
+		self.doCharActions()
+		self.moveChars()
 		self.buryDeadPeople()
 
 		#let's try
@@ -180,20 +182,37 @@ class Game(State):
 		elif self.keys['start']:
 			return "Paused"
 
-	def move(self):
+	def moveObjects(self):
+		# BLOCK MOVEMENT ACTION
+		for block in self.currentMap().blocks:
+			if block.isMoving:
+				block.move(block.direction)
+
+		# LIFTABLE MOVEMENT ACTION
+		for liftable in self.currentMap().liftables:
+			if liftable.isMoving:
+				liftable.move(liftable.direction)
+				p1, p2 = liftable.getCollisionPos(liftable.direction)
+				x1, y1 = self.currentMap().posToGrid(p1)
+				x2, y2 = self.currentMap().posToGrid(p2)
+				for x,y in [(x1,y1), (x2,y2)]:
+					if self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+						for enemy in self.currentMap().enemies:
+							lPos = self.currentMap().posToGrid(enemy.getPos())
+							if tuple(lPos) == (x,y):
+								self.collision(liftable, enemy)
+
+	def doCharActions(self):
 		for char in [self.characters[self.player], self.characters[self.player2]]:
-		#char = self.characters[self.player]
 			add = "1"
 			if char == self.characters[self.player]:
 				add = ""
 
-			directions = [key for key in ["up","down","left","right"] if self.keys[key+add]]
-
-			if self.keys['attack']:
+			if self.keys['attack'+add]:
 				self.keys['attack'] = False
 				print('Using %s' % (char.currentItem()) )
 
-			if self.keys['cancel']:
+			if self.keys['cancel'+add]:
 				self.keys['cancel'] = False
 				print('Changing slot')
 				char.changeSlot()
@@ -204,26 +223,15 @@ class Game(State):
 				char.lifting.move(char.direction)
 				char.lifting = None
 
+	def moveChars(self):
+		for char in [self.characters[self.player], self.characters[self.player2]]:
+			add = "1"
+			if char == self.characters[self.player]:
+				add = ""
+
+			directions = [key for key in ["up","down","left","right"] if self.keys[key+add]]
+
 			# I know the block movement code sucks by now (REALLY?)... i was just testing it and will refactor
-
-			# BLOCK MOVEMENT ACTION
-			for block in self.currentMap().blocks:
-				if block.isMoving:
-					block.move(block.direction)
-
-			# LIFTABLE MOVEMENT ACTION
-			for liftable in self.currentMap().liftables:
-				if liftable.isMoving:
-					liftable.move(liftable.direction)
-					p1, p2 = liftable.getCollisionPos(liftable.direction)
-					x1, y1 = self.currentMap().posToGrid(p1)
-					x2, y2 = self.currentMap().posToGrid(p2)
-					for x,y in [(x1,y1), (x2,y2)]:
-						if self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-							for enemy in self.currentMap().enemies:
-								lPos = self.currentMap().posToGrid(enemy.getPos())
-								if tuple(lPos) == (x,y):
-									self.collision(liftable, enemy)
 
 			if len(directions) == 0:
 				char.stop()
