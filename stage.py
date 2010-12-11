@@ -1,10 +1,10 @@
-
 import json
 
 from item import Item
 from model import Model
 from character import Character
 from music import Music
+from switch import Switch
 from panda3d.core import NodePath, CardMaker, Texture, Vec4, Point3
 from panda3d.core import PointLight, DirectionalLight, AmbientLight, Spotlight
 from direct.actor.Actor import Actor
@@ -25,7 +25,6 @@ class Map:
 		self.readConfig()
 
 		try:
-
 			self.tiles = data["map"]
 
 			for layer in range(len(self.tiles)):
@@ -63,18 +62,14 @@ class Map:
 			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
 			print(self.enemies)
 		except KeyError as e:
-
 			self.enemies = []
 
 		self.constructModel()
 
 	def readConfig(self):
-
 		cfg = open("cfg/stage.cfg")
-
 		data = json.loads(cfg.read())
 		self.tilemap = data['tilemap']
-
 		cfg.close()
 
 	def tileType(self, layer, point):
@@ -121,6 +116,7 @@ class Map:
 		self.obstacles = []
 		self.blocks = []
 		self.liftables = []
+		self.switches = []
 
 		if self.nodePath != None:
 			self.nodePath.removeNode()
@@ -135,6 +131,13 @@ class Map:
 
 		for y in range(self.height):
 			for x in range(self.width):
+				tType = self.tileType(Map.GROUND, (x,y))
+
+				if tType == 'inactive_switch':
+					self.switches.append(self.makeSwitch(x, y))
+
+		for y in range(self.height):
+			for x in range(self.width):
 				# TO DO: MUDAR NOME
 				a = {"block": self.blocks,
 					 "obstacle": self.obstacles,
@@ -144,6 +147,17 @@ class Map:
 
 				if tType != 'free':
 					a[tType].append(self.makeObject(tType, x,y))
+
+	def makeSwitch(self, x, y):
+		switch = Switch(self.squareHeight, self.squareWidth)
+#		switch.model.setColor(0, 0, 0)
+		x,y = self.gridToPos((x,y))
+		switch.setPos(x,y)
+		return switch
+		#cm = CardMaker('CardMaker-Switches')
+		#cm.setFrame(-0.2, .2, -0.2, 0.2)
+		#card = self.nodePath.attachNewNode(cm.generate())
+		#card.setTexture(tex)
 
 	def makeObject(self, obj_type, x, y):
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
@@ -200,7 +214,7 @@ class Stage:
 		if mapFile:
 			mapData = json.loads(mpFile.read())
 
-		self.readLights( data["lights"] )
+		self.readLights(data["lights"])
 
 		self.start = data["start"]
 
@@ -258,7 +272,7 @@ class Stage:
 
 			#if it's allright
 			if pl != None:
-				self.lights.append( NodePath(pl) )
+				self.lights.append(NodePath(pl))
 
 			i += 1
 

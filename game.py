@@ -102,6 +102,9 @@ class Game(State):
 			for liftable in self.currentMap().liftables:
 				self.spawnObject(liftable)
 
+			for switch in self.currentMap().switches:
+				switch.getNode().reparentTo(NodePath(self.currentMap().getNode()))
+
 			self.currentMap().started = True
 
 			for e in self.currentMap().enemies:
