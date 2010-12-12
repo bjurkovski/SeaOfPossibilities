@@ -146,8 +146,8 @@
 "items": [],
 
 "enemies": [
-	{"name" : "EvilJackson" , "pos": [5,8]},
-	{"name" : "EvilJackson" , "pos": [2,6] }
+	{"name" : "EvilJackson" , "pos": [6,8]},
+	{"name" : "EvilJackson" , "pos": [2,7] }
 ]
 
 },

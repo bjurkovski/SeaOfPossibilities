@@ -258,7 +258,7 @@ class Game(State):
 				#TODO to be re-refactored
 				p1, p2 = char.getCollisionPos(dir)
 
-				if self.currentMap.futPosAreFree(p1, p2):
+				if self.currentMap().futPosAreFree(p1, p2):
 					char.move(dir)
 					if char.lifting:
 						char.lifting.setPos(char.getPos())
@@ -284,11 +284,8 @@ class Game(State):
 				# - OK, agreed
 				dir = ['up','down','left','right'][random.randint(0,3)]
 				p1, p2 = enemy.getCollisionPos(dir)
-				x1, y1 = self.currentMap().posToGrid(p1)
-				x2, y2 = self.currentMap().posToGrid(p2)
 
-				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
-				if  isFree:
+				if self.currentMap().futPosAreFree(p1, p2):
 					enemy.enemy_move(dir)
 				else:
 					enemy.setDirection(dir)
@@ -322,14 +319,15 @@ class Game(State):
 		mp = self.currentMap()
 		for s in mp.switches:
 			x,y = mp.posToGrid(s.getPos())
-			if mp.tiles[Map.COLLISION][y][x] != ' ':
+			charPos = [self.currentMap().posToGrid(self.characters[char].getPos()) for char in self.characters]
+			if mp.tiles[Map.COLLISION][y][x] != ' ' or ((x,y) in charPos):
 				#print 'activated!'
 				mp.tiles[Map.GROUND][y][x] = 'S'
-				s.activated = True
+				s.activate()
 			else:
 				#print 'deactivated!'
 				mp.tiles[Map.GROUND][y][x] = 's'
-				s.activated = False
+				s.deactivate()
 
 	def collision(self, a, b):
 		print "Collision: TYPE A:", a.getType(), "TYPE B:", b.getType()
