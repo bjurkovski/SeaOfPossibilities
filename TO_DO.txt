@@ -1,12 +1,8 @@
-TO DO:
-	* Fazer botoes (pros blocos pressionarem)
-		* Ideia: (que eu tive, voces podem ter ideias melhores)
-			* Usar a camada 0 do mapa (a cheia de '.') e colocar um 'b' pro botao nao pressionado e 'B' pro botao pressionado
-			* Quando o bloco tivesse se movimentando e colidisse com essa posicao, mudava de nao pressionado pra pressionado
-			* Quando deixasse de colidir com a posicao, voltava a ficar nao pressionado
-	* Fazder uma mini-ia pros inimigos, de alguma forma
+TO DO (ordem de importancia):
+	* Arrumar bug inimigo continuando no mapa (tentei e nao consegui =/)
 	* Implementar gancho (basear-se em liftable, talvez)
 	* Fazer Liftable ser destruido quando colidir com a parede ou com um personagem amigo (sem tirar dano)
+	* Fazder uma mini-ia pros inimigos, de alguma forma
 	* Ler o código com calma e ir arrumando as porquices
 	* Organizar os arquivos (ACABAR COM A PASTA "cfg", cada arquivo deve estar na sua pasta semantica correta)
 		* Padronizar as extensões:

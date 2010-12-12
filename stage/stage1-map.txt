@@ -55,8 +55,9 @@
 ],
 
 "items": [
-	{"name": "mine" , "pos": [2,2] } ,
-	{"name" : "sword", "pos" : [5,2] }
+	{"name": "mine" , "pos": [2,2]} ,
+	{"name" : "sword", "pos" : [5,2]},
+	{"name" : "sword", "pos" : [5,4]}
 ],
 
 "enemies": [

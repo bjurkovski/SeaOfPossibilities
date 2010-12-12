@@ -70,18 +70,19 @@ class Character(Body):
 		if self.currentSlot >= len(self.slots):
 			self.currentSlot = 0
 
-	def pickItem(self, itemName):
+	def pickItem(self, item):
 		if len(self.slots) < self.maxSlots:
-			print("Picking this %s" % (itemName) )
-			self.slots.append(itemName)
+			print("Picking this %s" % (item.name) )
+			self.slots.append(item)
+			return None
 		else:
 			oldItem = self.slots[self.currentSlot]
-			self.slots[self.currentSlot] = itemName
+			self.slots[self.currentSlot] = item
 			return oldItem
 
 	def currentItem(self):
 		if len(self.slots) > 1:
-			return self.slots[self.currentSlot]['symbol']
+			return self.slots[self.currentSlot].name
 		else:
 			return None
 
@@ -96,7 +97,7 @@ class Character(Body):
 			else:
 				slots += '  '
 
-			slots += str(s) + ' '
+			slots += str(s.name) + ' '
 			i += 1
 
 		slots += ']'

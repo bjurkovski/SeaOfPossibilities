@@ -48,12 +48,14 @@ class Map:
 		try:
 			for i in items:
 				item = Item(i['name'])
-				item.setPos(self.gridToPos( i['pos'] ) )
+				item.setPos(self.gridToPos(i['pos']))
 				item.originalPos = item.getPos()
 				self.items.append(item)
 		except KeyError as e:
 			# ESSA PORRA NAO TINHA QUE TAR AQUI!!! TEMOS QUE PARAR DE PEGAR EXCECOES INUTEIS.....
 			# Nao meu, o mapa pode vir se o campo itens e o programa nao pode fechar...
+			# - Na minha opiniao, o campo itens (e inimigos, e diabo a quatro) tinha que ser obrigatorio
+			#	no arquivo de mapas, vindo vazio se necessario
 			print('Error reading items: %s' % e)
 			self.items = []
 

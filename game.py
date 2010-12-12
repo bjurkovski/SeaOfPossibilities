@@ -46,7 +46,7 @@ class Game(State):
 			)
 			posi += 1
 
-	def spawnObject(self, ob ):
+	def spawnObject(self, ob):
 		try:
 			if ob.type == "item":
 				print('need to make item')
@@ -56,7 +56,6 @@ class Game(State):
 		ob.setMap(self.currentMap())
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
-
 
 		try:
 			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
@@ -215,15 +214,16 @@ class Game(State):
 				add = ""
 
 			if self.keys['attack'+add]:
-				self.keys['attack'] = False
+				self.keys['attack'+add] = False
 				print('Using %s' % (char.currentItem()) )
 
 			if self.keys['cancel'+add]:
-				self.keys['cancel'] = False
+				self.keys['cancel'+add] = False
 				print('Changing slot')
 				char.changeSlot()
 
 			if self.keys['action'+add]:
+				self.keys['action'+add] = False
 				if char.lifting:
 					char.lifting.setHeight(0)
 					char.lifting.move(char.direction)
@@ -334,18 +334,25 @@ class Game(State):
 
 		if b.getType() == 'item':
 			for i in range(len(self.currentMap().items)):
-				if tuple(self.currentMap().items[i].getPos()) == tuple(b.getPos()):
-					# removes the item
-					self.currentMap().items.pop(i)
+				if i < len(self.currentMap().items): #we need this because the size of the list may change if we remove an item
+					if tuple(self.currentMap().items[i].getPos()) == tuple(b.getPos()):
+						# removes the item
+						self.currentMap().items.pop(i)
 
-					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
+						x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
 
-					# it's not drawed anymore
-					self.currentMap().tiles[1][y][x] = ' '
-					NodePath(b.getNode()).removeNode()
+						# it's not drawed anymore
+						self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+						NodePath(b.getNode()).removeNode()
 
-					#it's picked
-					a.pickItem(b)
+						#it's picked
+						oldItem = a.pickItem(b)
+						if oldItem != None:
+							print oldItem.name
+							oldItem.setPos(self.currentMap().gridToPos((x,y)))
+							oldItem.originalPos = oldItem.getPos()
+							self.spawnObject(oldItem)
+							self.currentMap().items.append(oldItem)
 
 		if a.getType() == 'liftable' and b.getType() == 'enemy':
 			a.stop()
