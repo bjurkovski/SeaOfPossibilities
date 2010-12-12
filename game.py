@@ -12,6 +12,7 @@ from direct.actor.Actor import Actor
 from panda3d.core import Point2, Point3
 from panda3d.core import LightRampAttrib
 from direct.filter.CommonFilters import CommonFilters
+from direct.gui.OnscreenText import OnscreenText
 
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
@@ -279,7 +280,7 @@ class Game(State):
 
 				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
 				if  isFree:
-					enemy.move(dir)
+					enemy.enemy_move(dir)
 				else:
 					enemy.setDirection(dir)
 

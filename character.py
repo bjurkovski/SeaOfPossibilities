@@ -1,8 +1,6 @@
 from body import *
 from direct.actor.Actor import Actor
-from panda3d.core import Point3
-
-from direct.gui.OnscreenText import OnscreenText
+from panda3d.core import Point3, ClockObject
 
 from body import *
 
@@ -33,6 +31,7 @@ class Character(Body):
 		self.readRenderData()
 		self.calculateDimensions()
 
+		self.clock = None
 
 	def stop(self):
 		Body.stop(self)
@@ -117,6 +116,18 @@ class Character(Body):
 
 	def isAlive(self):
 		return self.hearts > 0
+
+	def enemy_move(self,dir):
+		#TODO later we'll subclass enemy and everything will be alright
+		if self.clock == None:
+			self.clock = ClockObject()
+			self.last_step = self.clock.getRealTime()
+
+		if self.clock.getRealTime() - self.last_step > 1:
+			self.move(dir)
+			self.last_step = self.last_step = self.clock.getRealTime()
+		else:
+			self.move(self.direction)
 
 	def pick(self, liftable):
 		self.lifting = liftable

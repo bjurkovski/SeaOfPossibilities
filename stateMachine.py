@@ -59,7 +59,6 @@ class StateMachine(FSM, ShowBase, Input):
 		self.request(initialState)
 
 	def idle(self, task):
-#		try:
 		if task.time - self.lastTaskTime > 0.016: #0.016
 			newState = self.states[self.state].iterate()
 			if newState:
@@ -67,9 +66,6 @@ class StateMachine(FSM, ShowBase, Input):
 				self.request(newState)
 
 			self.lastTaskTime = task.time
-#		except KeyError as e:
-#			print("Error: State '"+ self.state +"' not registered...")
-#			print(e)
 		return task.cont
 
 	def enterTitle(self):
