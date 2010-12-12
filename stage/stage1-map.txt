@@ -93,9 +93,9 @@
 "o      ooooooo  o",
 "o            o  o",
 "             o  o",
-"             o  o",
+"         l   o  o",
 "o            o  o",
-"o         ll o  o",
+"o          l o  o",
 "oooooooooooooo  o"]
 
 ],
@@ -123,7 +123,7 @@
 ".................",
 ".................",
 ".................",
-".................",
+".s...............",
 ".................",
 "................."
 ],
@@ -131,14 +131,14 @@
 [
 "oooooooooooooo  o",
 "o               o",
-"o       t       o",
 "o               o",
 "o               o",
+"o  t            o",
 "o               o",
-"o               o",
-"oooooo           ",
-"o  t o           ",
+"oooooo          o",
+"o    o           ",
 "o    b           ",
+"o                ",
 "ooooooooooooooooo"]
 
 ],
@@ -146,8 +146,8 @@
 "items": [],
 
 "enemies": [
-	{"name" : "EvilJackson" , "pos": [5,5] },
-	{"name" : "EvilJackson" , "pos": [2,5] }
+	{"name" : "EvilJackson" , "pos": [5,8]},
+	{"name" : "EvilJackson" , "pos": [2,6] }
 ]
 
 },
@@ -172,8 +172,8 @@
 
 [
 "ooooooooooooooooo",
-"o  ooo          o",
-"ot o o    t     o",
+"o    o          o",
+"ot   o    t     o",
 "oobooo     t    o",
 "o               o",
 "o                ",

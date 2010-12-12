@@ -9,7 +9,7 @@ from body import *
 class Character(Body):
 	def __init__(self, filename):
 		Body.__init__(self, filename, 'Character')
-		
+
 		self.level = 1
 		self.hearts = 6
 		self.slots = []
@@ -19,25 +19,25 @@ class Character(Body):
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
 		self.name = self.data["name"]
 		self.maxSlots = self.data["slots"]
-		
+
 		self.stop()
 		self.isMoving = False
-		
+
 		self.tryToMove = []
 		self.tryToDo = None
-		
+
 		self.readRenderData()
 		self.calculateDimensions()
-		
-		
+
+
 	def stop(self):
 		Body.stop(self)
 		self.model.stop()
 		#self.model.pose("walk",5) #transition between run and stop, if actor was looping 'run' animation
-			
+
 	def getCollisionPos(self, direction):
 		angles = {"up": 270, "left": 0, "down": 90, "right": 180}
-		
+
 		try:
 			self.turn(angles[direction])
 			futPos = Body.getCollisionPos(self, direction)
@@ -46,18 +46,18 @@ class Character(Body):
 		except Exception as e:
 			print('Na colisao', e)
 			return self.getPos()
-		
+
 	def move(self, direction):
 		angles = {"up": 270, "left": 0, "down": 90, "right": 180}
-		
+
 		self.setDirection(direction)
 		if self.isMoving is False:
 			self.model.loop("walk")
 		Body.move(self, direction)
-			
+
 	def setDirection(self, direction):
 		Body.setDirection(self, direction)
-		angles = {"up": 270, "left": 0, "down": 90, "right": 180} 
+		angles = {"up": 270, "left": 0, "down": 90, "right": 180}
 		#colocar no json depois...
 
 		self.turn(angles[direction])
@@ -65,7 +65,7 @@ class Character(Body):
 	def changeSlot(self):
 		self.currentSlot += 1
 		if self.currentSlot >= len(self.slots):
-			self.currentSlot = 0			
+			self.currentSlot = 0
 
 	def pickItem(self, itemName):
 		if len(self.slots) < self.maxSlots:
@@ -77,7 +77,7 @@ class Character(Body):
 			return oldItem
 
 	def currentItem(self):
-		if len(self.slots) > 1:	
+		if len(self.slots) > 1:
 			return self.slots[self.currentSlot]['symbol']
 		else:
 			return None
@@ -91,9 +91,9 @@ class Character(Body):
 			if i == self.currentSlot:
 				slots += '>'
 			else:
-				slots += '  ' 
+				slots += '  '
 
-			slots += s['symbol'] + ' '
+			slots += str(s) + ' '
 			i += 1
 
 		slots += ']'
@@ -104,7 +104,7 @@ class Character(Body):
 		self.hearts -= damage
 		if self.hearts < 0:
 			self.hearts = 0
-	
+
 	def isAlive(self):
 		return self.hearts > 0
 
@@ -112,5 +112,4 @@ class Character(Body):
 		self.lifting = liftable
 		liftable.setPos(self.getPos())
 		liftable.setHeight(-0.07)
-		
 

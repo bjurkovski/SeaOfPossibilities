@@ -300,7 +300,7 @@ class Game(State):
 
 				collisionTiles = ["item", "enemy"]
 				collisionElements = {"item": self.currentMap().items, "enemy": self.currentMap().enemies}
-				
+
 				for t in collisionTiles:
 					if self.stage.maps[self.room].tileType(1, (x,y)) == t:
 						for e in collisionElements[t]:
@@ -335,7 +335,7 @@ class Game(State):
 
 					# again this is idiotic, but forgive me
 					print "need to pick the item somehow..."
-					#a.pickItem(b.extra)
+					a.pickItem(b)
 
 		if a.getType() == 'liftable' and b.getType() == 'enemy':
 			a.stop()
