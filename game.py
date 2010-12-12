@@ -223,11 +223,25 @@ class Game(State):
 				print('Changing slot')
 				char.changeSlot()
 
-			if self.keys['action'+add] and char.lifting:
-				print 'atirando'
-				char.lifting.setHeight(0)
-				char.lifting.move(char.direction)
-				char.lifting = None
+			if self.keys['action'+add]:
+				if char.lifting:
+					char.lifting.setHeight(0)
+					char.lifting.move(char.direction)
+					char.lifting = None
+				else:
+					p1, p2 = char.getCollisionPos(char.direction)
+					x1, y1 = self.currentMap().posToGrid(p1)
+					x2, y2 = self.currentMap().posToGrid(p2)
+
+					for x,y in [(x1,y1), (x2,y2)]:
+						if self.stage.maps[self.room].tileType(Map.COLLISION, (x,y)) == 'block':
+							for block in self.currentMap().blocks:
+								if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
+									block.move(char.direction)
+						elif self.stage.maps[self.room].tileType(Map.COLLISION, (x,y)) == 'item':
+							for item in self.currentMap().items:
+								if tuple(self.currentMap().posToGrid(item.getPos())) == (x,y):
+									self.collision(char, item)
 
 	def moveChars(self):
 		for char in [self.characters[self.player], self.characters[self.player2]]:
@@ -237,34 +251,19 @@ class Game(State):
 
 			directions = [key for key in ["up","down","left","right"] if self.keys[key+add]]
 
-			# I know the block movement code sucks by now (REALLY?)... i was just testing it and will refactor
-
 			if len(directions) == 0:
 				char.stop()
-
-			p1, p2 = char.getCollisionPos(char.direction)
-			x1, y1 = self.currentMap().posToGrid(p1)
-			x2, y2 = self.currentMap().posToGrid(p2)
-			# BLOCK MOVEMENT TRIGGER
-			for x,y in [(x1,y1), (x2,y2)]:
-				if self.keys["action"+add] and self.stage.maps[self.room].tileType(1, (x,y)) == 'block':
-					for block in self.currentMap().blocks:
-						if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
-							block.move(char.direction)
 
 			for dir in directions:
 				#TODO to be re-refactored
 				p1, p2 = char.getCollisionPos(dir)
-				x1, y1 = self.currentMap().posToGrid(p1)
-				x2, y2 = self.currentMap().posToGrid(p2)
 
-				isFree = (self.currentMap().tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.currentMap().tileType(Map.COLLISION, (x2,y2)) == 'free')
-				if  isFree:
+				if self.currentMap.futPosAreFree(p1, p2):
 					char.move(dir)
 					if char.lifting:
 						char.lifting.setPos(char.getPos())
 
-					ex = self.stage.maps[self.room].getExit((x1,y1))
+					ex = self.stage.maps[self.room].getExit(self.currentMap().posToGrid(p1))
 
 					if ex and (ex in self.stage.doors[self.room].keys()):
 						self.changeMap(ex)
@@ -282,6 +281,7 @@ class Game(State):
 				# por exemplo ele pode as vezes andar em direcao a um heroi e
 				# as vezes ser random
 				# por enquanto e so random
+				# - OK, agreed
 				dir = ['up','down','left','right'][random.randint(0,3)]
 				p1, p2 = enemy.getCollisionPos(dir)
 				x1, y1 = self.currentMap().posToGrid(p1)
@@ -308,28 +308,15 @@ class Game(State):
 							self.currentMap().tiles[1][y][x] = ' '
 							self.keys["action"+add] = False
 
-				collisionTiles = ["item", "enemy"]
-				collisionElements = {"item": self.currentMap().items, "enemy": self.currentMap().enemies}
+				collisionTiles = ["enemy"]
+				collisionElements = {"enemy": self.currentMap().enemies}
 
 				for t in collisionTiles:
-					if self.stage.maps[self.room].tileType(1, (x,y)) == t:
+					if self.stage.maps[self.room].tileType(Map.COLLISION, (x,y)) == t:
 						for e in collisionElements[t]:
 							lPos = self.currentMap().posToGrid(e.getPos())
 							if tuple(lPos) == (x,y):
 								self.collision(char, e)
-
-				# the part down here was generalized in the code above
-				#if self.stage.maps[self.room].tileType(1, (x,y)) == 'item':
-				#	for item in self.currentMap().items:
-				#		lPos = self.currentMap().posToGrid(item.getPos())
-				#		if tuple(lPos) == (x,y):
-				#			self.collision(char, item)
-				#
-				#elif self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-				#	for enemy in self.currentMap().enemies:
-				#		lPos = self.currentMap().posToGrid(enemy.getPos())
-				#		if tuple(lPos) == (x,y):
-				#			self.collision(char, enemy)
 
 	def activateSwitches(self):
 		mp = self.currentMap()
@@ -365,7 +352,7 @@ class Game(State):
 		if a.getType() == 'liftable' and b.getType() == 'enemy':
 			a.stop()
 			a.getNode().detachNode()
-			x,y = self.currentMap().posToGrid(a.getPos())
+			x,y = self.currentMap().posToGrid(a.getPos()) #nao precisaria
 			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 			b.takeDamage(10000)
 
@@ -379,8 +366,8 @@ class Game(State):
 		# commented while fixing the bugs
 		for enemy in self.currentMap().enemies:
 			if not enemy.isAlive():
-				x, y = self.currentMap().posToGrid(NodePath(enemy.getNode()).getPos())
-				self.currentMap().tiles[1][y][x] = ' '
+				x, y = self.currentMap().posToGrid(enemy.getPos())
+				self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 				NodePath(enemy.getNode()).removeNode()
 				self.currentMap().enemies.remove(enemy)
 

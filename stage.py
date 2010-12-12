@@ -75,6 +75,12 @@ class Map:
 	def tileType(self, layer, point):
 		return self.tilemap[self.tiles[layer][int(point[1])][int(point[0])]]
 
+	def futPosAreFree(self, p1, p2):
+		x1, y1 = self.posToGrid(p1)
+		x2, y2 = self.posToGrid(p2)
+
+		return (self.tileType(Map.COLLISION, (x1,y1)) == 'free') and (self.tileType(Map.COLLISION, (x2,y2)) == 'free')
+
 	def getExit(self,point):
 		"""
 			Returns a string representing the direction if the given point
@@ -101,7 +107,7 @@ class Map:
 	def __str__(self):
 		# WRONG!!!!
 		str = ""
-		for row in self.tiles[Map.GROUND]:
+		for row in self.tiles[Map.COLLISION]:
 			for tile in row:
 				str += tile
 			str += "\n"
