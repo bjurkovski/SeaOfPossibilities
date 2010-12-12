@@ -9,11 +9,12 @@ def opposite(dir):
 	return op[dir]
 
 class Character(Body):
+	maxHearts = 6
 	def __init__(self, filename):
 		Body.__init__(self, filename, 'Character')
 
 		self.level = 1
-		self.hearts = 6
+		self.hearts = Character.maxHearts
 		self.slots = []
 		self.currentSlot = 0
 		self.lifting = None

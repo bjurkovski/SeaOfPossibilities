@@ -133,8 +133,8 @@ class Game(State):
 
 		self.startMap()
 
-	def register(self, render, camera, keys):
-		State.register(self, render, camera, keys)
+	def register(self, render, camera, keys, render2d):
+		State.register(self, render, camera, keys, render2d)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 
 		char = self.characters[self.player]
@@ -150,12 +150,17 @@ class Game(State):
 			render.setLight(l)
 
 		# COWABUNGA test!!!
-		self.hearts = []
-		for i in range(6):
-			self.hearts.append(Sprite("heart.png", 0.05, 0.05))
-			self.hearts[i].setPos(i*0.055 , 0)
-			self.hearts[i].getNode().reparentTo(self.node)
-			# bad results with render, should get better with render2d
+		self.hearts = {}
+		numChar=0
+		for char in self.characters:
+			self.hearts[char] = []
+
+			for i in range(Character.maxHearts):
+				self.hearts[char].append(Sprite("heart.png", 0.05, 0.05))
+				self.hearts[char][i].setPos(-0.5 + 1*numChar + (i%3)*0.055 , -0.7 - int(i/3)*0.055)
+				self.hearts[char][i].getNode().reparentTo(self.node2d)
+
+			numChar += 1
 
 		#COWABUNGA comment this to stop the madness
 		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
@@ -325,6 +330,12 @@ class Game(State):
 							lPos = self.currentMap().posToGrid(e.getPos())
 							if tuple(lPos) == (x,y):
 								self.collision(char, e)
+								# TEST - porco!!!!
+								try:
+									self.hearts[self.player][self.characters[self.player].hearts].getNode().detachNode()
+									self.hearts[self.player2][self.characters[self.player2].hearts].getNode().detachNode()
+								except IndexError:
+									pass
 
 	def activateSwitches(self):
 		mp = self.currentMap()

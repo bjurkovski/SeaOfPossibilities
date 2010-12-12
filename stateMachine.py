@@ -99,7 +99,7 @@ class StateMachine(FSM, ShowBase, Input):
 					'Jackson2': Character("char/Jackson2")}
 
 			self.states[self.newState] = Game(Stage(*initialStage), chars, "Jackson", "Jackson2")
-			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
+			self.states[self.newState].register(self.render, self.cam, self.actionKeys, self.render2d)
 		else:
 			self.states[self.newState].enter()
 
