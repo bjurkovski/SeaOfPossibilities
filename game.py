@@ -4,8 +4,9 @@ from stage import *
 from item import *
 from player import *
 from music import *
-import random
+from sprite import *
 
+import random
 import sys
 
 from direct.actor.Actor import Actor
@@ -40,8 +41,8 @@ class Game(State):
 		posi = 0
 		for p in self.players:
 			# initialize character status string
-			self.status.append (OnscreenText(mayChange= True ,
-				                             style=1, fg=(1,1,1,1),
+			self.status.append(OnscreenText(mayChange= True ,
+				                             style=2, fg=(1,1,1,1),
 				                             pos=(1.5*posi - 0.7,-0.75), scale = .08)
 			)
 			posi += 1
@@ -148,6 +149,14 @@ class Game(State):
 		for l in self.stage.getLights():
 			render.setLight(l)
 
+		# COWABUNGA test!!!
+		self.hearts = []
+		for i in range(6):
+			self.hearts.append(Sprite("heart.png", 0.05, 0.05))
+			self.hearts[i].setPos(i*0.055 , 0)
+			self.hearts[i].getNode().reparentTo(self.node)
+			# bad results with render, should get better with render2d
+
 		#COWABUNGA comment this to stop the madness
 		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
 		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
@@ -178,14 +187,18 @@ class Game(State):
 
 		self.activateSwitches()
 
-		#let's try
-		for i in range(2):
-			self.status[i].setText(self.characters[self.players[i]].getStatus())
+		self.updateHUD()
 
 		if self.isOver:
 			return "GameOver"
 		elif self.keys['start']:
 			return "Paused"
+
+	def updateHUD(self):
+		#let's try
+		for i in range(2):
+			self.status[i].setText(self.characters[self.players[i]].getStatus())
+
 
 	def moveObjects(self):
 		# BLOCK MOVEMENT ACTION
