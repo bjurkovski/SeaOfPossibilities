@@ -242,6 +242,12 @@ class Game(State):
 							for item in self.currentMap().items:
 								if tuple(self.currentMap().posToGrid(item.getPos())) == (x,y):
 									self.collision(char, item)
+						elif self.currentMap().tileType(Map.COLLISION, (x,y)) == 'liftable':
+							for liftable in self.currentMap().liftables:
+								lPos = self.currentMap().posToGrid(liftable.getPos())
+								if tuple(lPos) == (x,y):
+									char.pick(liftable)
+									self.currentMap().tiles[1][y][x] = ' '
 
 	def moveChars(self):
 		for char in [self.characters[self.player], self.characters[self.player2]]:
@@ -297,14 +303,6 @@ class Game(State):
 			x1, y1 = self.currentMap().posToGrid(p1)
 			x2, y2 = self.currentMap().posToGrid(p2)
 			for x,y in [(x1,y1), (x2,y2)]:
-				if self.keys["action"+add] and self.currentMap().tileType(Map.COLLISION, (x,y)) == 'liftable':
-					for liftable in self.currentMap().liftables:
-						lPos = self.currentMap().posToGrid(liftable.getPos())
-						if tuple(lPos) == (x,y):
-							char.pick(liftable)
-							self.currentMap().tiles[1][y][x] = ' '
-							self.keys["action"+add] = False
-
 				collisionTiles = ["enemy"]
 				collisionElements = {"enemy": self.currentMap().enemies}
 

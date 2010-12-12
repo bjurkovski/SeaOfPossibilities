@@ -4,6 +4,10 @@ class Menu:
 		self.keys = None
 		self.actions = None
 		self.selected = 0
+
+	def clearOptions(self):
+		self.selected = 0
+		self.options = []
 		
 	def addOptions(self, options):
 		self.options += options

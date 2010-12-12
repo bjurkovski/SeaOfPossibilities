@@ -7,6 +7,7 @@ from character import *
 from cam import *
 
 from game import *
+from newGame import *
 from pause import *
 from titleScreen import *
 from options import *
@@ -86,7 +87,8 @@ class StateMachine(FSM, ShowBase, Input):
 			self.states[self.newState].enter()
 
 	def enterNewGame(self):
-		pass
+		self.states[self.newState] = NewGame()
+		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 
 	def enterInGame(self):
 		# to do: read this from a config file
@@ -114,6 +116,9 @@ class StateMachine(FSM, ShowBase, Input):
 
 	def enterExit(self):
 		exit()
+
+	def exitNewGame(self):
+		self.states[self.oldState].exit()
 
 	def exitTitle(self):
 		self.states[self.oldState].exit()

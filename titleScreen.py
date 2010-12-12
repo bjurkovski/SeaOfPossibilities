@@ -9,15 +9,14 @@ class TitleScreen(State):
 		State.__init__(self)
 
 		options = ['New Game', 'Exit']
-		self.optState = ['InGame', 'Exit']
+		#self.optState = ['InGame', 'Exit']
+		self.optState = ['NewGame', 'Exit']
 
 		self.menu = Menu()
 		self.menu.addOptions(options)
 
 	def register(self, render, camera, keys):
-
 		State.register(self, render, camera, keys)
-
 
 		cm = CardMaker('CardMaker-Title')
 		tex = loadTexture('titlescreen.png')
