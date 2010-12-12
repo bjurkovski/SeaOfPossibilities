@@ -12,6 +12,15 @@ TO DO (ordem de importancia):
 			* Stage: .stg
 	* Usar instancias para modelos que repetem (tipo pedras) - checar loader.loadModelCopy()
 
+IDEIAS:
+	* Criar item 'Axe'
+	* Criar elementos 'XDoor' na camada da colisao
+		* Ex: GoldenDoor, SilverDoor, AxeDoor
+		* Sao abertos se o player usar o item X nelas, tipo Axe, GoldenKey, SilverKey
+		* Ex: AxeDoor seriam arvores, o player usa o item Axe nelas e abre caminho pro proximo mapa
+	* Criar elemento 'Hole' na camada Ground
+		* Player só pode passar se usar um item tipo "Bridge" ou "Rope"
+
 DESIGNER (Fialho eh o responsavel por repassar a ele):
 	* Personagem principal
 		* Parado, Caminhando, Chutando pedra, bracos pra cima (pra pegar item), atirando item, tomando dano
