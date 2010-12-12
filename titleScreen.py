@@ -36,12 +36,12 @@ class TitleScreen(State):
 		self.menu.registerKeys(keys, menuActions)
 
 		self.title = OnscreenText(text="", mayChange = True , style=2,
-							 fg=(1,1,1,1), pos=(0,0.75), scale = 0.2)
+							 fg=(1,1,1,1), pos=(0, 0.75), scale = 0.2) # is this used??
 		self.text = {}
 
 		id=0
 		for opt in self.menu.options:
-			self.text[opt] = OnscreenText(text=opt, mayChange = True , style=1, fg=(1,1,1,1), pos=(0,-0.1 - 0.15*id), scale = .1)
+			self.text[opt] = OnscreenText(text=opt, mayChange = True , style=2, fg=(1,1,1,1), pos=(0, -0.3 - 0.15*id), scale = .1)
 			id+=1
 
 		self.title.reparentTo(self.node)
@@ -58,7 +58,7 @@ class TitleScreen(State):
 
 		for option in self.text.keys():
 			self.text[option].setScale(0.1)
-		self.text[self.menu.options[self.menu.selected]].setScale(0.15)
+		self.text[self.menu.options[self.menu.selected]].setScale(0.12)
 
 		return self.menu.iterate()
 

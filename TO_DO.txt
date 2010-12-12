@@ -1,8 +1,12 @@
 TO DO (ordem de importancia):
+	* Algo que toque um som soh uma vez (tipo quando o char toma porrada ou quando a pedra eh destruida)
+		* Se isso ja for possivel com a classe atual, fialho por favor faca um exemplo em algum lugar,
+			que nao tou muito familiarizado com ela
 	* Arrumar bug inimigo continuando no mapa (tentei e nao consegui =/)
 	* Implementar gancho (basear-se em liftable, talvez)
 	* Fazer Liftable ser destruido quando colidir com a parede ou com um personagem amigo (sem tirar dano)
 	* Fazder uma mini-ia pros inimigos, de alguma forma
+	* Subclassear varias coisas, como Enemy, Block, pra ajeitar os 'move's e outras coisas
 	* Ler o código com calma e ir arrumando as porquices
 	* Organizar os arquivos (ACABAR COM A PASTA "cfg", cada arquivo deve estar na sua pasta semantica correta)
 		* Padronizar as extensões:
@@ -11,14 +15,15 @@ TO DO (ordem de importancia):
 			* Mapa: .map
 			* Stage: .stg
 	* Usar instancias para modelos que repetem (tipo pedras) - checar loader.loadModelCopy()
+	* Particulas na tela de titulo
 
 IDEIAS:
 	* Criar item 'Axe'
-	* Criar elementos 'XDoor' na camada da colisao
+	* Criar elementos 'XDoor' na camada da colisao (e uma lista 'doors' em Map)
 		* Ex: GoldenDoor, SilverDoor, AxeDoor
 		* Sao abertos se o player usar o item X nelas, tipo Axe, GoldenKey, SilverKey
 		* Ex: AxeDoor seriam arvores, o player usa o item Axe nelas e abre caminho pro proximo mapa
-	* Criar elemento 'Hole' na camada Ground
+	* Criar elemento 'Hole' na camada Ground (e uma lista 'holes' em Map)
 		* Player só pode passar se usar um item tipo "Bridge" ou "Rope"
 
 DESIGNER (Fialho eh o responsavel por repassar a ele):
