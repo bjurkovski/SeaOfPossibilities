@@ -177,6 +177,8 @@ class Game(State):
 		self.moveChars()
 		self.buryDeadPeople()
 
+		self.activateSwitches()
+
 		#let's try
 		for i in range(2):
 			self.status[i].setText(self.characters[self.players[i]].getStatus())
@@ -273,6 +275,13 @@ class Game(State):
 				#TODO actually enemies are still present in the map
 				x,y = self.currentMap().posToGrid(enemy.getPos())
 				self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+
+				# COWABUNGA
+				# se botarmos aqui uma funcao que define como o inimigo anda
+				# vai dar tudo certo
+				# por exemplo ele pode as vezes andar em direcao a um heroi e
+				# as vezes ser random
+				# por enquanto e so random
 				dir = ['up','down','left','right'][random.randint(0,3)]
 				p1, p2 = enemy.getCollisionPos(dir)
 				x1, y1 = self.currentMap().posToGrid(p1)
@@ -321,6 +330,19 @@ class Game(State):
 				#		lPos = self.currentMap().posToGrid(enemy.getPos())
 				#		if tuple(lPos) == (x,y):
 				#			self.collision(char, enemy)
+
+	def activateSwitches(self):
+		mp = self.currentMap()
+		for s in mp.switches:
+			x,y = mp.posToGrid(s.getPos())
+			if mp.tiles[Map.COLLISION][y][x] != ' ':
+				#print 'activated!'
+				mp.tiles[Map.GROUND][y][x] = 'S'
+				s.activated = True
+			else:
+				#print 'deactivated!'
+				mp.tiles[Map.GROUND][y][x] = 's'
+				s.activated = False
 
 	def collision(self, a, b):
 		print "Collision: TYPE A:", a.getType(), "TYPE B:", b.getType()

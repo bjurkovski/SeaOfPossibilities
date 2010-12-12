@@ -1,5 +1,4 @@
 TO DO:
-	* Fazer pegar items (em Game.collision, onde tem um 'print "need to pick the item somehow..."'
 	* Fazer botoes (pros blocos pressionarem)
 		* Ideia: (que eu tive, voces podem ter ideias melhores)
 			* Usar a camada 0 do mapa (a cheia de '.') e colocar um 'b' pro botao nao pressionado e 'B' pro botao pressionado
@@ -29,5 +28,6 @@ DESIGNER (Fialho eh o responsavel por repassar a ele):
 	* Barril (ou coisa do tipo)
 		* (pra ser agarrado pelo personagem e atirado nos inimigos)
 		* Parado, Sendo destruido
-		
+
 	* Se houver duvida quanto ao proposito ou definicao de alguma das animacoes, pede pra ele ver videos do pateta no youtube
+
