@@ -324,17 +324,19 @@ class Game(State):
 	def collision(self, a, b):
 		print "Collision: TYPE A:", a.getType(), "TYPE B:", b.getType()
 
-		# commented while fixing the bugs
 		if b.getType() == 'item':
 			for i in range(len(self.currentMap().items)):
 				if tuple(self.currentMap().items[i].getPos()) == tuple(b.getPos()):
+					# removes the item
 					self.currentMap().items.pop(i)
+
 					x, y = self.currentMap().posToGrid((NodePath(b.getNode()).getX(), NodePath(b.getNode()).getZ()))
+
+					# it's not drawed anymore
 					self.currentMap().tiles[1][y][x] = ' '
 					NodePath(b.getNode()).removeNode()
 
-					# again this is idiotic, but forgive me
-					print "need to pick the item somehow..."
+					#it's picked
 					a.pickItem(b)
 
 		if a.getType() == 'liftable' and b.getType() == 'enemy':

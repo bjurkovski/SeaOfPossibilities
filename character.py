@@ -6,6 +6,10 @@ from direct.gui.OnscreenText import OnscreenText
 
 from body import *
 
+def opposite(dir):
+	op = { 'left' : 'right', 'up' : 'down', 'right' : 'left', 'down' : 'up' }
+	return op[dir]
+
 class Character(Body):
 	def __init__(self, filename):
 		Body.__init__(self, filename, 'Character')
@@ -101,6 +105,12 @@ class Character(Body):
 		return "%s 	HP: %s\nItens: %s" % (self.name,self.hearts,slots )
 
 	def takeDamage(self, damage):
+		pos = self.getPos()
+
+		newdir = opposite(self.direction)
+
+		self.setPos( pos + self.speed[newdir]*5 )
+
 		self.hearts -= damage
 		if self.hearts < 0:
 			self.hearts = 0
