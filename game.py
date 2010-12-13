@@ -218,12 +218,27 @@ class Game(State):
 				p1, p2 = liftable.getCollisionPos(liftable.direction)
 				x1, y1 = self.currentMap().posToGrid(p1)
 				x2, y2 = self.currentMap().posToGrid(p2)
-				for x,y in [(x1,y1), (x2,y2)]:
-					if self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
-						for enemy in self.currentMap().enemies:
-							lPos = self.currentMap().posToGrid(enemy.getPos())
-							if tuple(lPos) == (x,y):
-								self.collision(liftable, enemy)
+				try:
+					for x,y in [(x1,y1), (x2,y2)]:
+						if self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+							for enemy in self.currentMap().enemies:
+								lPos = self.currentMap().posToGrid(enemy.getPos())
+								if tuple(lPos) == (x,y):
+									self.collision(liftable, enemy)
+						elif self.stage.maps[self.room].tileType(1, (x,y)) != 'free':
+							liftable.stop()
+							liftable.getNode().detachNode()
+						else:
+							for char in self.characters:
+								if (x,y) == self.currentMap().posToGrid(self.characters[char].getPos()):
+									print "Stun nele!"
+									self.characters[char].stun()
+									liftable.stop()
+									liftable.getNode().detachNode()
+				except IndexError:
+					# to do, create a liftable.destroy(), which animates the liftable and do these two actions:
+					liftable.stop()
+					liftable.getNode().detachNode()
 
 	def doCharActions(self):
 		for char in [self.characters[self.player], self.characters[self.player2]]:

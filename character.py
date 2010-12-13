@@ -10,6 +10,7 @@ def opposite(dir):
 
 class Character(Body):
 	maxHearts = 6
+	clock = ClockObject()
 	def __init__(self, filename):
 		Body.__init__(self, filename, 'Character')
 
@@ -32,7 +33,10 @@ class Character(Body):
 		self.readRenderData()
 		self.calculateDimensions()
 
-		self.clock = None
+		self.last_step = Character.clock.getRealTime()
+
+		self.stunned = False
+		self.stunTime = 0
 
 	def stop(self):
 		Body.stop(self)
@@ -54,10 +58,13 @@ class Character(Body):
 	def move(self, direction):
 		angles = {"up": 270, "left": 0, "down": 90, "right": 180}
 
-		self.setDirection(direction)
-		if self.isMoving is False:
-			self.model.loop("walk")
-		Body.move(self, direction)
+		self.tryToRecover()
+
+		if not self.stunned:
+			self.setDirection(direction)
+			if self.isMoving is False:
+				self.model.loop("walk")
+			Body.move(self, direction)
 
 	def setDirection(self, direction):
 		Body.setDirection(self, direction)
@@ -72,17 +79,21 @@ class Character(Body):
 			self.currentSlot = 0
 
 	def pickItem(self, item):
-		if len(self.slots) < self.maxSlots:
-			print("Picking this %s" % (item.name) )
-			self.slots.append(item)
-			return None
-		else:
-			oldItem = self.slots[self.currentSlot]
-			self.slots[self.currentSlot] = item
-			return oldItem
+		self.tryToRecover()
+
+		if not self.stunned:
+			if len(self.slots) < self.maxSlots:
+				self.slots.append(item)
+				return None
+			else:
+				oldItem = self.slots[self.currentSlot]
+				self.slots[self.currentSlot] = item
+				return oldItem
 
 	def currentItem(self):
-		if len(self.slots) > 1:
+		self.tryToRecover()
+
+		if (not self.stunned) and (len(self.slots) > 1):
 			return self.slots[self.currentSlot].name
 		else:
 			return None
@@ -121,13 +132,9 @@ class Character(Body):
 
 	def enemy_move(self,dir):
 		#TODO later we'll subclass enemy and everything will be alright
-		if self.clock == None:
-			self.clock = ClockObject()
-			self.last_step = self.clock.getRealTime()
-
-		if self.clock.getRealTime() - self.last_step > 1:
+		if Character.clock.getRealTime() - self.last_step > 1:
 			self.move(dir)
-			self.last_step = self.last_step = self.clock.getRealTime()
+			self.last_step = Character.clock.getRealTime()
 		else:
 			self.move(self.direction)
 
@@ -136,3 +143,10 @@ class Character(Body):
 		liftable.setPos(self.getPos())
 		liftable.setHeight(-0.07)
 
+	def stun(self):
+		self.stunned = True
+		self.stunTime = Character.clock.getRealTime()
+
+	def tryToRecover(self):
+		if self.stunned and (Character.clock.getRealTime() - self.stunTime > 1):
+			self.stunned = False

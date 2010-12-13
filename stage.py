@@ -62,9 +62,14 @@ class Map:
 		try:
 			self.enemies = data["enemies"]
 			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
-			print(self.enemies)
 		except KeyError as e:
 			self.enemies = []
+
+		# add doors...
+		try:
+			self.doors = data["doors"]
+		except KeyError:
+			self.doors = []
 
 		self.constructModel()
 

@@ -56,13 +56,17 @@
 
 "items": [
 	{"name": "mine" , "pos": [2,2]} ,
-	{"name" : "sword", "pos" : [5,2]},
-	{"name" : "sword", "pos" : [5,4]}
+	{"name": "sword", "pos": [5,2]},
+	{"name": "sword", "pos": [5,4]}
 ],
 
 "enemies": [
-	{"name" : "EvilJackson" , "pos": [5,5] },
-	{"name" : "EvilJackson" , "pos": [2,5] }
+	{"name": "EvilJackson" , "pos": [5,5] },
+	{"name": "EvilJackson" , "pos": [2,5] }
+],
+
+"doors": [
+	{"name": "tree", "type": "silver", "pos": [16,6]}
 ]
 
 },
