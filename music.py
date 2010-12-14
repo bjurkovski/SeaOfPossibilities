@@ -12,6 +12,10 @@ class Music():
     def play(self):
         if self.current != None:
             self.getCurrent().play()
+            self.getCurrent().setPlayRate(1)
+
+    def stop(self):
+        self.getCurrent().setPlayRate(0)
 
     def getTracks(self):
         return self.tracks.keys

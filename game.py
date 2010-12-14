@@ -439,6 +439,7 @@ class Game(State):
 
 	def exit(self):
 		for c in self.players:
+			self.stage.stopMusic()
 			NodePath(c.getNode()).removeNode()
 
 		NodePath(self.currentMap().getNode()).removeNode()

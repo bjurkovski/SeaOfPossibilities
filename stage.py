@@ -257,6 +257,8 @@ class Stage:
 	def playMusic(self):
 		self.music.play()
 
+	def stopMusic(self):
+		self.music.stop()
 
 	def readLights(self,light_data):
 		self.lights = []
