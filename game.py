@@ -119,18 +119,20 @@ class Game(State):
 		self.characters[self.player].setMap(self.currentMap())
 		self.characters[self.player2].setMap(self.currentMap())
 
-	def changeMap(self,direction):
+	def changeMap(self,direction,char):
+		#TODO modularize for more characters
 		self.exitMap()
 		self.room = self.stage.doors[self.room][direction]
 		NodePath(self.currentMap().getNode()).reparentTo(self.node)
 
 		map = self.stage.maps[self.room]
-		x, y = self.currentMap().posToGrid(self.characters[self.player].getPos())
+		x, y = self.currentMap().posToGrid(char.getPos())
 		if   direction == "right": x = 1
 		elif direction == "left":  x = map.width-2
 		elif direction == "down":  y = 1
 		elif direction == "up":    y = map.height-2
 		pos = self.currentMap().gridToPos((x,y))
+
 		self.characters[self.player].setPos(pos)
 		self.characters[self.player2].setPos(pos)
 		self.characters[self.player2].setDirection(self.characters[self.player].direction)
@@ -347,7 +349,7 @@ class Game(State):
 					ex = self.stage.maps[self.room].getExit(self.currentMap().posToGrid(p1))
 
 					if ex and (ex in self.stage.doors[self.room].keys()):
-						self.changeMap(ex)
+						self.changeMap(ex,char)
 				else:
 					char.setDirection(dir)
 

@@ -4,7 +4,7 @@ PRESENTATION CHECKLIST (friday):
 -> portas que abrem com botoes pressionados
 -> arrumar botoes pro modelo que o cara passou
 -> arrumar bug do inimigo que permanece no mapa as vezes
--> bug do teleporte de sala DOING
+-> bug do teleporte de sala FEITOOOOOOOOOO!
 -> melhorar o stun
 -> barulhos
 -> arrumar controles dos players e do json DOING
