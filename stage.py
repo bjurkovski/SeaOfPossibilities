@@ -5,6 +5,7 @@ from model import Model
 from character import Character
 from music import Music
 from switch import Switch
+from door import Door
 from panda3d.core import NodePath, CardMaker, Texture, Vec4, Point3
 from panda3d.core import PointLight, DirectionalLight, AmbientLight, Spotlight
 from direct.actor.Actor import Actor
@@ -61,13 +62,14 @@ class Map:
 
 		try:
 			self.enemies = data["enemies"]
-			self.enemies = [ self.makeCharacter(e,'enemy') for e in self.enemies ]
+			self.enemies = [self.makeCharacter(e,'enemy') for e in self.enemies]
 		except KeyError as e:
 			self.enemies = []
 
 		# add doors...
 		try:
 			self.doors = data["doors"]
+			self.doors = [self.makeDoor(d) for d in self.doors]
 		except KeyError:
 			self.doors = []
 
@@ -198,6 +200,18 @@ class Map:
 		c.name = char['name']
 
 		return c
+
+	def makeDoor(self, door):
+		try:
+			d = Door("model/" + door["model"] + ".json", door["openWith"], door["permanent"])
+			d.setPos(self.gridToPos(door["pos"]))
+			d.type = "door"
+			d.symbol = 'd'
+
+			return d
+		except KeyError as e:
+			print "Error in map doors..."
+			exit()
 
 	def posToGrid(self, pos):
 		x = int(round(self.width/2 + (pos[0])/self.squareWidth))
