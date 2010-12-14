@@ -77,6 +77,7 @@ class Game(State):
 			b.setPos(b.originalPos)
 			x,y = self.currentMap().posToGrid(b.getPos())
 			self.currentMap().tiles[1][y][x] = 'b'
+			b.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 
 		for b in self.currentMap().liftables:
 			b.setPos(b.originalPos)
@@ -210,6 +211,26 @@ class Game(State):
 		for block in self.currentMap().blocks:
 			if block.isMoving:
 				block.move(block.direction)
+				p1, p2 = block.getCollisionPos(block.direction)
+				x1, y1 = self.currentMap().posToGrid(p1)
+				x2, y2 = self.currentMap().posToGrid(p2)
+				try:
+					for x,y in [(x1,y1), (x2,y2)]:
+						if self.stage.maps[self.room].tileType(1, (x,y)) == 'enemy':
+							for enemy in self.currentMap().enemies:
+								lPos = self.currentMap().posToGrid(enemy.getPos())
+								if tuple(lPos) == (x,y):
+									self.collision(block, enemy)
+						else:
+							for char in self.characters:
+								if (x,y) == self.currentMap().posToGrid(self.characters[char].getPos()):
+									bx,by = self.currentMap().posToGrid(block.getPos())
+									self.currentMap().tiles[Map.COLLISION][by][bx] = ' '
+									self.characters[char].stun()
+									block.stop()
+									block.getNode().detachNode()
+				except IndexError:
+					block.stop()
 
 		# LIFTABLE MOVEMENT ACTION
 		for liftable in self.currentMap().liftables:
@@ -396,6 +417,9 @@ class Game(State):
 			a.getNode().detachNode()
 			x,y = self.currentMap().posToGrid(a.getPos()) #nao precisaria
 			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+			b.takeDamage(10000)
+
+		if a.getType() == 'block' and b.getType() == 'enemy':
 			b.takeDamage(10000)
 
 
