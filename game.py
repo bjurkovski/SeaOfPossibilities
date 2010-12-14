@@ -142,8 +142,8 @@ class Game(State):
 		State.register(self, render, camera, keys, render2d)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 
-		for s in self.status:
-			s.reparentTo(self.node2d)
+		for c in self.characters:
+			self.status[c].reparentTo(self.node2d)
 
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
