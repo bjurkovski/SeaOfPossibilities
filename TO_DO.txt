@@ -1,10 +1,23 @@
+PRESENTATION CHECKLIST (friday):
+-> terminar seleção de modo/jogador
+-> inimigos mais espertos
+-> portas que abrem com botoes pressionados
+-> arrumar botoes pro modelo que o cara passou
+-> arrumar bug do inimigo que permanece no mapa as vezes
+-> bug do teleporte de sala
+-> melhorar o stun
+-> barulhos
+
+
+(se sobrar tempo, melhor nao pra apresentacao)
+-> hookshot
+
 TO DO (ordem de importancia):
 	* Algo que toque um som soh uma vez (tipo quando o char toma porrada ou quando a pedra eh destruida)
 		* Se isso ja for possivel com a classe atual, fialho por favor faca um exemplo em algum lugar,
 			que nao tou muito familiarizado com ela
 	* Arrumar bug inimigo continuando no mapa (tentei e nao consegui =/)
 	* Implementar gancho (basear-se em liftable, talvez)
-	* Fazer Liftable ser destruido quando colidir com a parede ou com um personagem amigo (sem tirar dano)
 	* Fazder uma mini-ia pros inimigos, de alguma forma
 	* Subclassear varias coisas, como Enemy, Block, pra ajeitar os 'move's e outras coisas
 	* Ler o código com calma e ir arrumando as porquices
