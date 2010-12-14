@@ -100,7 +100,7 @@ class Character(Body):
 	def currentItem(self):
 		self.tryToRecover()
 
-		if (not self.stunned) and (len(self.slots) > 1):
+		if (not self.stunned) and (len(self.slots) >= 1):
 			return self.slots[self.currentSlot].name
 		else:
 			return None
