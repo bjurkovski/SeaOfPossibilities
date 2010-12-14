@@ -160,8 +160,6 @@ class Game(State):
 
 		#COWABUNGA comment this to stop the madness
 		render.setAttrib(LightRampAttrib.makeSingleThreshold(0.1, 1))
-		#render.setAttrib(LightRampAttrib.makeDoubleThreshold(0.1, 0.3, 0.9 , 1))
-		#render.setAttrib(LightRampAttrib.makeSingleThreshold(0.5, 0.4))
 
 		# THE TRUE CARTOON SHADER :P
 #		self.separation = 1 # Pixels
@@ -177,9 +175,6 @@ class Game(State):
 	def iterate(self):
 		State.iterate(self)
 		self.camera.look()
-
-		for e in self.currentMap().enemies:
-			e.IsMoving = True
 
 		self.moveObjects()
 		self.doCharActions()
@@ -361,12 +356,6 @@ class Game(State):
 							lPos = self.currentMap().posToGrid(e.getPos())
 							if tuple(lPos) == (x,y):
 								self.collision(char, e)
-								# TEST - porco!!!!
-								try:
-									self.hearts[self.player][self.characters[self.player].hearts].getNode().detachNode()
-									self.hearts[self.player2][self.characters[self.player2].hearts].getNode().detachNode()
-								except IndexError:
-									pass
 
 	def activateSwitches(self):
 		mp = self.currentMap()
@@ -416,7 +405,6 @@ class Game(State):
 
 		if a.getType() == 'block' and b.getType() == 'enemy':
 			b.takeDamage(10000)
-
 
 		if a.getType() == 'Character':
 			print("Character collided with", b.getType())

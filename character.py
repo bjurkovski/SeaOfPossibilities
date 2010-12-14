@@ -38,6 +38,8 @@ class Character(Body):
 		self.stunned = False
 		self.stunTime = 0
 
+		self.hearts = 6
+
 	def stop(self):
 		Body.stop(self)
 		self.model.stop()
