@@ -76,14 +76,20 @@ class Game(State):
 		for b in self.currentMap().blocks:
 			b.setPos(b.originalPos)
 			x,y = self.currentMap().posToGrid(b.getPos())
-			self.currentMap().tiles[1][y][x] = 'b'
+			self.currentMap().tiles[Map.COLLISION][y][x] = 'b'
 			b.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 
 		for b in self.currentMap().liftables:
 			b.setPos(b.originalPos)
 			x,y = self.currentMap().posToGrid(b.getPos())
-			self.currentMap().tiles[1][y][x] = 'l'
+			self.currentMap().tiles[Map.COLLISION][y][x] = 'l'
 			b.getNode().reparentTo(NodePath(self.currentMap().getNode()))
+
+		for d in self.currentMap().doors:
+			if d.permanent:
+				x,y = self.currentMap().posToGrid(d.getPos())
+				self.currentMap().tiles[Map.COLLISION][y][x] = 'd'
+				d.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 
 		for char in [self.characters[self.player], self.characters[self.player2]]:
 			char.lifting = None
@@ -106,6 +112,9 @@ class Game(State):
 
 			for switch in self.currentMap().switches:
 				switch.getNode().reparentTo(NodePath(self.currentMap().getNode()))
+
+			for door in self.currentMap().doors:
+				self.spawnObject(door)
 
 			self.currentMap().started = True
 
@@ -270,6 +279,18 @@ class Game(State):
 			if self.keys['attack'+add]:
 				self.keys['attack'+add] = False
 				print('Using %s' % (char.currentItem()) )
+				p1, p2 = char.getCollisionPos(char.direction)
+				x1, y1 = self.currentMap().posToGrid(p1)
+				x2, y2 = self.currentMap().posToGrid(p2)
+
+				for x,y in [(x1,y1), (x2,y2)]:
+					if self.stage.maps[self.room].tileType(Map.COLLISION, (x,y)) == 'door':
+						for d in self.currentMap().doors:
+							if tuple(self.currentMap().posToGrid(d.getPos())) == (x,y):
+								opened = d.open(char.currentItem())
+								if opened:
+									self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+									char.destroyCurrentItem()
 
 			if self.keys['cancel'+add]:
 				self.keys['cancel'+add] = False

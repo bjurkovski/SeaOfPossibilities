@@ -90,6 +90,13 @@ class Character(Body):
 				self.slots[self.currentSlot] = item
 				return oldItem
 
+	def destroyCurrentItem(self):
+		self.slots.pop(self.currentSlot)
+		if len(self.slots) > 0:
+			self.currentSlot = self.currentSlot % len(self.slots)
+		else:
+			self.currentSlot = 0
+
 	def currentItem(self):
 		self.tryToRecover()
 
