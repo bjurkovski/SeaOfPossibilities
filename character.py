@@ -114,7 +114,7 @@ class Character(Body):
 
 		slots += ']'
 
-		return "%s 	HP: %s\nItens: %s" % (self.name,self.hearts,slots )
+		return "%s\nItens: %s" % (self.name,slots)
 
 	def takeDamage(self, damage):
 		pos = self.getPos()
@@ -150,3 +150,4 @@ class Character(Body):
 	def tryToRecover(self):
 		if self.stunned and (Character.clock.getRealTime() - self.stunTime > 1):
 			self.stunned = False
+

@@ -43,7 +43,7 @@ class Game(State):
 			# initialize character status string
 			self.status.append(OnscreenText(mayChange= True ,
 				                             style=2, fg=(1,1,1,1),
-				                             pos=(1.5*posi - 0.7,-0.75), scale = .08)
+				                             pos=(1.5*posi - 0.7,-0.85), scale = .08)
 			)
 			posi += 1
 
