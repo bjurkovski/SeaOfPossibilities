@@ -29,4 +29,6 @@ class State:
 
 	def exit(self):
 		self.node.detachNode()
-		self.node2d.detachNode()
+		
+		if self.render2d:
+			self.node2d.detachNode()
