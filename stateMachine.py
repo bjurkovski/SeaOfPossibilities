@@ -117,6 +117,9 @@ class StateMachine(FSM, ShowBase, Input):
 	def enterExit(self):
 		exit()
 
+	def exitInGame(self):
+		self.states[self.oldState].exit()
+
 	def exitNewGame(self):
 		self.states[self.oldState].exit()
 

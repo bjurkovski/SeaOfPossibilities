@@ -31,7 +31,8 @@ class Game(State):
 		self.room = self.stage.start
 		self.isOver = False
 
-		self.players = [player,player2]
+		self.players = []
+
 		#print(self.players)
 		self.startMap()
 
@@ -39,7 +40,7 @@ class Game(State):
 		self.status = []
 
 		posi = 0
-		for p in self.players:
+		for p in self.characters:
 			# initialize character status string
 			self.status.append(OnscreenText(mayChange= True ,
 				                             style=2, fg=(1,1,1,1),
@@ -48,12 +49,6 @@ class Game(State):
 			posi += 1
 
 	def spawnObject(self, ob):
-		try:
-			if ob.type == "item":
-				print('need to make item')
-		except AttributeError as e:
-			print('Attr error, ', ob , e)
-
 		ob.setMap(self.currentMap())
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
@@ -139,10 +134,10 @@ class Game(State):
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 
 		char = self.characters[self.player]
-		self.players.append(HumanPlayer(char, keys))
+		self.players.append(char)
 
 		char2 = self.characters[self.player2]
-		self.players.append(HumanPlayer(char2 , keys))
+		self.players.append(char2)
 
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
@@ -202,8 +197,8 @@ class Game(State):
 
 	def updateHUD(self):
 		#let's try
-		for i in range(2):
-			self.status[i].setText(self.characters[self.players[i]].getStatus())
+		for i in range(len(self.players)):
+			self.status[i].setText(self.players[i].getStatus())
 
 
 	def moveObjects(self):
@@ -442,6 +437,11 @@ class Game(State):
 			if not self.characters[char].isAlive():
 				self.isOver = True
 
+	def exit(self):
+		for c in self.players:
+			NodePath(c.getNode()).removeNode()
+
+		NodePath(self.currentMap().getNode()).removeNode()
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 
