@@ -142,12 +142,6 @@ class Game(State):
 		State.register(self, render, camera, keys, render2d)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 
-#		char = self.characters[self.player]
-#		self.players.append(char)
-
-#		char2 = self.characters[self.player2]
-#		self.players.append(char2)
-
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
 
@@ -157,13 +151,17 @@ class Game(State):
 		# COWABUNGA test!!!
 		self.hearts = {}
 		numChar=0
+
+		self.heartsNode = NodePath(PandaNode('hearts'))
+		self.heartsNode.reparentTo(self.node2d)
+
 		for char in self.characters:
 			self.hearts[char] = []
 
 			for i in range(Character.maxHearts):
 				self.hearts[char].append(Sprite("heart.png", 0.05, 0.05))
 				self.hearts[char][i].setPos(-0.5 + 1*numChar + (i%3)*0.055 , -0.7 - int(i/3)*0.055)
-				self.hearts[char][i].getNode().reparentTo(self.node2d)
+				self.hearts[char][i].getNode().reparentTo(self.heartsNode)
 
 			numChar += 1
 
@@ -209,7 +207,7 @@ class Game(State):
 					heart.getNode().detachNode()
 
 				for i in range(self.characters[c].hearts):
-					self.hearts[c][i].getNode().reparentTo(self.node2d)
+					self.hearts[c][i].getNode().reparentTo(self.heartsNode)
 
 				self.characters[c].healthChanged = False
 
@@ -414,7 +412,7 @@ class Game(State):
 
 						# it's not drawed anymore
 						self.currentMap().tiles[Map.COLLISION][y][x] = ' '
-						NodePath(b.getNode()).removeNode()
+						NodePath(b.getNode()).detachNode()
 
 						#it's picked
 						oldItem = a.pickItem(b)
@@ -455,9 +453,14 @@ class Game(State):
 				self.isOver = True
 
 	def exit(self):
-		for c in self.players:
+
+		self.heartsNode.removeNode()
+		for c in self.characters:
 			self.stage.stopMusic()
-			NodePath(c.getNode()).removeNode()
+
+			NodePath(self.characters[c].getNode()).removeNode()
+
+			self.status[c].removeNode()
 
 		NodePath(self.currentMap().getNode()).removeNode()
 
