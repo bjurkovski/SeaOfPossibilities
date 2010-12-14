@@ -142,6 +142,9 @@ class Game(State):
 		State.register(self, render, camera, keys, render2d)
 		self.node.attachNewNode(self.stage.maps[self.room].getNode())
 
+		for s in self.status:
+			s.reparentTo(self.node2d)
+
 		char = self.characters[self.player]
 		self.players.append(char)
 
@@ -447,11 +450,12 @@ class Game(State):
 				self.isOver = True
 
 	def exit(self):
-		for c in self.players:
-			self.stage.stopMusic()
-			NodePath(c.getNode()).removeNode()
-
-		NodePath(self.currentMap().getNode()).removeNode()
+		self.stage.stopMusic()
+		State.exit(self)
+	#	for c in self.players:
+	#		NodePath(c.getNode()).removeNode()
+#
+#		NodePath(self.currentMap().getNode()).removeNode()
 
 # to do (or not): create GameServer and GameClient classes to inherit from Game
 

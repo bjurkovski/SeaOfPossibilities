@@ -110,7 +110,7 @@ class StateMachine(FSM, ShowBase, Input):
 	def enterGameOver(self):
 		if not self.states[self.newState]:
 			self.states[self.newState] = GameOver()
-			self.states[self.newState].register(self.render, self.cam, self.actionKeys)
+			self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 		else:
 			self.states[self.newState].enter()
 
