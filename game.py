@@ -37,12 +37,12 @@ class Game(State):
 		self.startMap()
 
 		self.stage.playMusic()
-		self.status = []
+		self.status = {}
 
 		posi = 0
-		for p in self.characters:
+		for c in self.characters:
 			# initialize character status string
-			self.status.append(OnscreenText(mayChange= True ,
+			self.status[c] = (OnscreenText(mayChange= True ,
 				                             style=2, fg=(1,1,1,1),
 				                             pos=(1.5*posi - 0.7,-0.85), scale = .08)
 			)
@@ -145,12 +145,6 @@ class Game(State):
 		for s in self.status:
 			s.reparentTo(self.node2d)
 
-		char = self.characters[self.player]
-		self.players.append(char)
-
-		char2 = self.characters[self.player2]
-		self.players.append(char2)
-
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
 
@@ -203,10 +197,18 @@ class Game(State):
 			return "Paused"
 
 	def updateHUD(self):
-		#let's try
-		for i in range(len(self.players)):
-			self.status[i].setText(self.players[i].getStatus())
 
+		for c in self.characters:
+			self.status[c].setText(self.characters[c].getStatus())
+
+			if self.characters[c].healthChanged:
+				for heart in self.hearts[c]:
+					heart.getNode().detachNode()
+
+				for i in range(self.characters[c].hearts):
+					self.hearts[c][i].getNode().reparentTo(self.node2d)
+
+				self.characters[c].healthChanged = False
 
 	def moveObjects(self):
 		# BLOCK MOVEMENT ACTION

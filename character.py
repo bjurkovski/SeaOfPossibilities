@@ -38,7 +38,7 @@ class Character(Body):
 		self.stunned = False
 		self.stunTime = 0
 
-		self.hearts = 6
+		self.healthChanged = False
 
 	def stop(self):
 		Body.stop(self)
@@ -126,6 +126,9 @@ class Character(Body):
 		return "%s\nItens: %s" % (self.name,slots)
 
 	def takeDamage(self, damage):
+
+		self.healthChanged = True
+
 		pos = self.getPos()
 
 		newdir = opposite(self.direction)
