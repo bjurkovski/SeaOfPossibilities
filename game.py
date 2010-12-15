@@ -404,6 +404,19 @@ class Game(State):
 				mp.tiles[Map.GROUND][y][x] = 's'
 				s.deactivate()
 
+		for d in mp.doors:
+			openDoor = True
+			if d.openWith == "switches":
+				for ds in d.switches:
+					for ms in mp.switches:
+						if (ds == ms.name) and (not ms.active):
+							openDoor = False
+							break
+				if openDoor:
+					d.open("switches")
+					x,y = mp.posToGrid(d.getPos())
+					mp.tiles[Map.COLLISION][y][x] = ' '
+
 	def collision(self, a, b):
 		print "Collision: TYPE A:", a.getType(), "TYPE B:", b.getType()
 

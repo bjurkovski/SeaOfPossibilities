@@ -9,12 +9,15 @@ from gameLoader import *
 class Switch:
 	cardMaker = CardMaker('CardMaker-Switches')
 	SwitchID = 0
-	def __init__(self, sizeX, sizeY, active=False):
+	def __init__(self, name, sizeX, sizeY, active=False):
 		self.id = "Switch" + str(Switch.SwitchID)
 		Switch.SwitchID += 1
 
 		Switch.cardMaker.setFrame(-sizeX/2.0, sizeX/2.0, 0, sizeY)
 		self.model = NodePath(Switch.cardMaker.generate())
+
+		self.name = name
+
 		self.map = None #maybe this is not necessary... i'll check later
 
 		self.active = None

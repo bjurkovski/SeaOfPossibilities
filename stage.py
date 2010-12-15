@@ -73,6 +73,19 @@ class Map:
 		except KeyError:
 			self.doors = []
 
+
+		try:
+			self.switches = []
+			switches = data["switches"]
+			for s in switches:
+				x,y = s["pos"]
+				switch = self.makeSwitch(s["name"], x, y)
+				self.tiles[Map.GROUND][y][x] = 's'
+				self.switches.append(switch)
+		except KeyError:
+			self.switches = []
+			
+
 		self.constructModel()
 
 	def readConfig(self):
@@ -131,7 +144,6 @@ class Map:
 		self.obstacles = []
 		self.blocks = []
 		self.liftables = []
-		self.switches = []
 
 		if self.nodePath != None:
 			self.nodePath.removeNode()
@@ -146,13 +158,6 @@ class Map:
 
 		for y in range(self.height):
 			for x in range(self.width):
-				tType = self.tileType(Map.GROUND, (x,y))
-
-				if tType == 'inactive_switch':
-					self.switches.append(self.makeSwitch(x, y))
-
-		for y in range(self.height):
-			for x in range(self.width):
 				# TO DO: MUDAR NOME
 				a = {"block": self.blocks,
 					 "obstacle": self.obstacles,
@@ -163,8 +168,8 @@ class Map:
 				if tType != 'free':
 					a[tType].append(self.makeObject(tType, x,y))
 
-	def makeSwitch(self, x, y):
-		switch = Switch(self.squareHeight, self.squareWidth)
+	def makeSwitch(self, name, x, y):
+		switch = Switch(name, self.squareHeight, self.squareWidth)
 #		switch.model.setColor(0, 0, 0)
 		x,y = self.gridToPos((x,y))
 		switch.setPos(x,y)
@@ -207,6 +212,9 @@ class Map:
 			d.setPos(self.gridToPos(door["pos"]))
 			d.type = "door"
 			d.symbol = 'd'
+
+			if door["openWith"] == "switches":
+				d.switches = door["switches"]
 
 			return d
 		except KeyError as e:

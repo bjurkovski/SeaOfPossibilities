@@ -1,0 +1,14 @@
+{
+	"render":
+	{
+		"model": "model/button/botao",
+		"scale": [0.002, 0.002, 0.002],
+		"hpr": [0, 90, 0],
+		"pos": [0, 0.0, 0],
+
+		"animation":
+		{
+			"activate": "model/button/anim_botao"
+		}
+	}
+}
