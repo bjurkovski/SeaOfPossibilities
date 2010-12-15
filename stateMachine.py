@@ -25,8 +25,7 @@ class StateMachine(FSM, ShowBase, Input):
 		self.cam = Cam(self.cam)
 
 		self.defaultTransitions = {
-			# this changed, must go back to normal
-			'Title':    ['NewGame','InGame', 'Options', 'Exit'],
+			'Title':    ['NewGame','Options', 'Exit'],
 			'NewGame':  ['InGame', 'Title'],
 			'InGame':   ['Paused', 'GameOver'],
 			'Paused':   ['InGame', 'Title', 'Exit'],
