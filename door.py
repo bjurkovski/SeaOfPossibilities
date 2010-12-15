@@ -6,6 +6,7 @@ class Door(Model):
 		self.closed = True
 		self.openWith = openWith
 		self.permanent = permanent
+		self.switches = []
 
 	def open(self, object):
 		if object == self.openWith:
