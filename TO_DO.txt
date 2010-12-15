@@ -3,10 +3,13 @@ PRESENTATION CHECKLIST (friday):
 -> inimigos mais espertos
 -> portas que abrem com botoes pressionados
 -> arrumar botoes pro modelo que o cara passou
+
+ACHO QUE SÓ ACONTECE QUANDO MATAM 2 INIMIGOS AO MESMO TEMPO FIKDIK
 -> arrumar bug do inimigo que permanece no mapa as vezes
+
 -> bug do teleporte de sala FEITOOOOOOOOOO!
 -> melhorar o stun
--> barulhos
+-> barulhos (MINHA NET É MT LENTA, BAIXA ELES Q EU INTEGRO)
 -> arrumar controles dos players e do json DOING
 
 (se sobrar tempo, melhor nao pra apresentacao)
@@ -16,8 +19,7 @@ TO DO (ordem de importancia):
 	* Algo que toque um som soh uma vez (tipo quando o char toma porrada ou quando a pedra eh destruida)
 		* Se isso ja for possivel com a classe atual, fialho por favor faca um exemplo em algum lugar,
 			que nao tou muito familiarizado com ela
-	* Arrumar bug inimigo continuando no mapa (tentei e nao consegui =/)
-	* Implementar gancho (basear-se em liftable, talvez)
+
 	* Fazder uma mini-ia pros inimigos, de alguma forma
 	* Subclassear varias coisas, como Enemy, Block, pra ajeitar os 'move's e outras coisas
 	* Ler o código com calma e ir arrumando as porquices
