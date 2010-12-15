@@ -14,7 +14,17 @@ class Switch:
 		Switch.SwitchID += 1
 
 		Switch.cardMaker.setFrame(-sizeX/2.0, sizeX/2.0, 0, sizeY)
-		self.model = NodePath(Switch.cardMaker.generate())
+		#self.model = NodePath(Switch.cardMaker.generate())
+
+		# THE CODE DOWN HERE SUX, BUT WE NEED THIS TO FRIDAY'S PRESENTATION, I'M SORRY DUDES
+		file = open("model/switch.json")
+		self.data = json.loads(file.read())
+		file.close()
+		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
+		self.model.setScale(*self.data["render"]["scale"])
+		self.model.setHpr(*self.data["render"]["hpr"])
+		self.model.setPos(*self.data["render"]["pos"])
+		# end of sucking code
 
 		self.name = name
 
@@ -39,9 +49,14 @@ class Switch:
 		self.map = _map
 
 	def activate(self):
-		self.active = True
-		self.model.setColor(0,1,0)
+		if not self.active:
+			self.model.setPlayRate(3, "activate")
+			self.model.play("activate")
+			self.active = True
+			self.model.setColor(0,1,0)
 
 	def deactivate(self):
 		self.active = False
+		self.model.stop()
+		self.model.pose("activate", 0)
 		self.model.setColor(1,0,0)
