@@ -84,7 +84,7 @@ class Map:
 				self.switches.append(switch)
 		except KeyError:
 			self.switches = []
-			
+
 
 		self.constructModel()
 
@@ -162,6 +162,7 @@ class Map:
 				a = {"block": self.blocks,
 					 "obstacle": self.obstacles,
 					 "tree": self.obstacles,
+					 "bush" : self.obstacles,
 					 "liftable": self.liftables}
 				tType = self.tileType(Map.COLLISION, (x,y))
 
@@ -182,9 +183,9 @@ class Map:
 	def makeObject(self, obj_type, x, y):
 		# THIS SHOULD NOT BE NECESSARY. TO DO: THEME FILE WITH THIS DICTs
 		# yeah I know
-		models = { 'block': 'block', 'obstacle': 'rock', 'tree': 'tree', "liftable": "liftable" }
-		symbols = { 'block': 'b', 'obstacle': "o", 'tree': 't', 'liftable': 'l' }
-		types = { 'obstacle': 'obstacle', 'tree': 'obstacle', 'block': 'block', 'liftable': 'liftable'}
+		models = { 'block': 'block', 'obstacle': 'rock', 'tree': 'tree', "liftable": "liftable", "bush" : "bush" }
+		symbols = { 'block': 'b', 'obstacle': "o", 'tree': 't', 'liftable': 'l', 'bush' : 'T' }
+		types = { 'obstacle': 'obstacle', 'tree': 'obstacle', 'block': 'block', 'liftable': 'liftable', 'bush' : 'obstacle'}
 
 		instance = Model("model/" + models[obj_type] + ".json")
 		instance.setPos(self.gridToPos((x,y)))

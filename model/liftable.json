@@ -2,7 +2,7 @@
 	"render":
 	{
 		"model": "model/barrel/barrel",
-		"scale": [0.004, 0.004, 0.004],
+		"scale": [0.004, 0.004, 0.004   ],
 		"hpr": [0, 90, 0],
 		"pos": [0, 0, 0]
 	},
