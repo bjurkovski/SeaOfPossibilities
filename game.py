@@ -15,6 +15,7 @@ from panda3d.core import LightRampAttrib
 from direct.filter.CommonFilters import CommonFilters
 from direct.gui.OnscreenText import OnscreenText
 from direct.showbase.Transitions import Transitions
+from direct.interval.FunctionInterval import Wait
 
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
@@ -125,7 +126,10 @@ class Game(State):
 	def changeMap(self,direction,char):
 
 		self.transitions.fadeOut(1)
-		self.transitions.fadeIn(1)
+		self.wait(1)
+
+		self.transitions.fadeIn(2)
+		self.wait(1)
 
 		#TODO modularize for more characters
 		self.exitMap()
@@ -478,7 +482,14 @@ class Game(State):
 			if not self.characters[char].isAlive():
 				self.isOver = True
 
+	def wait(self, time):
+		self.waitTime = time
+
 	def exit(self):
+
+		self.transitions.fadeOut(2)
+		self.wait(2)
+		self.transitions.noFade()
 
 		self.stage.stopMusic()
 		self.heartsNode.removeNode()

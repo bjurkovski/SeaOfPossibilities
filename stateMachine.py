@@ -59,8 +59,16 @@ class StateMachine(FSM, ShowBase, Input):
 		self.request(initialState)
 
 	def idle(self, task):
-		if task.time - self.lastTaskTime > 0.016: #0.016
+
+		waitTime = 0.016
+		if self.states[self.state].waitTime > 0:
+			waitTime = self.states[self.state].waitTime
+
+		if task.time - self.lastTaskTime > waitTime: #0.016
+			self.states[self.state].waitTime = 0
+
 			newState = self.states[self.state].iterate()
+
 			if newState:
 				print(newState)
 				self.request(newState)
