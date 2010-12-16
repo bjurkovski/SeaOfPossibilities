@@ -2,7 +2,7 @@ PRESENTATION CHECKLIST (friday):
 -> terminar seleção de modo/jogador
 -> inimigos mais espertos
 -> portas que abrem com botoes pressionados DONE!
--> arrumar botoes pro modelo que o cara passou
+-> arrumar botoes pro modelo que o cara passou DONE!
 
 ACHO QUE SÓ ACONTECE QUANDO MATAM 2 INIMIGOS AO MESMO TEMPO FIKDIK
 -> arrumar bug do inimigo que permanece no mapa as vezes

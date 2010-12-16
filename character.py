@@ -37,6 +37,16 @@ class Character(Body):
 
 		self.stunned = False
 		self.stunTime = 0
+		# THE CODE DOWN HERE SUX, BUT WE NEED THIS TO FRIDAY'S PRESENTATION, I'M SORRY DUDES
+		file = open("model/stun.json")
+		sdata = json.loads(file.read())
+		file.close()
+		self.stunModel = Actor(sdata["render"]["model"], sdata["render"]["animation"])
+		self.stunModel.setScale(*sdata["render"]["scale"])
+		self.stunModel.setHpr(*sdata["render"]["hpr"])
+		self.stunModel.setPos(*sdata["render"]["pos"])
+		self.stunModel.reparentTo(self.model)
+		# end
 
 		self.healthChanged = False
 
@@ -158,8 +168,11 @@ class Character(Body):
 	def stun(self):
 		self.stunned = True
 		self.stunTime = Character.clock.getRealTime()
+		self.stunModel.reparentTo(self.model)
+		self.stunModel.play("stun")
 
 	def tryToRecover(self):
 		if self.stunned and (Character.clock.getRealTime() - self.stunTime > 1):
 			self.stunned = False
+			self.stunModel.detachNode()
 

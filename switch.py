@@ -32,9 +32,9 @@ class Switch:
 
 		self.active = None
 		if active:
-			self.activate()
+			self.activate(True)
 		else:
-			self.deactivate()
+			self.deactivate(True)
 
 	def getNode(self):
 		return self.model
@@ -48,15 +48,17 @@ class Switch:
 	def setMap(self, _map):
 		self.map = _map
 
-	def activate(self):
-		if not self.active:
+	def activate(self, forceActivate=False):
+		if (not self.active) or forceActivate:
+			self.active = True
 			self.model.setPlayRate(3, "activate")
 			self.model.play("activate")
-			self.active = True
 			self.model.setColor(0,1,0)
 
-	def deactivate(self):
-		self.active = False
-		self.model.stop()
-		self.model.pose("activate", 0)
-		self.model.setColor(1,0,0)
+	def deactivate(self, forceDeactivate=False):
+		if self.active or forceDeactivate:
+			self.active = False
+			self.model.stop()
+			self.model.setPlayRate(-5, "activate")
+			self.model.play("activate")
+			self.model.setColor(1,0,0)
