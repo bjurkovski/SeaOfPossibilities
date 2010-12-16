@@ -17,8 +17,8 @@ ACHO QUE SÓ ACONTECE QUANDO MATAM 2 INIMIGOS AO MESMO TEMPO FIKDIK
 -> arrumar bug do inimigo que permanece no mapa as vezes
 
 -> bug do teleporte de sala FEITOOOOOOOOOO!
--> melhorar o stun
--> barulhos (MINHA NET É MT LENTA, BAIXA ELES Q EU INTEGRO)
+-> melhorar o stun DONE!
+-> barulhos DOING
 -> arrumar controles dos players e do json DOING
 
 (se sobrar tempo, melhor nao pra apresentacao)
