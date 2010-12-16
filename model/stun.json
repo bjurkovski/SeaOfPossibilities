@@ -1,0 +1,14 @@
+{
+	"render":
+	{
+		"model": "model/bolotas/bolotas",
+		"scale": [0.5, 0.5, 0.5],
+		"hpr": [0, 90, 0],
+		"pos": [0, -0.07, 0],
+
+		"animation":
+		{
+			"stun": "model/bolotas/bolotas_anim"
+		}
+	}
+}
