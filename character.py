@@ -133,7 +133,7 @@ class Character(Body):
 
 		slots += ']'
 
-		return "%s\nItens: %s" % (self.name,slots)
+		return "%s %s" % (self.name,slots)
 
 	def takeDamage(self, damage):
 

@@ -45,7 +45,7 @@ class Game(State):
 			# initialize character status string
 			self.status[c] = (OnscreenText(mayChange= True ,
 				                             style=2, fg=(1,1,1,1),
-				                             pos=(1.5*posi - 0.7,-0.85), scale = .08)
+				                             pos=(1.4*posi - 0.8,-0.83), scale = .07)
 			)
 			posi += 1
 
@@ -176,7 +176,7 @@ class Game(State):
 
 			for i in range(Character.maxHearts):
 				self.hearts[char].append(Sprite("heart.png", 0.05, 0.05))
-				self.hearts[char][i].setPos(-0.5 + 1*numChar + (i%3)*0.055 , -0.7 - int(i/3)*0.055)
+				self.hearts[char][i].setPos(-0.8 + 1.4*numChar + (i%3)*0.055 , -0.9 - int(i/3)*0.055)
 				self.hearts[char][i].getNode().reparentTo(self.heartsNode)
 
 			numChar += 1
@@ -462,8 +462,24 @@ class Game(State):
 			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 			b.takeDamage(10000)
 
+			if not b.isAlive():
+				x, y = self.currentMap().posToGrid(b.getPos())
+				self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+				NodePath(b.getNode()).removeNode()
+				self.currentMap().enemies.remove(b)
+
 		if a.getType() == 'block' and b.getType() == 'enemy':
+			a.stop()
+			a.getNode().detachNode()
+			x,y = self.currentMap().posToGrid(a.getPos())
+			self.currentMap().tiles[Map.COLLISION][y][x] = ' '
 			b.takeDamage(10000)
+
+			if not b.isAlive():
+				x, y = self.currentMap().posToGrid(b.getPos())
+				self.currentMap().tiles[Map.COLLISION][y][x] = ' '
+				NodePath(b.getNode()).removeNode()
+				self.currentMap().enemies.remove(b)
 
 		if a.getType() == 'Character':
 			print("Character collided with", b.getType())
