@@ -1,10 +1,11 @@
 {
 	"render":
 	{
-		"model": "models/teapot",
-		"scale": [0.03, 0.03, 0.03],
+		"model": "model/key",
+		"scale": [0.02, 0.02, 0.02],
 		"hpr": [0, 90, 0],
-		"pos": [0, 0.0, 0],
-		"color": [1,0,0]
+		"pos": [0, 0 , 0.1],
+		"color": [0.7,0.7,0]
 	}
 }
+

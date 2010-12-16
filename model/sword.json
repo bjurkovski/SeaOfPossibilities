@@ -1,10 +1,10 @@
 {
 	"render":
 	{
-		"model": "models/teapot",
-		"scale": [0.03, 0.03, 0.03],
-		"hpr" : [0, 0, 0],
-		"pos" : [0, 0, 0],
-		"color": [0,0,1]
+		"model": "model/sword/sword",
+		"scale": [0.011, 0.011, 0.011],
+		"hpr" : [0, 0, 45],
+		"pos" : [0, 0, 0]
 	}
 }
+
