@@ -11,11 +11,10 @@ import sys
 
 from direct.actor.Actor import Actor
 from panda3d.core import Point2, Point3
-from panda3d.core import LightRampAttrib
+from panda3d.core import LightRampAttrib, ClockObject
 from direct.filter.CommonFilters import CommonFilters
 from direct.gui.OnscreenText import OnscreenText
 from direct.showbase.Transitions import Transitions
-from direct.interval.FunctionInterval import Wait
 
 class Game(State):
 	mapOffset = {"up": (0,1), "down": (0,-1), "left": (-1,0), "right": (1,0)}
@@ -51,6 +50,8 @@ class Game(State):
 			posi += 1
 
 		self.transitions = Transitions(GameLoader.loader)
+		self.clock = ClockObject()
+		self.lastTime = 0
 
 	def spawnObject(self, ob):
 		ob.setMap(self.currentMap())
@@ -487,7 +488,8 @@ class Game(State):
 				self.isOver = True
 
 	def wait(self, time):
-		self.waitTime = time
+		while self.lastTime - self.clock.getRealTime() > time:
+			pass
 
 	def exit(self):
 
