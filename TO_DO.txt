@@ -1,3 +1,4 @@
+-> BGOD/Personagem.egg
 -> Modelo do boneco pronto, os frames são
 0-38 = andando
 50-400  = parado
