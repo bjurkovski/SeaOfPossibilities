@@ -1,7 +1,7 @@
 import json
 from direct.actor.Actor import Actor
 from panda3d.core import Point3
-from pandac.PandaModules import CollisionNode, CollisionSphere
+from pandac.PandaModules import NodePath
 from body import *
 from gameLoader import *
 
@@ -10,6 +10,7 @@ class Model(Body):
 		Body.__init__(self, filename, 'Model')
 
 		self.model = loadModel(self.data["render"]["model"])
+		self.node = NodePath(self.model)
 
 		self.readRenderData()
 		self.calculateDimensions()

@@ -1,6 +1,6 @@
 from body import *
 from direct.actor.Actor import Actor
-from panda3d.core import Point3, ClockObject
+from panda3d.core import Point3, NodePath, ClockObject
 
 from body import *
 
@@ -21,6 +21,7 @@ class Character(Body):
 		self.lifting = None
 
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
+
 		self.name = self.data["name"]
 		self.maxSlots = self.data["slots"]
 
@@ -44,8 +45,7 @@ class Character(Body):
 		self.stunModel = Actor(sdata["render"]["model"], sdata["render"]["animation"])
 		self.stunModel.setScale(*sdata["render"]["scale"])
 		self.stunModel.setHpr(*sdata["render"]["hpr"])
-		self.stunModel.setPos(*sdata["render"]["pos"])
-		self.stunModel.reparentTo(self.model)
+		#self.stunModel.setPos(*sdata["render"]["pos"])
 		# end
 
 		self.healthChanged = False
@@ -168,11 +168,13 @@ class Character(Body):
 	def stun(self):
 		self.stunned = True
 		self.stunTime = Character.clock.getRealTime()
-		self.stunModel.reparentTo(self.model)
+		self.stunModel.setPos(self.model.getPos())
+		self.stunModel.reparentTo(self.stunRender)
 		self.stunModel.play("stun")
 
 	def tryToRecover(self):
 		if self.stunned and (Character.clock.getRealTime() - self.stunTime > 1):
 			self.stunned = False
 			self.stunModel.detachNode()
+			print('no longer stunned')
 

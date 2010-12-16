@@ -161,6 +161,7 @@ class Game(State):
 
 		for char in self.characters.values():
 			char.getNode().reparentTo(self.node)
+			char.stunRender = self.node
 
 		for l in self.stage.getLights():
 			render.setLight(l)
@@ -208,6 +209,9 @@ class Game(State):
 		self.activateSwitches()
 
 		self.updateHUD()
+
+		for c in self.characters:
+			self.characters[c].tryToRecover()
 
 		if self.isOver:
 			return "GameOver"
