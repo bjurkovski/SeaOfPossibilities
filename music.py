@@ -8,11 +8,18 @@ class Music():
         self.name = name
         self.tracks = {}
         self.current = None
+        self.sfx = {}
 
     def play(self):
         if self.current != None:
             self.getCurrent().play()
             self.getCurrent().setPlayRate(1)
+
+    def playSfx(self,name):
+        self.sfx[name].play()
+
+    def getSfx(self,name):
+        return self.sfx[name]
 
     def stop(self):
         self.getCurrent().setPlayRate(0)
@@ -36,6 +43,8 @@ class Music():
         """
         return self.tracks[self.current]
 
+    def addSfx(self, name, fileext = 'wav'):
+        t = self.sfx[name] = loader.loadMusic('sfx/%s.%s' % (name, fileext) )
 
     def addTrack(self,track):
         t = self.tracks[track] = loader.loadMusic('music/%s.ogg' % (track) )

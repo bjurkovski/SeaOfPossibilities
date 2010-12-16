@@ -36,6 +36,7 @@ class StateMachine(FSM, ShowBase, Input):
 		self.music = Music('game')
 		self.music.addTrack('no_entrance')
 		self.music.addTrack('gameover')
+		self.music.addSfx('key')
 
 		#enable shaders in every model
 		self.render.setShaderAuto()
@@ -112,6 +113,7 @@ class StateMachine(FSM, ShowBase, Input):
 			self.states[self.newState].enter()
 
 	def enterPaused(self):
+		self.music.playSfx('key')
 		self.states[self.newState] = Pause()
 		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 

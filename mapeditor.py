@@ -10,7 +10,6 @@ from panda3d.core import Vec2,Vec3,Vec4
 from panda3d.core import CardMaker,NodePath,PandaNode
 from direct.gui.DirectGui import *
 
-from gameLoader import *
 from stage import *
 
 import sys
@@ -18,17 +17,16 @@ import sys
 class MapEditor(ShowBase):
 	def __init__(self, w, h):
 		ShowBase.__init__(self)
-		
+
 		self.mapNode = NodePath(PandaNode("map"))
-		
-		self.loader = GameLoader()
+
 		self.loadStuff()
 
 		#number of cells to be present in the map field
 		self.width = w
 		self.height = h
 
-		self.map = Map( size=(w,h) )
+#		self.map = Map( size=(w,h) )
 
 		# maybe store a "theme" attribute in map and apply the texture there
 #		tex = self.loader["textures"]["tile.png"]
@@ -50,9 +48,9 @@ class MapEditor(ShowBase):
 		self.accept('escape', sys.exit)
 
 	def loadStuff(self):
-		self.loader.loadTexture("tile.png")
-		self.loader.loadTexture("tree.png")
-		self.loader.loadTexture("rock.png")
+#		self.loader.loadTexture("tile.png")
+#		self.loader.loadTexture("tree.png")
+#		self.loader.loadTexture("rock.png")
 
 	def mouseInput(self,task):
 		if base.mouseWatcherNode.hasMouse():
@@ -66,11 +64,12 @@ class MapEditor(ShowBase):
 		self.camera.setPos(0, -10, 10)
 		self.camera.lookAt((0,0,0) ,(0,0,1))
 		self.title.setText ("MapMaker (%02d,%02d)" % ( self.mouse[0], self.mouse[1] ) )
-		
+
 		return task.cont
 
 
 
 app = MapEditor(20,20)
 app.run()
+Z
 

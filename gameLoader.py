@@ -6,6 +6,7 @@ class GameLoader():
     textures = {}
     tracks = {}
     models = {}
+    sfx = {}
     loader = Loader('loader')
 
 
@@ -27,10 +28,21 @@ def loadMusic(filename):
     track = None
 
     try:
-       track = tracks[filename]
+       track = GameLoader.tracks[filename]
     except KeyError:
        track = GameLoader.loader.loadMusic('music/%s' % (filename) )
        GameLoader.tracks[filename] = track
 
     return track
+
+def loadSfx(filename):
+    sfx = None
+
+    try:
+       sfx = GameLoader.sfx[filename]
+    except KeyError:
+       sfx = GameLoader.loader.loadSfx('sfx/%s' % (filename) )
+       GameLoader.sfx[filename] = sfx
+
+    return sfx
 

@@ -67,6 +67,7 @@ class Game(State):
 		return self.stage.maps[self.room]
 
 	def exitMap(self):
+		self.s.play()
 		for i in range(self.currentMap().width):
 			for j in range(self.currentMap().height):
 				atype = self.currentMap().tileType(1,(i,j))
