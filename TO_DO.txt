@@ -1,3 +1,12 @@
+-> Modelo do boneco pronto, os frames são
+0-38 = andando
+50-400  = parado
+440-470 = levando hit
+480-491 = chute
+500-520 = levanta caixa
+530-552 = jogando a caixa
+­560-573 = ataque
+
 PRESENTATION CHECKLIST (friday):
 -> terminar seleção de modo/jogador
 -> inimigos mais espertos

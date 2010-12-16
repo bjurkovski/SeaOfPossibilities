@@ -35,6 +35,7 @@ class StateMachine(FSM, ShowBase, Input):
 
 		self.music = Music('game')
 		self.music.addTrack('no_entrance')
+		self.music.addTrack('gameover')
 
 		#enable shaders in every model
 		self.render.setShaderAuto()
@@ -115,6 +116,8 @@ class StateMachine(FSM, ShowBase, Input):
 		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 
 	def enterGameOver(self):
+		self.music.setCurrent('gameover')
+		self.music.play()
 		if not self.states[self.newState]:
 			self.states[self.newState] = GameOver()
 			self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
