@@ -9,6 +9,7 @@ from door import Door
 from panda3d.core import NodePath, CardMaker, Texture, Vec4, Point3
 from panda3d.core import PointLight, DirectionalLight, AmbientLight, Spotlight
 from direct.actor.Actor import Actor
+from gameLoader import *
 
 tex = Texture('tex')
 tex.load('tex/grass_painterly_large.jpg')
@@ -258,9 +259,8 @@ class Stage:
 		self.doors = {}
 
 		#could be better
-		self.music = Music(data['name'])
-		self.music.addTrack(data['music'])
-		self.music.setCurrent(data['music'])
+		GameLoader.music.addTrack(data['music'])
+		GameLoader.music.setCurrent(data['music'])
 
 		for room in data["rooms"]:
 
@@ -275,13 +275,13 @@ class Stage:
 		mpFile.close()
 
 	def setTrack(self,title):
-		self.music.setTrack(title)
+		GameLoader.music.setTrack(title)
 
 	def playMusic(self):
-		self.music.play()
+		GameLoader.music.play()
 
 	def stopMusic(self):
-		self.music.stop()
+		GameLoader.music.stop()
 
 	def readLights(self,light_data):
 		self.lights = []

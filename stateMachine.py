@@ -33,10 +33,10 @@ class StateMachine(FSM, ShowBase, Input):
 			'Options':  ['Title']
 		}
 
-		self.music = Music('game')
-		self.music.addTrack('no_entrance')
-		self.music.addTrack('gameover')
-		self.music.addSfx('key')
+		GameLoader.music = Music('game')
+		GameLoader.music.addTrack('no_entrance')
+		GameLoader.music.addTrack('gameover')
+		GameLoader.music.addSfx('key')
 
 		#enable shaders in every model
 		self.render.setShaderAuto()
@@ -80,8 +80,8 @@ class StateMachine(FSM, ShowBase, Input):
 
 	def enterTitle(self):
 		#TODO integrate music with the loader
-		self.music.setCurrent('no_entrance')
-		self.music.play()
+		GameLoader.music.setCurrent('no_entrance')
+		GameLoader.music.play()
 		if not self.states[self.newState]:
 			self.states[self.newState] = TitleScreen()
 			self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
@@ -113,13 +113,13 @@ class StateMachine(FSM, ShowBase, Input):
 			self.states[self.newState].enter()
 
 	def enterPaused(self):
-		self.music.playSfx('key')
+		GameLoader.music.playSfx('key')
 		self.states[self.newState] = Pause()
 		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 
 	def enterGameOver(self):
-		self.music.setCurrent('gameover')
-		self.music.play()
+		GameLoader.music.setCurrent('gameover')
+		GameLoader.music.play()
 		if not self.states[self.newState]:
 			self.states[self.newState] = GameOver()
 			self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
