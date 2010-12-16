@@ -127,10 +127,7 @@ class Game(State):
 	def changeMap(self,direction,char):
 
 		self.transitions.fadeOut(1)
-		self.wait(1)
-
 		self.transitions.fadeIn(2)
-		self.wait(1)
 
 		#TODO modularize for more characters
 		self.exitMap()
@@ -487,15 +484,11 @@ class Game(State):
 			if not self.characters[char].isAlive():
 				self.isOver = True
 
-	def wait(self, time):
-		while self.lastTime - self.clock.getRealTime() > time:
-			pass
-
 	def exit(self):
 
 		self.transitions.fadeOut(2)
-		self.wait(2)
-		self.transitions.noFade()
+		self.transitions.fadeIn(3)
+		#self.transitions.noFade()
 
 		self.stage.stopMusic()
 		self.heartsNode.removeNode()
