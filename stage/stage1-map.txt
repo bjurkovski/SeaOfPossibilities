@@ -61,8 +61,7 @@
 ],
 
 "enemies": [
-	{"name": "EvilJackson" , "pos": [5,5] },
-	{"name": "EvilJackson" , "pos": [2,5] }
+	{"name": "EvilJackson" , "pos": [6,2] }
 ],
 
 "doors": [
@@ -114,8 +113,7 @@
 "items": [ ],
 
 "enemies": [
-	{"name" : "EvilJackson" , "pos": [5,5] },
-	{"name" : "EvilJackson" , "pos": [2,5] }
+	{"name" : "EvilJackson" , "pos": [5,5] }
 ]
 
 },

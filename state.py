@@ -11,6 +11,9 @@ class State:
 		self.node2d = NodePath("State"+str(State.counter)+"Node2D")
 		State.counter+=1
 
+		# OMG so ugly, sorry
+		self.waitTime = 0
+
 	def iterate(self):
 		pass
 
@@ -29,6 +32,7 @@ class State:
 
 	def exit(self):
 		self.node.detachNode()
-		
+
 		if self.render2d:
 			self.node2d.detachNode()
+
