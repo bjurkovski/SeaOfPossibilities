@@ -1,5 +1,6 @@
 from body import *
 from direct.actor.Actor import Actor
+from gameLoader import *
 from panda3d.core import Point3, NodePath, ClockObject
 
 from body import *
@@ -94,6 +95,7 @@ class Character(Body):
 		self.tryToRecover()
 
 		if not self.stunned:
+			GameLoader.music.playSfx(item.sfx)
 			if len(self.slots) < self.maxSlots:
 				self.slots.append(item)
 				return None

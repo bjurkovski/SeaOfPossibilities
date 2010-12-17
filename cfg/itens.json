@@ -2,12 +2,14 @@
 
 	"mine" : {
 		"model" : "model/mine.json",
-		"symbol" : "M"
+		"symbol" : "M",
+		"sfx" : "key"
 	} ,
 
 	"sword" : {
 		"model" : "model/sword.json",
-		"symbol" : "Swd"
+		"symbol" : "Swd",
+		"sfx"   : "sword"
 	}
 
 }

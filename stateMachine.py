@@ -33,7 +33,7 @@ class StateMachine(FSM, ShowBase, Input):
 			'Options':  ['Title']
 		}
 
-		GameLoader.music = Music('game')
+		GameLoader.music = Music('Game')
 		GameLoader.music.addTrack('no_entrance')
 		GameLoader.music.addTrack('gameover')
 		GameLoader.music.addSfx('key')
@@ -113,7 +113,6 @@ class StateMachine(FSM, ShowBase, Input):
 			self.states[self.newState].enter()
 
 	def enterPaused(self):
-		GameLoader.music.playSfx('key')
 		self.states[self.newState] = Pause()
 		self.states[self.newState].register(self.render2d, self.cam, self.actionKeys)
 

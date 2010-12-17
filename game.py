@@ -58,6 +58,9 @@ class Game(State):
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
 		x,y = self.currentMap().posToGrid(ob.getPos())
 
+		if ob.symbol == 'i':
+			GameLoader.music.addSfx(ob.sfx)
+
 		try:
 			self.currentMap().tiles[Map.COLLISION][y][x] = ob.symbol
 		except IndexError as e:
@@ -67,7 +70,6 @@ class Game(State):
 		return self.stage.maps[self.room]
 
 	def exitMap(self):
-		self.s.play()
 		for i in range(self.currentMap().width):
 			for j in range(self.currentMap().height):
 				atype = self.currentMap().tileType(1,(i,j))

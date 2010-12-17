@@ -5,6 +5,7 @@ def loadItens():
 	file = open('cfg/itens.json')
 	data = json.loads(file.read())
 	file.close()
+
 	return data
 
 class Item(Model):
@@ -13,7 +14,6 @@ class Item(Model):
 		Model.__init__(self, Item.ITENS[itemName]['model'])
 		self.name = itemName
 		self.type = 'item'
+		self.sfx = Item.ITENS[self.name]['sfx']
 		self.symbol = 'i'#Item.ITENS[self.name]['symbol']
-
-
 

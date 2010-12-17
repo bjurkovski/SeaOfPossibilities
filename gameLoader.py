@@ -3,6 +3,7 @@ from direct.actor.Actor import Actor
 
 class GameLoader():
 
+    music = None
     textures = {}
     tracks = {}
     models = {}

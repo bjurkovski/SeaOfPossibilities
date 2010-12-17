@@ -1,5 +1,6 @@
 from direct.showbase.Loader import Loader
 from direct.task import Task
+from gameLoader import *
 
 class Music():
     def __init__(self,name):
@@ -7,8 +8,9 @@ class Music():
         self.timer = 0
         self.name = name
         self.tracks = {}
-        self.current = None
         self.sfx = {}
+
+        self.current = None
 
     def play(self):
         if self.current != None:
@@ -44,7 +46,7 @@ class Music():
         return self.tracks[self.current]
 
     def addSfx(self, name, fileext = 'wav'):
-        t = self.sfx[name] = loader.loadMusic('sfx/%s.%s' % (name, fileext) )
+        t = self.sfx[name] = loader.loadSfx('sfx/%s.%s' % (name, fileext) )
 
     def addTrack(self,track):
         t = self.tracks[track] = loader.loadMusic('music/%s.ogg' % (track) )
