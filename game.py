@@ -37,7 +37,6 @@ class Game(State):
 		#print(self.players)
 		self.startMap()
 
-		self.stage.playMusic()
 		self.status = {}
 
 		posi = 0
@@ -510,11 +509,16 @@ class Game(State):
 			if not self.characters[char].isAlive():
 				self.isOver = True
 
+
+	def enter(self):
+		State.enter(self)
+		self.stage.playMusic()
+
 	def exit(self):
 
-		self.transitions.fadeOut(2)
-		self.transitions.fadeIn(3)
-		#self.transitions.noFade()
+#		self.transitions.fadeOut(2)
+#		self.transitions.fadeIn(3)
+#		self.transitions.noFade()
 
 		self.stage.stopMusic()
 #		self.heartsNode.removeNode()
