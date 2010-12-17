@@ -21,6 +21,10 @@ class Character(Body):
 		self.currentSlot = 0
 		self.lifting = None
 
+		self.animations = { 'walk' : (0,38) , 'standing' : (50,400) ,
+		                    'hit' : (440,470) , 'kick' : (480,491), 'lift' : (500,520) ,
+		                    'throw' : (530,552) , 'attack' : (560,573)
+		                    }
 		self.model = Actor(self.data["render"]["model"], self.data["render"]["animation"])
 
 		self.name = self.data["name"]
