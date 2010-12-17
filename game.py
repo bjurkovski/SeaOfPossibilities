@@ -53,6 +53,9 @@ class Game(State):
 		self.clock = ClockObject()
 		self.lastTime = 0
 
+		GameLoader.music.addSfx('barrel_breaks')
+		GameLoader.music.addSfx('stone','aif')
+
 	def spawnObject(self, ob):
 		ob.setMap(self.currentMap())
 		ob.getNode().reparentTo(NodePath(self.currentMap().getNode()))
@@ -330,6 +333,7 @@ class Game(State):
 						if self.stage.maps[self.room].tileType(Map.COLLISION, (x,y)) == 'block':
 							for block in self.currentMap().blocks:
 								if tuple(self.currentMap().posToGrid(block.getPos())) == (x,y):
+									GameLoader.music.playSfx('stone')
 									block.move(char.direction)
 						elif self.stage.maps[self.room].tileType(Map.COLLISION, (x,y)) == 'item':
 							for item in self.currentMap().items:
@@ -457,6 +461,9 @@ class Game(State):
 							oldItem.originalPos = oldItem.getPos()
 							self.spawnObject(oldItem)
 							self.currentMap().items.append(oldItem)
+
+		if a.getType() == 'liftable' or b.getType() == 'liftable':
+			GameLoader.music.playSfx('barrel_breaks')
 
 		if a.getType() == 'liftable' and b.getType() == 'enemy':
 			a.stop()
