@@ -517,12 +517,12 @@ class Game(State):
 		#self.transitions.noFade()
 
 		self.stage.stopMusic()
-		self.heartsNode.removeNode()
-		for c in self.characters:
-			NodePath(self.characters[c].getNode()).removeNode()
-			self.status[c].removeNode()
+#		self.heartsNode.removeNode()
+#		for c in self.characters:
+#			NodePath(self.characters[c].getNode()).removeNode()
+#			self.status[c].removeNode()
 
-		NodePath(self.currentMap().getNode()).removeNode()
+#		NodePath(self.currentMap().getNode()).removeNode()
 		State.exit(self)
 
 
