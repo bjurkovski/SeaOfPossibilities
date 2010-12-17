@@ -1,17 +1,25 @@
 {
-	"stage-map": "stage1-map.txt",
+	"stage-map": "stage2-map.txt",
 
 	"name" : "forest",
 
-	"start": "1",
+	"start": "0",
 
 	"rooms":
 	{
-		"1": {"right": "3"},
+		"0": {"right": "1"},
 
-		"2": {"left" : "1", "down" : "3"  },
+		"1": {"left" : "0", "down" : "3"  },
 
-		"3": {"right": "2"}
+		"2": {"left" : "1", "down" : "3", "up" : "0" },
+
+		"3": {"left" : "2", "up" : "1", "down" : "4" },
+
+		"4": { "up" : "3" , "right": "6", "left" : "5", "down" : "3"  },
+
+		"5": {"left" : "1", "right" : "4" , "up" : "3"  },
+
+        "6": {"left" : "4", "right" : "1"  }
 	} ,
 
 	"lights" : [ {"type" : "point" , "color" : [1,1,1,1] , "pos" : [0,-1,0] },

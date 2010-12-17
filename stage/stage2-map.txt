@@ -1,3 +1,43 @@
+{
+
+"0" : {
+
+"map" :
+
+[
+
+[
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+"................."
+] ,
+
+[
+"ooooooooooooooooo",
+"o               o",
+"o     t  t      o",
+"o               o",
+"o               o",
+"o                ",
+"o                ",
+"o   t           o",
+"o         ll    o",
+"o               o",
+"ooooooooooooooooo"
+]
+
+]
+
+},
+
 "1" : {
 
 "map" :
@@ -24,16 +64,18 @@
 "o        o   o  o",
 "o        obbbo  o",
 "ooo             o",
-"   oo            ",
-"       o         ",
+"   oo           o",
+"       o        o",
 "ooo    o        o",
 "o  oooo         o",
 "ot              o",
-"ooooooooooooooooo"
-] ,
+"ooooooo   ooooooo"
+]
+
+],
 
 "items": [
-	{"name": "key" , "pos": [1,11]}
+	{"name": "key" , "pos": [11,1]}
 ],
 
 "enemies": [
@@ -74,26 +116,28 @@
 "o  t    t        ",
 "o   t  t        o",
 "ooooooooooooooooo"
-] ,
+]
+
+],
 
 "enemies" : [],
 
 "itens" : [],
 
 "doors": [
-	{"model": "rock", "openWith": "switches", "permanent": false, "pos": [0,5], "switches": ["b1", "b2", "b3"] },
-	{"model": "rock", "openWith": "switches", "permanent": false, "pos": [0,6], "switches": ["b1", "b2", "b3"] }
+	{"model": "rock", "openWith": "switches", "permanent": false, "pos": [4,0], "switches": ["b1", "b2", "b3"] },
+	{"model": "rock", "openWith": "switches", "permanent": false, "pos": [5,0], "switches": ["b1", "b2", "b3"] }
 ],
 
 "switches": [
-	{"name": "b1", "pos": [3, 14]},
-	{"name": "b2", "pos": [9 , 5]},
-	{"name": "b3", "pos": [7 , 8]}
+	{"name": "b1", "pos": [14, 3]},
+	{"name": "b2", "pos": [12 , 5]},
+	{"name": "b3", "pos": [5 , 9]}
 ]
 
 },
 
-"2" : {
+"3" : {
 
 "map" :
 
@@ -119,18 +163,156 @@
 "o    o     o    o",
 "o  oo       oo  o",
 "o  o          bbo",
-"o  o            o",
-"o  o            o",
-"o  o            o",
+"obbo            o",
+"            l   o",
+"             l  o",
 "o               o",
 "o               o",
 "ooooooo   ooooooo"
-] ,
+]
 
-"enemies" : [ {"name": "EvilJackson" , "pos": [6,2] },
-              {"name": "EvilJackson" , "pos": [7,5] }
+],
+
+"enemies" : [ {"name": "EvilJackson" , "pos": [6,5] },
+              {"name": "EvilJackson" , "pos": [9,5] }
              ],
 
 "itens" : []
+},
+
+"4" : {
+
+"map" :  [
+
+[
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+"................."
+],
+
+[
+"ooooooo   ooooooo",
+"o               o",
+"o  oooo         o",
+"oo         ooo  o",
+"  ooooo         o",
+"      b         o",
+"      oooooob  oo",
+"o     b         o",
+"ol     b         ",
+"oll     blll    o",
+"ooooooooooooooooo"]
+
+],
+
+
+"items": [ ],
+
+"enemies": [
+	{"name" : "EvilJackson" , "pos": [5,9] },
+	{"name" : "EvilJackson" , "pos": [10,2] },
+	{"name" : "EvilJackson" , "pos": [12,5] }
+],
+
+"doors": [
+	{"model": "tree", "openWith": "key", "permanent": false, "pos": [16,8] }
+]
+
+},
+
+
+"5" : {
+
+"map" :  [
+
+[
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+"................."
+],
+
+[
+"ooooooooooooooooo",
+"o   b           o",
+"o   oooooobbooobbo",
+"o   o   b    o  o",
+"o   o   b    b   ",
+"o   b   o    b   ",
+"o   b   o    b   ",
+"obboobbooooooobbo",
+"o   b           o",
+"o   b           o",
+"ooooooooooooooooo"]
+
+],
+
+
+"items": [
+	{"name": "key" , "pos": [2,3]}
+]
+
+},
+
+"6" : {
+
+"map" :  [
+
+[
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+".................",
+"................."
+],
+
+[
+"ooooooooooooooooo",
+"o               o",
+"o    ooooooo    o",
+"o    o     o    o",
+"o    o     o    o",
+"o    o     o    o",
+"o    oo   oo     ",
+"                o",
+"o               o",
+"o               o",
+"ooooooooooooooooo"]
+
+],
+
+"items": [
+	{"name": "sword" , "pos": [7,4]}
+],
+
+"doors": [
+	{"model": "tree", "openWith": "key", "permanent": false, "pos": [16,6] }
+]
+
+
+}
+
+
 }
 

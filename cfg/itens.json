@@ -1,6 +1,6 @@
 {
 
-	"mine" : {
+	"key" : {
 		"model" : "model/mine.json",
 		"symbol" : "M",
 		"sfx" : "key"

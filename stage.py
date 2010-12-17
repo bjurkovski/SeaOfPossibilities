@@ -45,6 +45,7 @@ class Map:
 		try:
 			items = data["items"]
 		except KeyError as e:
+			items = []
 			self.items = []
 
 		try:
@@ -240,13 +241,15 @@ class Map:
 
 class Stage:
 
-	def __init__(self, stageFile, mapFile = None):
+	def __init__(self, stageFile):
 		stFile = open(stageFile)
+
+		data = json.loads(stFile.read())
+		mapFile = "stage/" + data['stage-map']
 
 		if mapFile:
 			mpFile = open(mapFile)
 
-		data = json.loads(stFile.read())
 
 		if mapFile:
 			mapData = json.loads(mpFile.read())
