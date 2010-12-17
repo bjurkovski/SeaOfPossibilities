@@ -86,8 +86,9 @@
 ],
 
 "switches": [
-	{"name": "button1", "pos": [3, 14]},
-	{"name": "button2", "pos": [9 , 5]}
+	{"name": "b1", "pos": [3, 14]},
+	{"name": "b2", "pos": [9 , 5]},
+	{"name": "b3", "pos": [7 , 8]}
 ]
 
 },
