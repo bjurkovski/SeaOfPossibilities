@@ -1,0 +1,65 @@
+Before reading/writing:
+	-> THINK what you'll put/change here, see what's done, what's good,
+		what's bad and what should be done. We don't want to make
+		the same mistakes again =].
+
+
+#####################################################
+# Class Hierarchy									#
+#####################################################
+
+- Body
+	> MovingBody
+		> Character
+		> Enemy
+		> Liftable
+		> Block
+	> Rock
+	> Item
+	> Door
+	> Switch
+
+- Sprite
+
+- State
+	> NewGame
+	> Game
+	> Options
+	> TitleScreen
+	> GameOver
+	> Pause
+
+- StateMachine
+
+- Music
+
+- GameLoader (Singleton)
+
+- Cam
+
+#####################################################
+# Classes Definition								#
+#	E.g.:											#
+#		self.attribute {domain}						#
+#		self.method() {input dom. => return dom.}	#
+#####################################################
+
+Body
+	self.node {NodePath}
+	self.map {Map}
+
+MovingBody
+	self.speed	{(speedX, speedY)}
+	self.direction {"left", "right", "up", "down"}
+	self.move(direction) {direction => true/false (moved)}
+
+Switch
+	self.active {true/false}
+	self.activate()
+	self.deactivate()
+
+Door
+	self.closed {true/false}
+	self.open(item) {"name_of_item" => true/false (opened)}
+
+
